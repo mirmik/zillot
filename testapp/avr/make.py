@@ -10,6 +10,10 @@ licant.cxx_application("firmware",
 	sources = ["main.cpp"],
 	mdepends = [
 		"igris.include",
+		"igris.util",
+		("igris.dprint", "stub"),
+
+		"zillot.include",
 		"zillot.chip.avr.atmega2560"
 	]
 )
