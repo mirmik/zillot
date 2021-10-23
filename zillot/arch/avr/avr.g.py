@@ -8,7 +8,7 @@ licant.module("zillot.avr-common",
 	include_paths = ["."]
 )
 
-licant.module("zillot.chip.avr-atmega2560",
+licant.module("zillot.chip.avr.atmega2560",
 	#ldscripts=["ldscripts/atmega2560.ld"],
 	cxx_flags="-mmcu=atmega2560",
 	cc_flags="-mmcu=atmega2560",
