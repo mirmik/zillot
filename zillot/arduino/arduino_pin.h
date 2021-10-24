@@ -5,12 +5,23 @@
 
 struct arduino_pin
 {
-    gpio_regs *regs;
+    struct gpio_regs *regs;
     int mask;
-
-    void set(bool en) { avr_gpio_set(regs, mask, en); }
-    int get() { return avr_gpio_get(regs, mask); }
-    int mode(uint32_t m) { return avr_gpio_mode(regs, mask, m); }
 };
+
+static void arduino_pin_set(struct arduino_pin *pin, bool en)
+{
+    avr_gpio_set(pin->regs, pin->mask, en);
+}
+
+static int arduino_pin_get(struct arduino_pin *pin)
+{
+    return avr_gpio_get(pin->regs, pin->mask);
+}
+
+static int arduino_pin_mode(struct arduino_pin *pin, uint32_t m)
+{
+    return avr_gpio_mode(pin->regs, pin->mask, m);
+}
 
 #endif

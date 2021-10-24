@@ -7,20 +7,29 @@
 #include <defs/arduino.h>
 
 #include <igris/dprint.h>
-#include <igris/systime.h>
+#include <igris/time/systime.h>
 #include <zillot/arduino/arduino_pin.h>
 #include <zillot/arduino/pinout.h>
 
-static inline arduino_pin getPin(int pin) { return PINOUT[pin]; }
+static inline struct arduino_pin *getPin(int pin)
+{
+    return (struct arduino_pin *)&PINOUT[pin];
+}
 
-static inline void digitalWrite(int num, int en) { getPin(num).set(en); }
+static inline void digitalWrite(int num, int en)
+{
+    arduino_pin_set(getPin(num), en);
+}
 
-static inline uint8_t digitalRead(int num) { return getPin(num).get(); }
+static inline uint8_t digitalRead(int num)
+{
+    return arduino_pin_get(getPin(num));
+}
 
 static inline void pinMode(int pin, uint8_t mode)
 {
-    auto gpin = getPin(pin);
-    gpin.mode(mode == OUTPUT ? GPIO_MODE_OUTPUT : GPIO_MODE_INPUT);
+    struct arduino_pin *gpin = getPin(pin);
+    arduino_pin_mode(gpin, mode == OUTPUT ? GPIO_MODE_OUTPUT : GPIO_MODE_INPUT);
 }
 
 static inline void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder,

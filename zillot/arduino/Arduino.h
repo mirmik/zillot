@@ -6,8 +6,6 @@
 
 #define PIN_NO_A(x) (x + NR_PINOUT_D)
 
-#include <igris/systime.h>
-
 #define min(a, b) ((a) < (b) ? (a) : (b))
 #define max(a, b) ((a) > (b) ? (a) : (b))
 #define abs(x) ((x) > 0 ? (x) : -(x))

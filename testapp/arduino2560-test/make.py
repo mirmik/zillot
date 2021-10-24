@@ -7,10 +7,11 @@ licant.include("igris")
 
 licant.cxx_application("firmware",
 	toolchain = licant.gcc_toolchain("avr-"),
-	sources = ["main.cpp"],
+	sources = ["main.c"],
 	mdepends = [
 		"igris.include",
 		"igris.util",
+		("igris.systime", "jiffies"),
 		("igris.dprint", "stub"),
 
 		"zillot.include",
