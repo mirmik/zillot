@@ -12,11 +12,12 @@ licant.cxx_application("firmware",
 		"igris.include",
 		"igris.util",
 		("igris.systime", "jiffies"),
+		("igris.syslock", "irqs"),
 		("igris.dprint", "stub"),
 
 		"zillot.include",
 		"zillot.chip.avr.atmega2560",
-		"zillot.arduino.mega"
+		"zillot.arduino.mega",
 	],
 
 	cxx_flags = "-ffunction-sections -fdata-sections",

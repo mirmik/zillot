@@ -9,9 +9,9 @@ int main()
 
     while (1)
     {
-        cpu_delay(100000);
+        delay(500);
         digitalWrite(13, 1);
-        cpu_delay(100000);
+        delay(500);
         digitalWrite(13, 0);
     }
 }

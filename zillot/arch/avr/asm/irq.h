@@ -3,12 +3,16 @@
 
 #include <avr/interrupt.h>
 #include <avr/io.h>
+#include <igris/compiler.h>
 
 typedef unsigned char irqstate_t;
 
 __BEGIN_DECLS
 
-static inline void irqs_enable(void) { sei(); }
+static inline void irqs_enable(void)
+{
+    sei();
+}
 
 static inline irqstate_t irqs_save(void)
 {
@@ -17,9 +21,15 @@ static inline irqstate_t irqs_save(void)
     return save;
 }
 
-static inline void irqs_restore(irqstate_t state) { SREG = state; }
+static inline void irqs_restore(irqstate_t state)
+{
+    SREG = state;
+}
 
-static inline void irqs_disable(void) { (void)irqs_save(); }
+static inline void irqs_disable(void)
+{
+    (void)irqs_save();
+}
 
 __END_DECLS
 
