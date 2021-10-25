@@ -17,18 +17,25 @@
 #define UART_CTRIRQS_TCON 4
 #define UART_CTRIRQS_TCOFF 5
 
+struct uart_operations 
+{
+	int (*setup)(struct uart_s * uart, int32_t baud, char parity, uint8_t databits, uint8_t stopbits);
+	int (*enable)(struct uart_s * uart, int en);
+	int (*ctrirqs)(struct uart_s * uart, uint8_t cmd);
+	int (*recvbyte)(struct uart_s * uart);
+	int (*sendbyte)(struct uart_s * uart, int c);
+	int (*cantx)(struct uart_s * uart);
+	int (*hasrx)(struct uart_s * uart);
+};
+
 typedef struct uart_s
 {
+	const uart_operations * u_ops;
 	void (*handler)(void* arg, int code);
 	void*  handarg;
 } uart_s;
 
-/*	virtual int setup(int32_t baud, char parity, uint8_t databits, uint8_t stopbits) = 0;
-	virtual int enable(int en) = 0;
-	virtual int ctrirqs(uint8_t cmd) = 0;
-	virtual int recvbyte() = 0;
-	virtual int sendbyte(int c) = 0;
-	virtual int cantx() = 0;
-	virtual int hasrx() = 0;*/
+
+#define UART_INIT(ops,handler,handarg) {ops,handler,handarg} 
 
 #endif

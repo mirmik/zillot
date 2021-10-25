@@ -18,7 +18,10 @@ licant.module("zillot.arduino.mega",
 		"zillot.arduino-compat",
 		"zillot.arduino.avr-systime",
 	],
-	defines = ["BOARD_ARDUINO_MEGA=1"]
+	defines = [
+		"BOARD_ARDUINO_MEGA=1",
+		"F_CPU=16000000"
+	]
 )
 
 licant.module("zillot.arduino.uno",
@@ -26,5 +29,8 @@ licant.module("zillot.arduino.uno",
 		"zillot.arduino-compat",
 		"zillot.arduino.avr-systime",
 	],
-	defines = ["BOARD_ARDUINO_UNO=1"]
+	defines = [
+		"BOARD_ARDUINO_UNO=1",
+		"F_CPU=16000000"
+	]
 )

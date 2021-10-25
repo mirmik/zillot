@@ -8,7 +8,7 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 
-typedef struct avr_usart_device_s
+typedef struct avr_usart_device
 {   
     struct uart_s u;
     struct usart_regs * regs;
@@ -31,6 +31,8 @@ typedef struct avr_usart_device_s
 #endif*/
 } avr_usart_device_s;
 
+extern const uart_operations avr_usart_device_ops;
+
 __BEGIN_DECLS
 
 void avr_usart_device_init(avr_usart_device_s* dev);
@@ -41,18 +43,18 @@ void avr_usart_device_tx_irq_handler(void * arg);
 __END_DECLS
 
 #define __DECLARE_ISR_RX(vect, arg) \
-ISR(vect)   { arg.handler(arg.handarg, UART_IRQCODE_RX); }
+ISR(vect)   { arg.u.handler(arg.u.handarg, UART_IRQCODE_RX); }
 
 #define __DECLARE_ISR_UDRE(vect, arg) \
-ISR(vect) { arg.handler(arg.handarg, UART_IRQCODE_TC); }
+ISR(vect) { arg.u.handler(arg.u.handarg, UART_IRQCODE_TC); }
 
 #define __DECLARE_ISR_TX(vect, arg) \
-ISR(vect)   { arg.handler(arg.handarg, UART_IRQCODE_TX); }
+ISR(vect)   { arg.u.handler(arg.u.handarg, UART_IRQCODE_TX); }
 
-#define DECLARE_AVR_USART_WITH_IRQS(usart, device_name) \
-avr_usart_device usart(device_name);                    \
-__DECLARE_ISR_RX  (device_name##_RX_vect, usart)        \
-__DECLARE_ISR_UDRE(device_name##_UDRE_vect, usart)      \
-__DECLARE_ISR_TX  (device_name##_TX_vect, usart)              
+#define DECLARE_AVR_USART_WITH_IRQS(name, avrlib_name, prefix)   \
+avr_usart_device name = {UART_INIT(&avr_usart_device_ops,nullptr,nullptr),avrlib_name}; \
+__DECLARE_ISR_RX  (prefix##_RX_vect, name)          \
+__DECLARE_ISR_UDRE(prefix##_UDRE_vect, name)        \
+__DECLARE_ISR_TX  (prefix##_TX_vect, name)              
 
 #endif
