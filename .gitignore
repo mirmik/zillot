@@ -71,3 +71,8 @@ doxygen/latex
 
 bindings/arduino/src 
 xxx
+
+*.hex
+*.bin
+*.elf
+firmware

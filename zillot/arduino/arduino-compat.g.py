@@ -20,3 +20,11 @@ licant.module("zillot.arduino.mega",
 	],
 	defines = ["BOARD_ARDUINO_MEGA=1"]
 )
+
+licant.module("zillot.arduino.uno",
+	mdepends = [
+		"zillot.arduino-compat",
+		"zillot.arduino.avr-systime",
+	],
+	defines = ["BOARD_ARDUINO_UNO=1"]
+)

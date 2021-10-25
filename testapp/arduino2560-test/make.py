@@ -5,7 +5,7 @@ import os
 licant.include("zillot")
 licant.include("igris")
 
-licant.cxx_application("firmware",
+licant.cxx_application("firmware.elf",
 	toolchain = licant.gcc_toolchain("avr-"),
 	sources = ["main.c"],
 	mdepends = [
@@ -27,10 +27,10 @@ licant.cxx_application("firmware",
 
 default_file = "/dev/ttyACM0"
 
-@licant.routine(deps=["firmware"])
+@licant.routine(deps=["firmware.elf"])
 def install(src="firmware.hex", tgt=default_file, *args):
 	for cmd in [
-		"avr-objcopy -O ihex -R .eeprom -R .fuse firmware firmware.hex",
+		"avr-objcopy -O ihex -R .eeprom -R .fuse firmware.elf firmware.hex",
 		f"avrdude -P{tgt} -v -cwiring -patmega2560 -b115200 -D -Uflash:w:./{src} -u"
 	]:
 		print(cmd)
@@ -40,4 +40,4 @@ def install(src="firmware.hex", tgt=default_file, *args):
 def terminal(path=default_file):
 	os.system("sudo gtkterm -p {} -s 115200 --parity none".format(path))
 
-licant.ex("firmware")
+licant.ex("firmware.elf")

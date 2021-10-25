@@ -1,7 +1,10 @@
 #ifndef GENOS_ARDUINO_UNO_PINOUT_H
 #define GENOS_ARDUINO_UNO_PINOUT_H
 
-const struct gpio_pin PINOUT[] = {
+#include <zillot/arduino/arduino_pin.h>
+
+const struct arduino_pin PINOUT[] = 
+{
     {GPIOD, 1 << 0}, // 0
     {GPIOD, 1 << 1}, // 1
     {GPIOD, 1 << 2}, // 2
