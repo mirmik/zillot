@@ -3,7 +3,11 @@ import licant
 licant.module("zillot.avr-common",
 	sources= [
 		"asm/avr_gpio.c",
+		"asm/avr_usart.c",
 		"asm/avr_timer.c",
+		"asm/avr_arch.c",
+		"asm/avr_diag.c",
+		"asm/avr_systime.c",
 	],
 	include_paths = ["."]
 )

@@ -13,7 +13,7 @@ licant.cxx_application("firmware.elf",
 		"igris.util",
 		("igris.systime", "jiffies"),
 		("igris.syslock", "irqs"),
-		("igris.dprint", "stub"),
+		("igris.dprint", "diag"),
 
 		"zillot.include",
 		"zillot.chip.avr.atmega2560",
