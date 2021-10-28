@@ -8,6 +8,8 @@ licant.module("zillot.avr-common",
 		"asm/avr_arch.c",
 		"asm/avr_diag.c",
 		"asm/avr_systime.c",
+		"asm/context.c",
+		"asm/switch_context.S",
 	],
 	include_paths = ["."]
 )

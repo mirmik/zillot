@@ -5,9 +5,7 @@
 #include <avr/interrupt.h>
 #include <stdint.h>
 
-#include <igris/event/delegate.h>
 #include <igris/dprint.h>
-#include <igris/buffer.h>
 #include <igris/util/bug.h>
 
 #include <zillot/i2c/i2c_device.h>
@@ -40,21 +38,21 @@
 
 enum AvrI2CType
 {
-	i2c_sawp = 0b00,
-	i2c_sarp = 0b01,
-	i2c_sawsarp = 0b10,
+	I2C_SAWP = 0b00,
+	I2C_SARP = 0b01,
+	I2C_SAWSARP = 0b10,
 };
 
 struct avr_i2c_device
 {
-	i2c_device dev;
+	struct i2c_bus_device dev;
 
 	uint8_t target_address;
-	void *  sendbuf;
+	const void *  sendbuf;
 	int     sendlen;
 	void *  recvbuf;
 	int     recvlen;
-	size_t  it;
+	int     it;
 	int     rbytecount;
 
 	union

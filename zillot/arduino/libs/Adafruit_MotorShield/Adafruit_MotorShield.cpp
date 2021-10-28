@@ -32,6 +32,7 @@
 //#include <Wire.h>
 #include "Adafruit_MotorShield.h"
 #include "Adafruit_MS_PWMServoDriver.h"
+#include <stddef.h>
 
 #if (MICROSTEPS == 8)
 ///! A sinusoial microstepping curve for the PWM output (8-bit range) with 9 points - last one is start of next step.
@@ -65,7 +66,7 @@ Adafruit_MotorShield::Adafruit_MotorShield(uint8_t addr) {
 	(on Due)
 */
 /**************************************************************************/
-void Adafruit_MotorShield::begin(i2c_device *theWire, uint16_t freq) {
+void Adafruit_MotorShield::begin(i2c_bus_device *theWire, uint16_t freq) {
 	_i2c = theWire;
 	//dprln("pwm.begin");
 	_pwm.begin(_i2c);

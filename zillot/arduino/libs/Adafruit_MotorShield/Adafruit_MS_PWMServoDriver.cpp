@@ -16,15 +16,15 @@
  ****************************************************/
 
 #include "Adafruit_MS_PWMServoDriver.h"
-#include <genos/api.h>
-
 #include <math.h>
+
+#include <genos/schedee_api.h>
 
 Adafruit_MS_PWMServoDriver::Adafruit_MS_PWMServoDriver(uint8_t addr) {
 	_i2caddr = addr;
 }
 
-void Adafruit_MS_PWMServoDriver::begin(i2c_device* i2c) {
+void Adafruit_MS_PWMServoDriver::begin(i2c_bus_device* i2c) {
 	this->i2c = i2c;
 	reset();
 }
@@ -54,7 +54,7 @@ void Adafruit_MS_PWMServoDriver::setPWMFreq(float freq) {
 	write8(PCA9685_MODE1, newmode); // go to sleep
 	write8(PCA9685_PRESCALE, prescale); // set the prescaler
 	write8(PCA9685_MODE1, oldmode);
-	msleep(5);
+	current_schedee_msleep(5);
 	write8(PCA9685_MODE1, oldmode | 0xa1);  //  This sets the MODE1 register to turn on auto increment.
 																					// This is why the beginTransmission below was not working.
 	//  Serial.print("Mode now 0x"); Serial.println(read8(PCA9685_MODE1), HEX);*/
@@ -71,14 +71,14 @@ void Adafruit_MS_PWMServoDriver::setPWM(uint8_t num, uint16_t on, uint16_t off) 
 	outdata[3] = off;
 	outdata[4] = off>>8;
 
-	i2c->write(_i2caddr, outdata, 5);
+	i2c->ops->write(i2c, _i2caddr, outdata, 5);
 }
 
 uint8_t Adafruit_MS_PWMServoDriver::read8(uint8_t addr) {
 	char indata[1];
 	char outdata[1];
 	outdata[0] = addr;
-	i2c->writeread(_i2caddr, outdata, 1, indata, 1);
+	i2c_writeread(i2c, _i2caddr, outdata, 1, indata, 1);
 	return indata[0];
 
 
@@ -102,7 +102,7 @@ void Adafruit_MS_PWMServoDriver::write8(uint8_t addr, uint8_t d) {
 	char outdata[2];
 	outdata[0] = addr;
 	outdata[1] = d;
-	i2c->write(_i2caddr, outdata, 2);
+	i2c->ops->write(i2c, _i2caddr, outdata, 2);
 	
 
 

@@ -22,8 +22,6 @@ void context_load(struct context* next);
 void context_save_and_displace(struct context* cntxt);
 
 void context_dprint (struct context* cntxt);
-
-//void genos_context_displace(struct context* cntxt);
 void __context_drop__();
 
 __END_DECLS

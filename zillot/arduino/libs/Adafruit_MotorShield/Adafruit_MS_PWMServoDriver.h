@@ -41,13 +41,13 @@
 class Adafruit_MS_PWMServoDriver {
  public:
   Adafruit_MS_PWMServoDriver(uint8_t addr = 0x40);
-  void begin(i2c_device* i2c);
+  void begin(i2c_bus_device* i2c);
   void reset(void);
   void setPWMFreq(float freq);
   void setPWM(uint8_t num, uint16_t on, uint16_t off);
 
  private:
- i2c_device* i2c;
+ i2c_bus_device* i2c;
   uint8_t _i2caddr;
 
   uint8_t read8(uint8_t addr);
