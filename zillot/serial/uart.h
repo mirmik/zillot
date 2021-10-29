@@ -17,6 +17,7 @@
 #define UART_CTRIRQS_TCON 4
 #define UART_CTRIRQS_TCOFF 5
 
+struct uart_s;
 struct uart_operations 
 {
 	int (*setup)(struct uart_s * uart, int32_t baud, char parity, uint8_t databits, uint8_t stopbits);
@@ -30,7 +31,7 @@ struct uart_operations
 
 typedef struct uart_s
 {
-	const uart_operations * u_ops;
+	const struct uart_operations * u_ops;
 	void (*handler)(void* arg, int code);
 	void*  handarg;
 } uart_s;

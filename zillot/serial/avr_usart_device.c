@@ -1,4 +1,4 @@
-#include <zillot/serial/avr_usart.h>
+#include <zillot/serial/avr_usart_device.h>
 #include <asm/avr_usart.h>
 #include <igris/util/member.h>
 #include <igris/util/cpu_delay.h>
@@ -126,3 +126,14 @@ int avr_usart_device_setup(uart_s * priv, int32_t baud,
 
 	return 0;
 }
+
+const struct uart_operations avr_usart_device_ops =
+{
+	.setup = avr_usart_device_setup,
+	.enable = avr_usart_device_enable,
+	.ctrirqs = avr_usart_device_ctrirqs,
+	.recvbyte = avr_usart_device_recvbyte,
+	.sendbyte = avr_usart_device_sendbyte,
+	.cantx = avr_usart_device_cantx,
+	.hasrx = avr_usart_device_hasrx,
+};
