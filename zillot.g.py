@@ -30,3 +30,11 @@ licant.module("zillot.include",
 licant.module("zillot.arduino.avr.systime",
 	sources=["zillot/arduino/avr-systick.c"]
 )
+
+licant.module("zillot",
+	mdepends=[
+		("zillot.diag", "impl"),
+		("igris.dprint", "diag"),
+		"zillot.include"
+	]
+)

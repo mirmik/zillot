@@ -4,7 +4,7 @@ licant.module("zillot.i2c-common",
 	sources=["i2c_device.c"]
 )
 
-licant.module("zillot.avr_i2c_device",
+licant.module("zillot.drivers.i2c.avr",
 	sources = ["avr_i2c_device.c"],
 	mdepends = ["zillot.i2c-common"]
 )
