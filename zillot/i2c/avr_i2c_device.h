@@ -46,6 +46,7 @@ enum AvrI2CType
 struct avr_i2c_device
 {
 	struct i2c_bus_device dev;
+	sem_t internal_lock;
 
 	uint8_t target_address;
 	const void *  sendbuf;
@@ -69,10 +70,20 @@ struct avr_i2c_device
 	};
 };
 
+extern const struct i2c_bus_device_operations avr_i2c_device_operations;
+
 __BEGIN_DECLS
 
-void i2c_irq_handler(void*);
+void avr_i2c_irq_handler(void*);
 
 __END_DECLS
+
+#define DECLARE_AVR_I2C_WITH_IRQS(name)                                      \
+struct avr_i2c_device name = {                                               \
+	I2C_INIT(name.dev,&avr_i2c_device_operations),                           \
+	SEMAPHORE_INIT(name.internal_lock, 0),                                   \
+};                                                                           \
+ISR(TWI_vect) { avr_i2c_irq_handler(&name); }
+
 
 #endif

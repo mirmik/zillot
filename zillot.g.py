@@ -35,6 +35,7 @@ licant.module("zillot",
 	mdepends=[
 		("zillot.diag", "impl"),
 		("igris.dprint", "diag"),
-		"zillot.include"
+		"zillot.include",
+		"igris.semaphore"
 	]
 )
