@@ -1,7 +1,9 @@
 import licant
 
 licant.module("zillot.drivers.serial.common",
-	sources=[]
+	sources=[
+		"uartring.c"
+	]
 )
 
 licant.module("zillot.drivers.serial.avr",
