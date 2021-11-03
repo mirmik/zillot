@@ -38,9 +38,9 @@
 
 enum AvrI2CType
 {
-	I2C_SAWP = 0b00,
-	I2C_SARP = 0b01,
-	I2C_SAWSARP = 0b10,
+	I2C_SAWP = 0x00,
+	I2C_SARP = 0x01,
+	I2C_SAWSARP = 0x02,
 };
 
 struct avr_i2c_device
@@ -59,13 +59,13 @@ struct avr_i2c_device
 	union u_s
 	{
 		uint8_t flags;
-		struct
+		struct f_s
 		{
 			uint8_t type : 2;
 			uint8_t ERR_BF : 1;
 			uint8_t ERR_NA : 1;
 			uint8_t ERR_NK : 1;
-		};
+		} f;
 	} u;
 };
 
