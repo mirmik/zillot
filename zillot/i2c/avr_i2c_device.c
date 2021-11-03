@@ -27,6 +27,7 @@ void avr_i2c_device_error_handler(struct avr_i2c_device *i2c)
 void avr_i2c_device_init_master(struct avr_i2c_device *i2c,
                                 uint32_t scl_freq_hz) // = 100000)
 {
+    (void) i2c;
     if (scl_freq_hz == 0)
         scl_freq_hz = 100000;
 
@@ -53,7 +54,7 @@ int avr_i2c_device_write(struct i2c_bus_device *dev, uint8_t target,
     i2c->sendlen = size;
     i2c->target_address = target << 1;
     i2c->it = 0;
-    i2c->type = I2C_SAWP;
+    i2c->u.type = I2C_SAWP;
 
     TWCR = 1 << TWSTA | 0 << TWSTO | 0 << TWEA | COMMON_FLAGS;
 
@@ -77,7 +78,7 @@ int avr_i2c_device_writeread(struct i2c_bus_device *dev, uint8_t target,
 
     i2c->target_address = target << 1;
     i2c->it = 0;
-    i2c->type = I2C_SAWSARP;
+    i2c->u.type = I2C_SAWSARP;
 
     TWCR = 1 << TWSTA | 0 << TWSTO | 0 << TWEA | COMMON_FLAGS;
 
@@ -102,7 +103,7 @@ void avr_i2c_irq_handler(void *arg)
     {
     case 0x00: // Bus Fail (автобус сломался)
     {
-        i2c->ERR_BF = 1;
+        i2c->u.ERR_BF = 1;
         // TWCR = 0 << TWSTA | 1 << TWSTO | i2c->slave_mode << TWEA |
         // COMMON_FLAGS;     // Go!
         send_stop_flag();
@@ -112,7 +113,7 @@ void avr_i2c_irq_handler(void *arg)
 
     case 0x08: // Старт был, а затем мы:
     {
-        if (i2c->type == I2C_SARP) // В зависимости от режима
+        if (i2c->u.type == I2C_SARP) // В зависимости от режима
         {
             TWDR = i2c->target_address | 0x01; // Шлем Addr+R
         }
@@ -128,7 +129,7 @@ void avr_i2c_irq_handler(void *arg)
 
     case 0x10: // Повторный старт был, а затем мы
     {
-        if (i2c->type == I2C_SAWSARP) // В зависимости от режима
+        if (i2c->u.type == I2C_SAWSARP) // В зависимости от режима
         {
             TWDR = i2c->target_address | 0x01; // Шлем Addr+R
         }
@@ -148,8 +149,8 @@ void avr_i2c_irq_handler(void *arg)
 
     case 0x18: // Был послан SLA+W получили ACK, а затем:
     {
-        if (i2c->type == I2C_SAWP ||
-            i2c->type == I2C_SAWSARP) // В зависимости от режима
+        if (i2c->u.type == I2C_SAWP ||
+            i2c->u.type == I2C_SAWSARP) // В зависимости от режима
         {
             // Шлем байт данных, увеличиваем указатель буфера
             TWDR = ((uint8_t *)i2c->sendbuf)[i2c->it++];
@@ -170,7 +171,7 @@ void avr_i2c_irq_handler(void *arg)
     case 0x20: // Был послан SLA+W получили NACK - слейв либо занят, либо его
                // нет дома.
     {
-        i2c->ERR_NA = 1; // Код ошибки
+        i2c->u.ERR_NA = 1; // Код ошибки
         // TWCR = 0 << TWSTA | 1 << TWSTO | i2c->slave_mode << TWEA |
         // COMMON_FLAGS; // Шлем шине Stop
         send_stop_flag();
@@ -182,7 +183,7 @@ void avr_i2c_irq_handler(void *arg)
                // данных. если sawsarp - байт адреса страницы)
     {
         // А дальше:
-        if (i2c->type == I2C_SAWP) // В зависимости от режима
+        if (i2c->u.type == I2C_SAWP) // В зависимости от режима
         {
             if (i2c->it == i2c->sendlen) // Если был байт данных последний
             {
@@ -202,7 +203,7 @@ void avr_i2c_irq_handler(void *arg)
             }
         }
 
-        if (i2c->type == I2C_SAWSARP) // В другом режиме мы
+        if (i2c->u.type == I2C_SAWSARP) // В другом режиме мы
         {
             if (i2c->it == i2c->sendlen) // Если был байт данных последний
             {
@@ -226,7 +227,7 @@ void avr_i2c_irq_handler(void *arg)
     case 0x30: //Байт ушел, но получили NACK причин две. 1я передача оборвана
                //слейвом и так надо. 2я слейв сглючил.
     {
-        i2c->ERR_NK = 1; // Запишем статус ошибки. Хотя это не факт, что ошибка.
+        i2c->u.ERR_NK = 1; // Запишем статус ошибки. Хотя это не факт, что ошибка.
         // TWCR = 0 << TWSTA | 1 << TWSTO | i2c->slave_mode << TWEA |
         // COMMON_FLAGS;	// Шлем Stop
         send_stop_flag();
@@ -271,7 +272,7 @@ void avr_i2c_irq_handler(void *arg)
     case 0x48: // Послали SLA+R, но получили NACK. Видать slave занят или его
                // нет дома.
     {
-        i2c->ERR_NA = 1; // Код ошибки No Answer
+        i2c->u.ERR_NA = 1; // Код ошибки No Answer
         // TWCR = 0 << TWSTA | 1 << TWSTO | i2c->slave_mode << TWEA |
         // COMMON_FLAGS;	// Шлем Stop
         send_stop_flag();
@@ -525,7 +526,7 @@ IIC_F MasterOutFunc = &DoNothing;			//  в Master режиме
 IIC_F SlaveOutFunc 	= &DoNothing;			//  в режиме Slave
 IIC_F ErrorOutFunc 	= &DoNothing;			//  в результате ошибки в режиме
 Master
-
+*/
 /*
 u08 	WorkLog[100];						// Лог пишем сюда
 u08		WorkIndex=0;						// Индекс лога
@@ -883,7 +884,7 @@ switch(TWSR & 0xF8)						// Отсекаем биты прескалера
 	default:	break;
 	}
 }
-
+*/
 /*void DoNothing(void)																// Функция пустышка, затыкать несуществующие ссылки
 {
 }*/

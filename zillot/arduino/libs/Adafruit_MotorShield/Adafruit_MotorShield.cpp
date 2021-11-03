@@ -126,7 +126,7 @@ Adafruit_DCMotor *Adafruit_MotorShield::getMotor(uint8_t num) {
 		// not init'd yet!
 		dcmotors[num].motornum = num;
 		dcmotors[num].MC = this;
-		uint8_t pwm, in1, in2;
+		uint8_t pwm=0, in1=0, in2=0;
 		if (num == 0) {
 			pwm = 8; in2 = 9; in1 = 10;
 		} else if (num == 1) {
@@ -181,7 +181,7 @@ Adafruit_DCMotor *Adafruit_MotorShield::getMotor(uint8_t num) {
 	return &steppers[num];
 }
 
-
+*/
 /******************************************
 							 MOTORS
 ******************************************/
@@ -260,7 +260,7 @@ Adafruit_StepperMotor::Adafruit_StepperMotor(void) {
 
 	usperstep = 60000000 / ((uint32_t)revsteps * (uint32_t)rpm);
 }
-
+*/
 /**************************************************************************/
 /*!
 		@brief  Release all pins of the stepper motor so it free-spins
@@ -274,7 +274,7 @@ Adafruit_StepperMotor::Adafruit_StepperMotor(void) {
 	MC->setPWM(PWMApin, 0);
 	MC->setPWM(PWMBpin, 0);
 }
-
+*/
 /**************************************************************************/
 /*!
 		@brief  Move the stepper motor with the given RPM speed, don't forget to call
@@ -308,7 +308,7 @@ Adafruit_StepperMotor::Adafruit_StepperMotor(void) {
 #endif
 	}
 }
-
+*/
 /**************************************************************************/
 /*!
 		@brief  Move the stepper motor one step only, with no delays

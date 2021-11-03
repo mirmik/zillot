@@ -55,6 +55,9 @@ void avr_usart_setup(
     uint8_t stopbits
 )
 {
+	(void) parity;
+	(void) databits;
+	(void) stopbits;
 	regs->ucsr_a |= 1 << U2X0;
 	uint16_t baud_setting = (F_CPU / 4 / baud - 1) / 2;
 

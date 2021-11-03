@@ -40,6 +40,7 @@ int diag_read(char *buf, int len)
 
 int diag_write_common(void *priv, const char *buf, int len)
 {
+    (void) priv;
     if (current_diag_ops == NULL)
         return 0;
     const char *ptr = buf;
@@ -50,6 +51,7 @@ int diag_write_common(void *priv, const char *buf, int len)
 
 int diag_read_common(void *priv, char *buf, int len)
 {
+    (void) priv;
     if (current_diag_ops == NULL)
         return 0;
     char *ptr = buf;

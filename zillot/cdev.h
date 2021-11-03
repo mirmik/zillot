@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <igris/compiler.h>
 #include <stddef.h>
+#include <stdint.h>
 
 struct char_device_s;
 

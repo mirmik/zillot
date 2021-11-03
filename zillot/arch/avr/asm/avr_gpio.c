@@ -12,19 +12,23 @@ int avr_gpio_set(struct gpio_regs *g, uint16_t mask, unsigned char level)
     return 0;
 }
 
-int avr_gpio_get(struct gpio_regs *g, uint16_t mask) { return g->pin; }
+int avr_gpio_get(struct gpio_regs *g, uint16_t mask)
+{
+    (void) mask;
+    return g->pin;
+}
 
 int avr_gpio_toggle(struct gpio_regs *g, uint16_t mask)
 {
+    (void) mask;
     g->pin = mask;
-
     return 0;
 }
 
 int avr_gpio_mode(struct gpio_regs *g, uint16_t mask, int32_t mode)
 {
     if ((mode & GPIO_MODE_OUT_SECTION) &&
-        (mode & GPIO_MODE_IN_SECTION)) /* mode is incorrect */
+            (mode & GPIO_MODE_IN_SECTION)) /* mode is incorrect */
     {
         return -1;
     }
@@ -61,4 +65,6 @@ int avr_gpio_mode(struct gpio_regs *g, uint16_t mask, int32_t mode)
         g->ddr |= mask;
         return 0;
     };
+
+    return -1;
 }

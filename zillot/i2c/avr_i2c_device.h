@@ -56,7 +56,7 @@ struct avr_i2c_device
 	int     it;
 	int     rbytecount;
 
-	union
+	union u_s
 	{
 		uint8_t flags;
 		struct
@@ -65,9 +65,8 @@ struct avr_i2c_device
 			uint8_t ERR_BF : 1;
 			uint8_t ERR_NA : 1;
 			uint8_t ERR_NK : 1;
-			uint8_t slave_mode: 1;
 		};
-	};
+	} u;
 };
 
 extern const struct i2c_bus_device_operations avr_i2c_device_operations;
@@ -80,8 +79,16 @@ __END_DECLS
 
 #define DECLARE_AVR_I2C_WITH_IRQS(name)                                      \
 struct avr_i2c_device name = {                                               \
-	I2C_INIT(name.dev,&avr_i2c_device_operations),                           \
-	SEMAPHORE_INIT(name.internal_lock, 0),                                   \
+	.dev = I2C_INIT(name.dev,&avr_i2c_device_operations),                    \
+	.internal_lock = SEMAPHORE_INIT(name.internal_lock, 0),                  \
+	.target_address = 0,                                                     \
+	.sendbuf = 0,                                                     \
+	.sendlen = 0,                                                     \
+	.recvbuf = 0,                                                     \
+	.recvlen = 0,                                                      \
+	.it = 0,                                                      \
+	.rbytecount = 0,                                                      \
+	.u = { .flags = 0 }                               \
 };                                                                           \
 ISR(TWI_vect) { avr_i2c_irq_handler(&name); }
 
