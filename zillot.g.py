@@ -16,7 +16,7 @@ licant.module("zillot.diag", "impl",
 
 licant.module("igris.dprint", "diag", 
 	mdepends=[
-		"zillot.diag", 
+		"zillot.diag",
 		"igris.dprint.common"
 	],
 	sources = ["zillot/dprint_diag.c"]
@@ -33,8 +33,6 @@ licant.module("zillot.arduino.avr.systime",
 
 licant.module("zillot",
 	mdepends=[
-		("zillot.diag", "impl"),
-		("igris.dprint", "diag"),
 		"zillot.include",
 		"igris.semaphore"
 	]

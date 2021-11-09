@@ -2,7 +2,6 @@
 #include <zillot/serial/uartring.h>
 
 #include <igris/defs/schedee.h>
-#include <igris/dprint.h>
 #include <igris/sync/syslock.h>
 #include <igris/util/bug.h>
 
@@ -64,9 +63,6 @@ static int uartring_read(struct char_device_s *dev, void *data,
                          unsigned int size, uint8_t flags)
 {
     struct uartring_s *uring = mcast_out(dev, struct uartring_s, dev);
-
-    while (!ring_empty(&uring->txring))
-        DPRINT(ring_avail(&uring->txring));
     int ret = 0;
 
     if (sem_wait(&uring->rxsem))
