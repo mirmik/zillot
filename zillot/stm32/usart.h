@@ -2,7 +2,7 @@
 #define ZILLOT_STM32_USART_H
 
 #include <zillot/common/usart.h>
-#include <stm32f4xxxx.h>
+#include <stm32xxxx.h>
 
 namespace zillot 
 {
@@ -10,11 +10,11 @@ namespace zillot
 	{
 		class usart 
 		{
-			TypeDef_USART * _regs;
+			USART_TypeDef* _regs;
 			int irqno;
 
 		public:
-			usart(TypeDef_USART * _regs, int irqno);
+			usart(USART_TypeDef * _regs, int irqno);
 		};
 	}
 }

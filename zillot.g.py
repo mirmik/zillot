@@ -39,3 +39,10 @@ licant.module("zillot",
 licant.module("zillot.cortex-m4", 
 	include_paths=[ "zillot/cortex-m4" ]
 )
+
+licant.module("zillot.stm32",
+	include_paths=[ "zillot/stm32/internal" ],
+	mdepends=[
+		"zillot.include",
+	]	
+)
