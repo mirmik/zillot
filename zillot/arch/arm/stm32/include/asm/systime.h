@@ -3,6 +3,9 @@
 
 #include <periph/map.h>
 
+typedef int64_t systime_t;
+typedef int64_t systime_difference_t;
+
 extern int __systick_config;
 
 #define systime_lomax() __systick_config

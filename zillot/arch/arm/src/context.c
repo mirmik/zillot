@@ -1,4 +1,4 @@
-#include <hal/subst.h>
+//#include <asm/subst.h>
 #include <asm/context.h>
 #include <string.h>
 

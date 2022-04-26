@@ -1,7 +1,7 @@
 #include <asm/stm32_clockbus.h>
 #include <asm/stm32_systick.h>
 #include <periph/map.h>
-#include <systime/systime.h>
+#include <igris/time/systime.h>
 
 #include <igris/util/bug.h>
 #include <igris/util/bits.h>

@@ -7,8 +7,10 @@ licant.module("hal.arm",
 )
 
 licant.module("hal.arm.armv7e-m",
-	sources = ["armv7e-m/src/nvic.c"],
-	include_paths = ["src"],
+	sources = [
+		"armv7e-m/src/nvic.c"
+	],
+	include_paths = ["armv7e-m/src"],
 	mdepends = [
 		"hal.arm"
 	]

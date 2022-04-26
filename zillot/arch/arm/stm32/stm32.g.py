@@ -55,6 +55,12 @@ licant.module("cpu.stm32.stm32f401re",
 	ldscripts=["ldscripts/stm32f401re.ld"]
 )
 
+licant.module("cpu.stm32.stm32f407vg",
+	mdepends = ["cpu.stm32.stm32f4"],
+	defines = ["CHIP_STM32F407", "STM32F4XX", "STM32F407xx"],
+	ldscripts=["ldscripts/stm32f407vg.ld"]
+)
+
 licant.module("cpu.stm32.stm32g474re",
 	defines = ["CHIP_STM32G474xx", "STM32G474xx"],
 	mdepends = ["cpu.stm32.stm32g4"],

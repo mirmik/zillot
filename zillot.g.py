@@ -2,7 +2,6 @@
 
 import licant
 
-licant.include("igris")
 licant.execute_recursive("zillot", ".g.py")
 
 licant.module("zillot.diag", "stub", 
@@ -22,7 +21,6 @@ licant.module("igris.dprint", "diag",
 	sources = ["zillot/dprint_diag.c"]
 )
 
-
 licant.module("zillot.include",
 	include_paths = ["."]
 )
@@ -36,4 +34,8 @@ licant.module("zillot",
 		"zillot.include",
 		"igris.semaphore"
 	]
+)
+
+licant.module("zillot.cortex-m4", 
+	include_paths=[ "zillot/cortex-m4" ]
 )
