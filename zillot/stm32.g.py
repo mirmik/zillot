@@ -21,7 +21,7 @@ licant.module("zillot.stm32.common",
 	ld_flags = "-mthumb -mcpu=cortex-m4 -fno-exceptions -fno-rtti  -mfloat-abi=hard -mfpu=fpv4-sp-d16  -D__FPU_USED=1",
 )
 
-licant.module("cpu.stm32.irqtable",
+licant.module("zillot.stm32.irqtable",
 	sources=[
 		"src/stm32_vectors.S",
 	],
