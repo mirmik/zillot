@@ -36,8 +36,13 @@ licant.module("zillot",
 	]
 )
 
+licant.module("zillot.armv7e-m", 
+	include_paths=[ "zillot/armv7e-m/internal" ]
+)
+
 licant.module("zillot.cortex-m4", 
-	include_paths=[ "zillot/cortex-m4" ]
+	include_paths=[ "zillot/cortex-m4" ],
+	mdepends = [ "zillot.armv7e-m" ]
 )
 
 licant.module("zillot.stm32",
