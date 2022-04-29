@@ -1,28 +1,22 @@
 import licant
 
 licant.module("zillot.arm",
-	srcdir="src",
-	include_paths = ["src"],
+	srcdir="arm/internal/asm",
+	include_paths = ["arm/internal"],
 	sources = ["context.c", "switch_context.S", "delay.c", "hardfault.c"],
 )
 
 licant.module("zillot.armv7e-m",
-	sources = [
-		"armv7e-m/src/nvic.c"
-	],
-	include_paths = ["armv7e-m/src"],
+	sources = [],
+	include_paths = ["armv7e-m/internal"],
 	mdepends = [
 		"zillot.arm"
 	]
 )
 
 licant.module("zillot.cortex-m4",
-	mdepends=["zillot.arm", "zillot.cortex-m4"]	
-)
-
-licant.module("zillot.cortex-m4",
 	mdepends = ["zillot.armv7e-m"],
-	include_paths=["cortex-m4/include"]
+	include_paths=["cortex-m4"]
 )
 
 licant.module("zillot.cortex-m7",

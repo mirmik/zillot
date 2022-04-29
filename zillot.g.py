@@ -29,25 +29,14 @@ licant.module("zillot.arduino.avr.systime",
 	sources=["zillot/arduino/avr-systick.c"]
 )
 
+licant.module("zillot.common",
+	sources=["zillot/common/*.cpp"]
+)
+
 licant.module("zillot",
 	mdepends=[
 		"zillot.include",
-		"igris.semaphore"
+		"zillot.common",
+		"igris.semaphore",
 	]
-)
-
-licant.module("zillot.armv7e-m", 
-	include_paths=[ "zillot/armv7e-m/internal" ]
-)
-
-licant.module("zillot.cortex-m4", 
-	include_paths=[ "zillot/cortex-m4" ],
-	mdepends = [ "zillot.armv7e-m" ]
-)
-
-licant.module("zillot.stm32",
-	include_paths=[ "zillot/stm32/internal" ],
-	mdepends=[
-		"zillot.include",
-	]	
 )

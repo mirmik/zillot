@@ -35,7 +35,7 @@
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include <periph/map.h>
+//#include <periph/map.h>
 #include "stm32f4xx.h"
 
 /** @addtogroup STM32F4xx_StdPeriph_Driver
@@ -1024,115 +1024,115 @@ typedef struct
 /* Exported functions --------------------------------------------------------*/ 
 
 /* TimeBase management ********************************************************/
-void TIM_DeInit(struct timer_regs* TIMx);
-void TIM_TimeBaseInit(struct timer_regs* TIMx, TIM_TimeBaseInitTypeDef* TIM_TimeBaseInitStruct);
+void TIM_DeInit(TIM_TypeDef * TIMx);
+void TIM_TimeBaseInit(TIM_TypeDef * TIMx, TIM_TimeBaseInitTypeDef* TIM_TimeBaseInitStruct);
 void TIM_TimeBaseStructInit(TIM_TimeBaseInitTypeDef* TIM_TimeBaseInitStruct);
-void TIM_PrescalerConfig(struct timer_regs* TIMx, uint16_t Prescaler, uint16_t TIM_PSCReloadMode);
-void TIM_CounterModeConfig(struct timer_regs* TIMx, uint16_t TIM_CounterMode);
-void TIM_SetCounter(struct timer_regs* TIMx, uint32_t Counter);
-void TIM_SetAutoreload(struct timer_regs* TIMx, uint32_t Autoreload);
-uint32_t TIM_GetCounter(struct timer_regs* TIMx);
-uint16_t TIM_GetPrescaler(struct timer_regs* TIMx);
-void TIM_UpdateDisableConfig(struct timer_regs* TIMx, FunctionalState NewState);
-void TIM_UpdateRequestConfig(struct timer_regs* TIMx, uint16_t TIM_UpdateSource);
-void TIM_ARRPreloadConfig(struct timer_regs* TIMx, FunctionalState NewState);
-void TIM_SelectOnePulseMode(struct timer_regs* TIMx, uint16_t TIM_OPMode);
-void TIM_SetClockDivision(struct timer_regs* TIMx, uint16_t TIM_CKD);
-void TIM_Cmd(struct timer_regs* TIMx, FunctionalState NewState);
+void TIM_PrescalerConfig(TIM_TypeDef * TIMx, uint16_t Prescaler, uint16_t TIM_PSCReloadMode);
+void TIM_CounterModeConfig(TIM_TypeDef * TIMx, uint16_t TIM_CounterMode);
+void TIM_SetCounter(TIM_TypeDef * TIMx, uint32_t Counter);
+void TIM_SetAutoreload(TIM_TypeDef * TIMx, uint32_t Autoreload);
+uint32_t TIM_GetCounter(TIM_TypeDef * TIMx);
+uint16_t TIM_GetPrescaler(TIM_TypeDef * TIMx);
+void TIM_UpdateDisableConfig(TIM_TypeDef * TIMx, FunctionalState NewState);
+void TIM_UpdateRequestConfig(TIM_TypeDef * TIMx, uint16_t TIM_UpdateSource);
+void TIM_ARRPreloadConfig(TIM_TypeDef * TIMx, FunctionalState NewState);
+void TIM_SelectOnePulseMode(TIM_TypeDef * TIMx, uint16_t TIM_OPMode);
+void TIM_SetClockDivision(TIM_TypeDef * TIMx, uint16_t TIM_CKD);
+void TIM_Cmd(TIM_TypeDef * TIMx, FunctionalState NewState);
 
 /* Output Compare management **************************************************/
-void TIM_OC1Init(struct timer_regs* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct);
-void TIM_OC2Init(struct timer_regs* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct);
-void TIM_OC3Init(struct timer_regs* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct);
-void TIM_OC4Init(struct timer_regs* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct);
+void TIM_OC1Init(TIM_TypeDef * TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct);
+void TIM_OC2Init(TIM_TypeDef * TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct);
+void TIM_OC3Init(TIM_TypeDef * TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct);
+void TIM_OC4Init(TIM_TypeDef * TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct);
 void TIM_OCStructInit(TIM_OCInitTypeDef* TIM_OCInitStruct);
-void TIM_SelectOCxM(struct timer_regs* TIMx, uint16_t TIM_Channel, uint16_t TIM_OCMode);
-void TIM_SetCompare1(struct timer_regs* TIMx, uint32_t Compare1);
-void TIM_SetCompare2(struct timer_regs* TIMx, uint32_t Compare2);
-void TIM_SetCompare3(struct timer_regs* TIMx, uint32_t Compare3);
-void TIM_SetCompare4(struct timer_regs* TIMx, uint32_t Compare4);
-void TIM_ForcedOC1Config(struct timer_regs* TIMx, uint16_t TIM_ForcedAction);
-void TIM_ForcedOC2Config(struct timer_regs* TIMx, uint16_t TIM_ForcedAction);
-void TIM_ForcedOC3Config(struct timer_regs* TIMx, uint16_t TIM_ForcedAction);
-void TIM_ForcedOC4Config(struct timer_regs* TIMx, uint16_t TIM_ForcedAction);
-void TIM_OC1PreloadConfig(struct timer_regs* TIMx, uint16_t TIM_OCPreload);
-void TIM_OC2PreloadConfig(struct timer_regs* TIMx, uint16_t TIM_OCPreload);
-void TIM_OC3PreloadConfig(struct timer_regs* TIMx, uint16_t TIM_OCPreload);
-void TIM_OC4PreloadConfig(struct timer_regs* TIMx, uint16_t TIM_OCPreload);
-void TIM_OC1FastConfig(struct timer_regs* TIMx, uint16_t TIM_OCFast);
-void TIM_OC2FastConfig(struct timer_regs* TIMx, uint16_t TIM_OCFast);
-void TIM_OC3FastConfig(struct timer_regs* TIMx, uint16_t TIM_OCFast);
-void TIM_OC4FastConfig(struct timer_regs* TIMx, uint16_t TIM_OCFast);
-void TIM_ClearOC1Ref(struct timer_regs* TIMx, uint16_t TIM_OCClear);
-void TIM_ClearOC2Ref(struct timer_regs* TIMx, uint16_t TIM_OCClear);
-void TIM_ClearOC3Ref(struct timer_regs* TIMx, uint16_t TIM_OCClear);
-void TIM_ClearOC4Ref(struct timer_regs* TIMx, uint16_t TIM_OCClear);
-void TIM_OC1PolarityConfig(struct timer_regs* TIMx, uint16_t TIM_OCPolarity);
-void TIM_OC1NPolarityConfig(struct timer_regs* TIMx, uint16_t TIM_OCNPolarity);
-void TIM_OC2PolarityConfig(struct timer_regs* TIMx, uint16_t TIM_OCPolarity);
-void TIM_OC2NPolarityConfig(struct timer_regs* TIMx, uint16_t TIM_OCNPolarity);
-void TIM_OC3PolarityConfig(struct timer_regs* TIMx, uint16_t TIM_OCPolarity);
-void TIM_OC3NPolarityConfig(struct timer_regs* TIMx, uint16_t TIM_OCNPolarity);
-void TIM_OC4PolarityConfig(struct timer_regs* TIMx, uint16_t TIM_OCPolarity);
-void TIM_CCxCmd(struct timer_regs* TIMx, uint16_t TIM_Channel, uint16_t TIM_CCx);
-void TIM_CCxNCmd(struct timer_regs* TIMx, uint16_t TIM_Channel, uint16_t TIM_CCxN);
+void TIM_SelectOCxM(TIM_TypeDef * TIMx, uint16_t TIM_Channel, uint16_t TIM_OCMode);
+void TIM_SetCompare1(TIM_TypeDef * TIMx, uint32_t Compare1);
+void TIM_SetCompare2(TIM_TypeDef * TIMx, uint32_t Compare2);
+void TIM_SetCompare3(TIM_TypeDef * TIMx, uint32_t Compare3);
+void TIM_SetCompare4(TIM_TypeDef * TIMx, uint32_t Compare4);
+void TIM_ForcedOC1Config(TIM_TypeDef * TIMx, uint16_t TIM_ForcedAction);
+void TIM_ForcedOC2Config(TIM_TypeDef * TIMx, uint16_t TIM_ForcedAction);
+void TIM_ForcedOC3Config(TIM_TypeDef * TIMx, uint16_t TIM_ForcedAction);
+void TIM_ForcedOC4Config(TIM_TypeDef * TIMx, uint16_t TIM_ForcedAction);
+void TIM_OC1PreloadConfig(TIM_TypeDef * TIMx, uint16_t TIM_OCPreload);
+void TIM_OC2PreloadConfig(TIM_TypeDef * TIMx, uint16_t TIM_OCPreload);
+void TIM_OC3PreloadConfig(TIM_TypeDef * TIMx, uint16_t TIM_OCPreload);
+void TIM_OC4PreloadConfig(TIM_TypeDef * TIMx, uint16_t TIM_OCPreload);
+void TIM_OC1FastConfig(TIM_TypeDef * TIMx, uint16_t TIM_OCFast);
+void TIM_OC2FastConfig(TIM_TypeDef * TIMx, uint16_t TIM_OCFast);
+void TIM_OC3FastConfig(TIM_TypeDef * TIMx, uint16_t TIM_OCFast);
+void TIM_OC4FastConfig(TIM_TypeDef * TIMx, uint16_t TIM_OCFast);
+void TIM_ClearOC1Ref(TIM_TypeDef * TIMx, uint16_t TIM_OCClear);
+void TIM_ClearOC2Ref(TIM_TypeDef * TIMx, uint16_t TIM_OCClear);
+void TIM_ClearOC3Ref(TIM_TypeDef * TIMx, uint16_t TIM_OCClear);
+void TIM_ClearOC4Ref(TIM_TypeDef * TIMx, uint16_t TIM_OCClear);
+void TIM_OC1PolarityConfig(TIM_TypeDef * TIMx, uint16_t TIM_OCPolarity);
+void TIM_OC1NPolarityConfig(TIM_TypeDef * TIMx, uint16_t TIM_OCNPolarity);
+void TIM_OC2PolarityConfig(TIM_TypeDef * TIMx, uint16_t TIM_OCPolarity);
+void TIM_OC2NPolarityConfig(TIM_TypeDef * TIMx, uint16_t TIM_OCNPolarity);
+void TIM_OC3PolarityConfig(TIM_TypeDef * TIMx, uint16_t TIM_OCPolarity);
+void TIM_OC3NPolarityConfig(TIM_TypeDef * TIMx, uint16_t TIM_OCNPolarity);
+void TIM_OC4PolarityConfig(TIM_TypeDef * TIMx, uint16_t TIM_OCPolarity);
+void TIM_CCxCmd(TIM_TypeDef * TIMx, uint16_t TIM_Channel, uint16_t TIM_CCx);
+void TIM_CCxNCmd(TIM_TypeDef * TIMx, uint16_t TIM_Channel, uint16_t TIM_CCxN);
 
 /* Input Capture management ***************************************************/
-void TIM_ICInit(struct timer_regs* TIMx, TIM_ICInitTypeDef* TIM_ICInitStruct);
+void TIM_ICInit(TIM_TypeDef * TIMx, TIM_ICInitTypeDef* TIM_ICInitStruct);
 void TIM_ICStructInit(TIM_ICInitTypeDef* TIM_ICInitStruct);
-void TIM_PWMIConfig(struct timer_regs* TIMx, TIM_ICInitTypeDef* TIM_ICInitStruct);
-uint32_t TIM_GetCapture1(struct timer_regs* TIMx);
-uint32_t TIM_GetCapture2(struct timer_regs* TIMx);
-uint32_t TIM_GetCapture3(struct timer_regs* TIMx);
-uint32_t TIM_GetCapture4(struct timer_regs* TIMx);
-void TIM_SetIC1Prescaler(struct timer_regs* TIMx, uint16_t TIM_ICPSC);
-void TIM_SetIC2Prescaler(struct timer_regs* TIMx, uint16_t TIM_ICPSC);
-void TIM_SetIC3Prescaler(struct timer_regs* TIMx, uint16_t TIM_ICPSC);
-void TIM_SetIC4Prescaler(struct timer_regs* TIMx, uint16_t TIM_ICPSC);
+void TIM_PWMIConfig(TIM_TypeDef * TIMx, TIM_ICInitTypeDef* TIM_ICInitStruct);
+uint32_t TIM_GetCapture1(TIM_TypeDef * TIMx);
+uint32_t TIM_GetCapture2(TIM_TypeDef * TIMx);
+uint32_t TIM_GetCapture3(TIM_TypeDef * TIMx);
+uint32_t TIM_GetCapture4(TIM_TypeDef * TIMx);
+void TIM_SetIC1Prescaler(TIM_TypeDef * TIMx, uint16_t TIM_ICPSC);
+void TIM_SetIC2Prescaler(TIM_TypeDef * TIMx, uint16_t TIM_ICPSC);
+void TIM_SetIC3Prescaler(TIM_TypeDef * TIMx, uint16_t TIM_ICPSC);
+void TIM_SetIC4Prescaler(TIM_TypeDef * TIMx, uint16_t TIM_ICPSC);
 
 /* Advanced-control timers (TIM1 and TIM8) specific features ******************/
-void TIM_BDTRConfig(struct timer_regs* TIMx, TIM_BDTRInitTypeDef *TIM_BDTRInitStruct);
+void TIM_BDTRConfig(TIM_TypeDef * TIMx, TIM_BDTRInitTypeDef *TIM_BDTRInitStruct);
 void TIM_BDTRStructInit(TIM_BDTRInitTypeDef* TIM_BDTRInitStruct);
-void TIM_CtrlPWMOutputs(struct timer_regs* TIMx, FunctionalState NewState);
-void TIM_SelectCOM(struct timer_regs* TIMx, FunctionalState NewState);
-void TIM_CCPreloadControl(struct timer_regs* TIMx, FunctionalState NewState);
+void TIM_CtrlPWMOutputs(TIM_TypeDef * TIMx, FunctionalState NewState);
+void TIM_SelectCOM(TIM_TypeDef * TIMx, FunctionalState NewState);
+void TIM_CCPreloadControl(TIM_TypeDef * TIMx, FunctionalState NewState);
 
 /* Interrupts, DMA and flags management ***************************************/
-void TIM_ITConfig(struct timer_regs* TIMx, uint16_t TIM_IT, FunctionalState NewState);
-void TIM_GenerateEvent(struct timer_regs* TIMx, uint16_t TIM_EventSource);
-FlagStatus TIM_GetFlagStatus(struct timer_regs* TIMx, uint16_t TIM_FLAG);
-void TIM_ClearFlag(struct timer_regs* TIMx, uint16_t TIM_FLAG);
-ITStatus TIM_GetITStatus(struct timer_regs* TIMx, uint16_t TIM_IT);
-void TIM_ClearITPendingBit(struct timer_regs* TIMx, uint16_t TIM_IT);
-void TIM_DMAConfig(struct timer_regs* TIMx, uint16_t TIM_DMABase, uint16_t TIM_DMABurstLength);
-void TIM_DMACmd(struct timer_regs* TIMx, uint16_t TIM_DMASource, FunctionalState NewState);
-void TIM_SelectCCDMA(struct timer_regs* TIMx, FunctionalState NewState);
+void TIM_ITConfig(TIM_TypeDef * TIMx, uint16_t TIM_IT, FunctionalState NewState);
+void TIM_GenerateEvent(TIM_TypeDef * TIMx, uint16_t TIM_EventSource);
+FlagStatus TIM_GetFlagStatus(TIM_TypeDef * TIMx, uint16_t TIM_FLAG);
+void TIM_ClearFlag(TIM_TypeDef * TIMx, uint16_t TIM_FLAG);
+ITStatus TIM_GetITStatus(TIM_TypeDef * TIMx, uint16_t TIM_IT);
+void TIM_ClearITPendingBit(TIM_TypeDef * TIMx, uint16_t TIM_IT);
+void TIM_DMAConfig(TIM_TypeDef * TIMx, uint16_t TIM_DMABase, uint16_t TIM_DMABurstLength);
+void TIM_DMACmd(TIM_TypeDef * TIMx, uint16_t TIM_DMASource, FunctionalState NewState);
+void TIM_SelectCCDMA(TIM_TypeDef * TIMx, FunctionalState NewState);
 
 /* Clocks management **********************************************************/
-void TIM_InternalClockConfig(struct timer_regs* TIMx);
-void TIM_ITRxExternalClockConfig(struct timer_regs* TIMx, uint16_t TIM_InputTriggerSource);
-void TIM_TIxExternalClockConfig(struct timer_regs* TIMx, uint16_t TIM_TIxExternalCLKSource,
+void TIM_InternalClockConfig(TIM_TypeDef * TIMx);
+void TIM_ITRxExternalClockConfig(TIM_TypeDef * TIMx, uint16_t TIM_InputTriggerSource);
+void TIM_TIxExternalClockConfig(TIM_TypeDef * TIMx, uint16_t TIM_TIxExternalCLKSource,
                                 uint16_t TIM_ICPolarity, uint16_t ICFilter);
-void TIM_ETRClockMode1Config(struct timer_regs* TIMx, uint16_t TIM_ExtTRGPrescaler, uint16_t TIM_ExtTRGPolarity,
+void TIM_ETRClockMode1Config(TIM_TypeDef * TIMx, uint16_t TIM_ExtTRGPrescaler, uint16_t TIM_ExtTRGPolarity,
                              uint16_t ExtTRGFilter);
-void TIM_ETRClockMode2Config(struct timer_regs* TIMx, uint16_t TIM_ExtTRGPrescaler, 
+void TIM_ETRClockMode2Config(TIM_TypeDef * TIMx, uint16_t TIM_ExtTRGPrescaler, 
                              uint16_t TIM_ExtTRGPolarity, uint16_t ExtTRGFilter);
 
 /* Synchronization management *************************************************/
-void TIM_SelectInputTrigger(struct timer_regs* TIMx, uint16_t TIM_InputTriggerSource);
-void TIM_SelectOutputTrigger(struct timer_regs* TIMx, uint16_t TIM_TRGOSource);
-void TIM_SelectSlaveMode(struct timer_regs* TIMx, uint16_t TIM_SlaveMode);
-void TIM_SelectMasterSlaveMode(struct timer_regs* TIMx, uint16_t TIM_MasterSlaveMode);
-void TIM_ETRConfig(struct timer_regs* TIMx, uint16_t TIM_ExtTRGPrescaler, uint16_t TIM_ExtTRGPolarity,
+void TIM_SelectInputTrigger(TIM_TypeDef * TIMx, uint16_t TIM_InputTriggerSource);
+void TIM_SelectOutputTrigger(TIM_TypeDef * TIMx, uint16_t TIM_TRGOSource);
+void TIM_SelectSlaveMode(TIM_TypeDef * TIMx, uint16_t TIM_SlaveMode);
+void TIM_SelectMasterSlaveMode(TIM_TypeDef * TIMx, uint16_t TIM_MasterSlaveMode);
+void TIM_ETRConfig(TIM_TypeDef * TIMx, uint16_t TIM_ExtTRGPrescaler, uint16_t TIM_ExtTRGPolarity,
                    uint16_t ExtTRGFilter);
 
 /* Specific interface management **********************************************/   
-void TIM_EncoderInterfaceConfig(struct timer_regs* TIMx, uint16_t TIM_EncoderMode,
+void TIM_EncoderInterfaceConfig(TIM_TypeDef * TIMx, uint16_t TIM_EncoderMode,
                                 uint16_t TIM_IC1Polarity, uint16_t TIM_IC2Polarity);
-void TIM_SelectHallSensor(struct timer_regs* TIMx, FunctionalState NewState);
+void TIM_SelectHallSensor(TIM_TypeDef * TIMx, FunctionalState NewState);
 
 /* Specific remapping management **********************************************/
-void TIM_RemapConfig(struct timer_regs* TIMx, uint16_t TIM_Remap);
+void TIM_RemapConfig(TIM_TypeDef * TIMx, uint16_t TIM_Remap);
 
 #ifdef __cplusplus
 }
