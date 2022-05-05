@@ -17,11 +17,8 @@ __BEGIN_DECLS
 
 void stm32_clockbus_hsi_mode();
 void stm32_clockbus_hse_mode();
-
 void stm32_clockbus_reevaluate();
-
 void stm32_clockbus_systime_setup();
-
 void stm32_clockbus_set_dividers(int a, int b);
 
 __END_DECLS

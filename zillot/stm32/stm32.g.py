@@ -3,24 +3,17 @@ import licant
 licant.module("zillot.stm32.common",
 	include_paths=["internal"],
 	sources=[
-		"systick.cpp",
-		"stm32_usart.c",
-		#"stm32_gpio.c",
-		#"stm32_start.c",
-		"stm32_pll.c",
-		#"stm32_diag.c",
-		#"stm32_zillot.c",
-		"stm32_clockbus.c",
+		"usart.cpp",
 
+		"stm32_usart.c",
+		"stm32_pll.c",
+		"stm32_timer.c",
+		"stm32_clockbus.c",
+		"stm32_systick.c",
 		"stm32_rcc.c",
 		"stm32_gpio.c",
 		"stm32_diag.c",
 		"stm32_watchdog.c",
-
-		"usart.cpp",
-
-#		"internal/spl/stm32f4xx_tim.c"
-#		"internal/spl/stm32f4xx_rcc.c"
 	],
 	mdepends = [
 		"zillot.include",
@@ -80,4 +73,18 @@ licant.module("zillot.stm32g431rb",
 	defines = ["CHIP_STM32G431xx", "STM32G431xx"],
 	mdepends = ["zillot.stm32g4"],
 	ldscripts=["ldscripts/stm32g431rb.ld"]
+)
+
+licant.module("zillot.stm32.spl",
+	sources=[
+		"internal/spl/stm32f4xx_tim.c",
+		"internal/spl/stm32f4xx_rcc.c",
+	]
+)
+
+licant.module("zillot.stm32.vectors",
+	sources=[
+		"stm32_vectors.S",
+		"stm32_start.c"
+	]
 )

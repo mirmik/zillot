@@ -1,5 +1,5 @@
-#ifndef GENOS_HAL_IRQTBL_H
-#define GENOS_HAL_IRQTBL_H
+#ifndef ZILLOT_HAL_IRQTBL_H
+#define ZILLOT_IRQTBL_H
 
 /*
 	irqtable - это комутатор прерываний genos. 
@@ -32,6 +32,8 @@ void irqtable_stub(void* irqno);
 
 void irqtable_debug_print();
 
+void do_irq(uint8_t i);
+
 __END_DECLS
 
 #ifdef __cplusplus
@@ -47,26 +49,4 @@ namespace genos
 }
 #endif
 
-/*#ifdef __cplusplus
-#include <igris/event/delegate.h>
-
-namespace genos 
-{
-	namespace irqtable 
-	{
-		static inline void set_handler(int irqno, irq_handler_t handler, void* arg) 
-		{
-			irqtable_set_handler(irqno, handler, arg);
-		}
-
-		template<class T>
-		void set_handler(int irqno, void(T::* handler)(), T* arg) 
-		{
-			auto dlg = igris::make_fastdelegate(handler, arg); 
-			set_handler(irqno, dlg.extfunction, dlg.object);
-		}
-	}
-}
-#endif
-*/
 #endif

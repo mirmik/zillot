@@ -1,9 +1,10 @@
 #ifndef ZILLOT_ARMV7E_NVIC_M
 #define ZILLOT_ARMV7E_NVIC_M
 
+#include <stm32xxxx.h> /// < Почему это в armv7e-m?
 #include <igris/compiler.h>
 
-#define NVIC_IRQNO(x) (x)
+#define NVIC_IRQNO(x) (x+16)
 
 __BEGIN_DECLS
 

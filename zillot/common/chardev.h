@@ -2,6 +2,7 @@
 #define ZILLOT_CHAR_DEVICE_H
 
 #include <igris/util/numconvert.h>
+#include <igris/event/delegate.h>
 
 namespace zillot 
 {
@@ -11,9 +12,23 @@ namespace zillot
 		uint16_t flags = 0;
 
 	public:
+		igris::delegate<void> rx_callback = {};
+		igris::delegate<void> tx_callback = {};
+
+	public:
 		chardev() {} 
 
 		int print(int32_t arg);
+		int print(const char * arg);
+
+		template <class Arg>
+		int println(const Arg& arg) 
+		{
+			int ret = 0;
+			ret += print(arg);
+			ret += write("\r\n", 2);
+			return ret;
+		}
 
 		virtual int read(void* data, size_t size) = 0;
 		virtual int write(const void* data, size_t size) = 0;

@@ -9,9 +9,6 @@ typedef int64_t systime_difference_t;
 
 extern uint32_t __systick_config;
 
-typedef int64_t systime_t;
-typedef int64_t systime_difference_t;
-
 #define systime_lomax() __systick_config
 #define systime_lopart() (__systick_config - SysTick->VAL)
 #define systime_check_flag() (SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk)

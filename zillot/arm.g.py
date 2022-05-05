@@ -1,9 +1,13 @@
 import licant
 
 licant.module("zillot.arm",
-	srcdir="arm/internal/asm",
+	srcdir="arm",
 	include_paths = ["arm/internal"],
-	sources = ["context.c", "switch_context.S", "delay.c", "hardfault.c"],
+	sources = [
+		"internal/asm/context.c", 
+		"internal/asm/switch_context.S", 
+		"internal/asm/delay.c", 
+		"arm_hardfault.c"],
 )
 
 licant.module("zillot.armv7e-m",

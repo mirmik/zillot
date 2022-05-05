@@ -26,7 +26,7 @@ int zillot::uartring::write(const void* data, size_t size)
 		udev->sendbyte(*(char*)data);
 	}
 
-	while (size != writed)
+	if (size != writed)
 	{
 		curwrited = ring_write(&txring,
 		                       txbuffer,
@@ -36,45 +36,8 @@ int zillot::uartring::write(const void* data, size_t size)
 			udev->ctrirqs(UART_CTRIRQS_TXON);
 
 		writed += curwrited;
-
-		if (writed == size)
-			break;
-
-		if (flags & IO_HOTLOOP)
-		{
-			system_unlock();
-			cpu_delay(1000); // Заменить на проверку завершения записи.
-			system_lock();
-			continue;
-		}
-
-		if (flags & IO_NOBLOCK)
-		{
-			break;
-		}
-
-		system_unlock();
-		wait_current_schedee(&txwait, WAIT_PRIORITY, nullptr);
-		system_lock();
 	}
 	system_unlock();
-
-	if (flags & IO_WAITSEND)
-	{
-		// Ждём, пока уйдет последний символ.
-		while (1)
-		{
-			system_lock();
-			if (ring_empty(&txring) && udev->cantx())
-			{
-				system_unlock();
-				break;
-			}
-			system_unlock();
-			cpu_delay(1000);
-		}
-	}
-
 	return writed;
 }
 
@@ -84,22 +47,11 @@ int zillot::uartring::read(void* data, size_t size)
 	irqstate_t save;
 
 	save = irqs_save();
-	while (ring_empty(&rxring))
+	if (ring_empty(&rxring))
 	{
-
-		if (flags & IO_NOBLOCK)
-		{
-			irqs_restore(save);
-			return 0;
-		}
-
-		if (wait_current_schedee(&rxwait, 0, nullptr) == SCHEDEE_DISPLACE_VIRTUAL)
-		{
-			irqs_restore(save);
-			return 0;
-		}
+		irqs_restore(save);
+		return 0;
 	}
-
 	irqs_restore(save);
 
 	if (data == nullptr)
@@ -167,7 +119,7 @@ void zillot::uartring::uartring_irq_handler(void* priv, int code)
 				if ( ring_empty(&uring->txring) )
 				{
 					uring->udev->ctrirqs(UART_CTRIRQS_TXOFF);
-					unwait_one(&uring->txwait, nullptr);
+					uring->tx_callback.invoke();
 					return;
 				}
 
@@ -180,7 +132,7 @@ void zillot::uartring::uartring_irq_handler(void* priv, int code)
 			{
 				char c = uring->udev->recvbyte();
 				ring_putc(&uring->rxring, uring->rxbuffer, c);
-				unwait_one(&uring->rxwait, nullptr);
+				uring->rx_callback.invoke();
 				return;
 			}
 

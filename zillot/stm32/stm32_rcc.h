@@ -13,8 +13,7 @@ void stm32_rcc_enable_spi(SPI_TypeDef * spi);
 void stm32_rcc_enable_i2c(I2C_TypeDef * spi);
 void stm32_rcc_enable_adc(ADC_TypeDef * spi);
 void stm32_rcc_enable_timer(TIM_TypeDef * spi);
-
-void stm32_rcc_reset();
+void stm32_rcc_enable_syscfg();
 
 __END_DECLS
 

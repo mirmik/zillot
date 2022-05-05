@@ -17,8 +17,6 @@ namespace zillot
 		char* txbuffer = nullptr;
 		struct ring_head rxring;
 		struct ring_head txring;
-		struct dlist_head txwait = DLIST_HEAD_INIT(txwait);
-		struct dlist_head rxwait = DLIST_HEAD_INIT(rxwait);
 		int refs = 0;
 
 	public:
@@ -54,5 +52,12 @@ namespace zillot
 		static void uartring_irq_handler(void* priv, int code);
 	};
 }
+
+#define ZILLOT_UARTRING_DECLARE(name, uart, tsize, rsize) \
+char CONCAT2(txbuf, __LINE__)[tsize];                     \
+char CONCAT2(rxbuf, __LINE__)[rsize];                     \
+zillot::uartring name((uart),                             \
+	igris::buffer{CONCAT2(txbuf, __LINE__), tsize},       \
+	igris::buffer{CONCAT2(rxbuf, __LINE__), rsize});
 
 #endif

@@ -16,7 +16,7 @@ namespace zillot
 			int irqno;
 
 		public:
-			usart(USART_TypeDef * _regs, int irqno);
+			usart(USART_TypeDef * _regs, int irqno) : regs(_regs), irqno(irqno) {}
 			int setup(int32_t baud, char parity, uint8_t databits, uint8_t stopbits) override;
 			int enable(int en) override;
 			int ctrirqs(uint8_t cmd) override;

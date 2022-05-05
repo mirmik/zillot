@@ -58,6 +58,9 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_rcc.h"
 
+#include <assert.h>
+#define assert_param(x) assert(x)
+
 /** @addtogroup STM32F4xx_StdPeriph_Driver
   * @{
   */

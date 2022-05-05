@@ -119,6 +119,9 @@
 #include "spl/stm32f4xx_tim.h"
 #include "spl/stm32f4xx_rcc.h"
 
+#include <assert.h>
+#define assert_param(x) assert(x)
+
 /** @addtogroup STM32F4xx_StdPeriph_Driver
   * @{
   */
@@ -142,13 +145,13 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
-static void TI1_Config(struct timer_regs* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,
+static void TI1_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,
                        uint16_t TIM_ICFilter);
-static void TI2_Config(struct timer_regs* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,
+static void TI2_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,
                        uint16_t TIM_ICFilter);
-static void TI3_Config(struct timer_regs* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,
+static void TI3_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,
                        uint16_t TIM_ICFilter);
-static void TI4_Config(struct timer_regs* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,
+static void TI4_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,
                        uint16_t TIM_ICFilter);
 
 /* Private functions ---------------------------------------------------------*/
@@ -197,7 +200,7 @@ static void TI4_Config(struct timer_regs* TIMx, uint16_t TIM_ICPolarity, uint16_
   * @retval None
 
   */
-void TIM_DeInit(struct timer_regs* TIMx)
+void TIM_DeInit(TIM_TypeDef* TIMx)
 {
   /* Check the parameters */
   assert_param(IS_TIM_ALL_PERIPH(TIMx)); 
@@ -285,7 +288,7 @@ void TIM_DeInit(struct timer_regs* TIMx)
   *         that contains the configuration information for the specified TIM peripheral.
   * @retval None
   */
-void TIM_TimeBaseInit(struct timer_regs* TIMx, TIM_TimeBaseInitTypeDef* TIM_TimeBaseInitStruct)
+void TIM_TimeBaseInit(TIM_TypeDef* TIMx, TIM_TimeBaseInitTypeDef* TIM_TimeBaseInitStruct)
 {
   uint16_t tmpcr1 = 0;
 
@@ -357,7 +360,7 @@ void TIM_TimeBaseStructInit(TIM_TimeBaseInitTypeDef* TIM_TimeBaseInitStruct)
   *            @arg TIM_PSCReloadMode_Immediate: The Prescaler is loaded immediatly.
   * @retval None
   */
-void TIM_PrescalerConfig(struct timer_regs* TIMx, uint16_t Prescaler, uint16_t TIM_PSCReloadMode)
+void TIM_PrescalerConfig(TIM_TypeDef* TIMx, uint16_t Prescaler, uint16_t TIM_PSCReloadMode)
 {
   /* Check the parameters */
   assert_param(IS_TIM_ALL_PERIPH(TIMx));
@@ -380,7 +383,7 @@ void TIM_PrescalerConfig(struct timer_regs* TIMx, uint16_t Prescaler, uint16_t T
   *            @arg TIM_CounterMode_CenterAligned3: TIM Center Aligned Mode3
   * @retval None
   */
-void TIM_CounterModeConfig(struct timer_regs* TIMx, uint16_t TIM_CounterMode)
+void TIM_CounterModeConfig(TIM_TypeDef* TIMx, uint16_t TIM_CounterMode)
 {
   uint16_t tmpcr1 = 0;
 
@@ -406,7 +409,7 @@ void TIM_CounterModeConfig(struct timer_regs* TIMx, uint16_t TIM_CounterMode)
   * @param  Counter: specifies the Counter register new value.
   * @retval None
   */
-void TIM_SetCounter(struct timer_regs* TIMx, uint32_t Counter)
+void TIM_SetCounter(TIM_TypeDef* TIMx, uint32_t Counter)
 {
   /* Check the parameters */
    assert_param(IS_TIM_ALL_PERIPH(TIMx));
@@ -421,7 +424,7 @@ void TIM_SetCounter(struct timer_regs* TIMx, uint32_t Counter)
   * @param  Autoreload: specifies the Autoreload register new value.
   * @retval None
   */
-void TIM_SetAutoreload(struct timer_regs* TIMx, uint32_t Autoreload)
+void TIM_SetAutoreload(TIM_TypeDef* TIMx, uint32_t Autoreload)
 {
   /* Check the parameters */
   assert_param(IS_TIM_ALL_PERIPH(TIMx));
@@ -435,7 +438,7 @@ void TIM_SetAutoreload(struct timer_regs* TIMx, uint32_t Autoreload)
   * @param  TIMx: where x can be 1 to 14 to select the TIM peripheral.
   * @retval Counter Register value
   */
-uint32_t TIM_GetCounter(struct timer_regs* TIMx)
+uint32_t TIM_GetCounter(TIM_TypeDef* TIMx)
 {
   /* Check the parameters */
   assert_param(IS_TIM_ALL_PERIPH(TIMx));
@@ -449,7 +452,7 @@ uint32_t TIM_GetCounter(struct timer_regs* TIMx)
   * @param  TIMx: where x can be 1 to 14 to select the TIM peripheral.
   * @retval Prescaler Register value.
   */
-uint16_t TIM_GetPrescaler(struct timer_regs* TIMx)
+uint16_t TIM_GetPrescaler(TIM_TypeDef* TIMx)
 {
   /* Check the parameters */
   assert_param(IS_TIM_ALL_PERIPH(TIMx));
@@ -465,7 +468,7 @@ uint16_t TIM_GetPrescaler(struct timer_regs* TIMx)
   *          This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void TIM_UpdateDisableConfig(struct timer_regs* TIMx, FunctionalState NewState)
+void TIM_UpdateDisableConfig(TIM_TypeDef* TIMx, FunctionalState NewState)
 {
   /* Check the parameters */
   assert_param(IS_TIM_ALL_PERIPH(TIMx));
@@ -494,7 +497,7 @@ void TIM_UpdateDisableConfig(struct timer_regs* TIMx, FunctionalState NewState)
   *            @arg TIM_UpdateSource_Regular: Source of update is counter overflow/underflow.
   * @retval None
   */
-void TIM_UpdateRequestConfig(struct timer_regs* TIMx, uint16_t TIM_UpdateSource)
+void TIM_UpdateRequestConfig(TIM_TypeDef* TIMx, uint16_t TIM_UpdateSource)
 {
   /* Check the parameters */
   assert_param(IS_TIM_ALL_PERIPH(TIMx));
@@ -519,7 +522,7 @@ void TIM_UpdateRequestConfig(struct timer_regs* TIMx, uint16_t TIM_UpdateSource)
   *          This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void TIM_ARRPreloadConfig(struct timer_regs* TIMx, FunctionalState NewState)
+void TIM_ARRPreloadConfig(TIM_TypeDef* TIMx, FunctionalState NewState)
 {
   /* Check the parameters */
   assert_param(IS_TIM_ALL_PERIPH(TIMx));
@@ -546,7 +549,7 @@ void TIM_ARRPreloadConfig(struct timer_regs* TIMx, FunctionalState NewState)
   *            @arg TIM_OPMode_Repetitive
   * @retval None
   */
-void TIM_SelectOnePulseMode(struct timer_regs* TIMx, uint16_t TIM_OPMode)
+void TIM_SelectOnePulseMode(TIM_TypeDef* TIMx, uint16_t TIM_OPMode)
 {
   /* Check the parameters */
   assert_param(IS_TIM_ALL_PERIPH(TIMx));
@@ -569,7 +572,7 @@ void TIM_SelectOnePulseMode(struct timer_regs* TIMx, uint16_t TIM_OPMode)
   *            @arg TIM_CKD_DIV4: TDTS = 4*Tck_tim
   * @retval None
   */
-void TIM_SetClockDivision(struct timer_regs* TIMx, uint16_t TIM_CKD)
+void TIM_SetClockDivision(TIM_TypeDef* TIMx, uint16_t TIM_CKD)
 {
   /* Check the parameters */
   assert_param(IS_TIM_LIST1_PERIPH(TIMx));
@@ -589,7 +592,7 @@ void TIM_SetClockDivision(struct timer_regs* TIMx, uint16_t TIM_CKD)
   *          This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void TIM_Cmd(struct timer_regs* TIMx, FunctionalState NewState)
+void TIM_Cmd(TIM_TypeDef* TIMx, FunctionalState NewState)
 {
   /* Check the parameters */
   assert_param(IS_TIM_ALL_PERIPH(TIMx)); 
@@ -670,7 +673,7 @@ void TIM_Cmd(struct timer_regs* TIMx, FunctionalState NewState)
   *         the configuration information for the specified TIM peripheral.
   * @retval None
   */
-void TIM_OC1Init(struct timer_regs* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)
+void TIM_OC1Init(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)
 {
   uint16_t tmpccmrx = 0, tmpccer = 0, tmpcr2 = 0;
    
@@ -751,7 +754,7 @@ void TIM_OC1Init(struct timer_regs* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)
   *         the configuration information for the specified TIM peripheral.
   * @retval None
   */
-void TIM_OC2Init(struct timer_regs* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)
+void TIM_OC2Init(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)
 {
   uint16_t tmpccmrx = 0, tmpccer = 0, tmpcr2 = 0;
    
@@ -832,7 +835,7 @@ void TIM_OC2Init(struct timer_regs* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)
   *         the configuration information for the specified TIM peripheral.
   * @retval None
   */
-void TIM_OC3Init(struct timer_regs* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)
+void TIM_OC3Init(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)
 {
   uint16_t tmpccmrx = 0, tmpccer = 0, tmpcr2 = 0;
    
@@ -912,7 +915,7 @@ void TIM_OC3Init(struct timer_regs* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)
   *         the configuration information for the specified TIM peripheral.
   * @retval None
   */
-void TIM_OC4Init(struct timer_regs* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)
+void TIM_OC4Init(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)
 {
   uint16_t tmpccmrx = 0, tmpccer = 0, tmpcr2 = 0;
    
@@ -1011,7 +1014,7 @@ void TIM_OCStructInit(TIM_OCInitTypeDef* TIM_OCInitStruct)
   *            @arg TIM_ForcedAction_InActive
   * @retval None
   */
-void TIM_SelectOCxM(struct timer_regs* TIMx, uint16_t TIM_Channel, uint16_t TIM_OCMode)
+void TIM_SelectOCxM(TIM_TypeDef* TIMx, uint16_t TIM_Channel, uint16_t TIM_OCMode)
 {
   uint32_t tmp = 0;
   uint16_t tmp1 = 0;
@@ -1057,7 +1060,7 @@ void TIM_SelectOCxM(struct timer_regs* TIMx, uint16_t TIM_Channel, uint16_t TIM_
   * @param  Compare1: specifies the Capture Compare1 register new value.
   * @retval None
   */
-void TIM_SetCompare1(struct timer_regs* TIMx, uint32_t Compare1)
+void TIM_SetCompare1(TIM_TypeDef* TIMx, uint32_t Compare1)
 {
   /* Check the parameters */
   assert_param(IS_TIM_LIST1_PERIPH(TIMx));
@@ -1073,7 +1076,7 @@ void TIM_SetCompare1(struct timer_regs* TIMx, uint32_t Compare1)
   * @param  Compare2: specifies the Capture Compare2 register new value.
   * @retval None
   */
-void TIM_SetCompare2(struct timer_regs* TIMx, uint32_t Compare2)
+void TIM_SetCompare2(TIM_TypeDef* TIMx, uint32_t Compare2)
 {
   /* Check the parameters */
   assert_param(IS_TIM_LIST2_PERIPH(TIMx));
@@ -1088,7 +1091,7 @@ void TIM_SetCompare2(struct timer_regs* TIMx, uint32_t Compare2)
   * @param  Compare3: specifies the Capture Compare3 register new value.
   * @retval None
   */
-void TIM_SetCompare3(struct timer_regs* TIMx, uint32_t Compare3)
+void TIM_SetCompare3(TIM_TypeDef* TIMx, uint32_t Compare3)
 {
   /* Check the parameters */
   assert_param(IS_TIM_LIST3_PERIPH(TIMx));
@@ -1103,7 +1106,7 @@ void TIM_SetCompare3(struct timer_regs* TIMx, uint32_t Compare3)
   * @param  Compare4: specifies the Capture Compare4 register new value.
   * @retval None
   */
-void TIM_SetCompare4(struct timer_regs* TIMx, uint32_t Compare4)
+void TIM_SetCompare4(TIM_TypeDef* TIMx, uint32_t Compare4)
 {
   /* Check the parameters */
   assert_param(IS_TIM_LIST3_PERIPH(TIMx));
@@ -1121,7 +1124,7 @@ void TIM_SetCompare4(struct timer_regs* TIMx, uint32_t Compare4)
   *            @arg TIM_ForcedAction_InActive: Force inactive level on OC1REF.
   * @retval None
   */
-void TIM_ForcedOC1Config(struct timer_regs* TIMx, uint16_t TIM_ForcedAction)
+void TIM_ForcedOC1Config(TIM_TypeDef* TIMx, uint16_t TIM_ForcedAction)
 {
   uint16_t tmpccmr1 = 0;
 
@@ -1150,7 +1153,7 @@ void TIM_ForcedOC1Config(struct timer_regs* TIMx, uint16_t TIM_ForcedAction)
   *            @arg TIM_ForcedAction_InActive: Force inactive level on OC2REF.
   * @retval None
   */
-void TIM_ForcedOC2Config(struct timer_regs* TIMx, uint16_t TIM_ForcedAction)
+void TIM_ForcedOC2Config(TIM_TypeDef* TIMx, uint16_t TIM_ForcedAction)
 {
   uint16_t tmpccmr1 = 0;
 
@@ -1178,7 +1181,7 @@ void TIM_ForcedOC2Config(struct timer_regs* TIMx, uint16_t TIM_ForcedAction)
   *            @arg TIM_ForcedAction_InActive: Force inactive level on OC3REF.
   * @retval None
   */
-void TIM_ForcedOC3Config(struct timer_regs* TIMx, uint16_t TIM_ForcedAction)
+void TIM_ForcedOC3Config(TIM_TypeDef* TIMx, uint16_t TIM_ForcedAction)
 {
   uint16_t tmpccmr2 = 0;
 
@@ -1207,7 +1210,7 @@ void TIM_ForcedOC3Config(struct timer_regs* TIMx, uint16_t TIM_ForcedAction)
   *            @arg TIM_ForcedAction_InActive: Force inactive level on OC4REF.
   * @retval None
   */
-void TIM_ForcedOC4Config(struct timer_regs* TIMx, uint16_t TIM_ForcedAction)
+void TIM_ForcedOC4Config(TIM_TypeDef* TIMx, uint16_t TIM_ForcedAction)
 {
   uint16_t tmpccmr2 = 0;
 
@@ -1235,7 +1238,7 @@ void TIM_ForcedOC4Config(struct timer_regs* TIMx, uint16_t TIM_ForcedAction)
   *            @arg TIM_OCPreload_Disable
   * @retval None
   */
-void TIM_OC1PreloadConfig(struct timer_regs* TIMx, uint16_t TIM_OCPreload)
+void TIM_OC1PreloadConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPreload)
 {
   uint16_t tmpccmr1 = 0;
 
@@ -1265,7 +1268,7 @@ void TIM_OC1PreloadConfig(struct timer_regs* TIMx, uint16_t TIM_OCPreload)
   *            @arg TIM_OCPreload_Disable
   * @retval None
   */
-void TIM_OC2PreloadConfig(struct timer_regs* TIMx, uint16_t TIM_OCPreload)
+void TIM_OC2PreloadConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPreload)
 {
   uint16_t tmpccmr1 = 0;
 
@@ -1294,7 +1297,7 @@ void TIM_OC2PreloadConfig(struct timer_regs* TIMx, uint16_t TIM_OCPreload)
   *            @arg TIM_OCPreload_Disable
   * @retval None
   */
-void TIM_OC3PreloadConfig(struct timer_regs* TIMx, uint16_t TIM_OCPreload)
+void TIM_OC3PreloadConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPreload)
 {
   uint16_t tmpccmr2 = 0;
 
@@ -1323,7 +1326,7 @@ void TIM_OC3PreloadConfig(struct timer_regs* TIMx, uint16_t TIM_OCPreload)
   *            @arg TIM_OCPreload_Disable
   * @retval None
   */
-void TIM_OC4PreloadConfig(struct timer_regs* TIMx, uint16_t TIM_OCPreload)
+void TIM_OC4PreloadConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPreload)
 {
   uint16_t tmpccmr2 = 0;
 
@@ -1352,7 +1355,7 @@ void TIM_OC4PreloadConfig(struct timer_regs* TIMx, uint16_t TIM_OCPreload)
   *            @arg TIM_OCFast_Disable: TIM output compare fast disable
   * @retval None
   */
-void TIM_OC1FastConfig(struct timer_regs* TIMx, uint16_t TIM_OCFast)
+void TIM_OC1FastConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCFast)
 {
   uint16_t tmpccmr1 = 0;
 
@@ -1383,7 +1386,7 @@ void TIM_OC1FastConfig(struct timer_regs* TIMx, uint16_t TIM_OCFast)
   *            @arg TIM_OCFast_Disable: TIM output compare fast disable
   * @retval None
   */
-void TIM_OC2FastConfig(struct timer_regs* TIMx, uint16_t TIM_OCFast)
+void TIM_OC2FastConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCFast)
 {
   uint16_t tmpccmr1 = 0;
 
@@ -1413,7 +1416,7 @@ void TIM_OC2FastConfig(struct timer_regs* TIMx, uint16_t TIM_OCFast)
   *            @arg TIM_OCFast_Disable: TIM output compare fast disable
   * @retval None
   */
-void TIM_OC3FastConfig(struct timer_regs* TIMx, uint16_t TIM_OCFast)
+void TIM_OC3FastConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCFast)
 {
   uint16_t tmpccmr2 = 0;
   
@@ -1443,7 +1446,7 @@ void TIM_OC3FastConfig(struct timer_regs* TIMx, uint16_t TIM_OCFast)
   *            @arg TIM_OCFast_Disable: TIM output compare fast disable
   * @retval None
   */
-void TIM_OC4FastConfig(struct timer_regs* TIMx, uint16_t TIM_OCFast)
+void TIM_OC4FastConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCFast)
 {
   uint16_t tmpccmr2 = 0;
 
@@ -1473,7 +1476,7 @@ void TIM_OC4FastConfig(struct timer_regs* TIMx, uint16_t TIM_OCFast)
   *            @arg TIM_OCClear_Disable: TIM Output clear disable
   * @retval None
   */
-void TIM_ClearOC1Ref(struct timer_regs* TIMx, uint16_t TIM_OCClear)
+void TIM_ClearOC1Ref(TIM_TypeDef* TIMx, uint16_t TIM_OCClear)
 {
   uint16_t tmpccmr1 = 0;
 
@@ -1503,7 +1506,7 @@ void TIM_ClearOC1Ref(struct timer_regs* TIMx, uint16_t TIM_OCClear)
   *            @arg TIM_OCClear_Disable: TIM Output clear disable
   * @retval None
   */
-void TIM_ClearOC2Ref(struct timer_regs* TIMx, uint16_t TIM_OCClear)
+void TIM_ClearOC2Ref(TIM_TypeDef* TIMx, uint16_t TIM_OCClear)
 {
   uint16_t tmpccmr1 = 0;
 
@@ -1532,7 +1535,7 @@ void TIM_ClearOC2Ref(struct timer_regs* TIMx, uint16_t TIM_OCClear)
   *            @arg TIM_OCClear_Disable: TIM Output clear disable
   * @retval None
   */
-void TIM_ClearOC3Ref(struct timer_regs* TIMx, uint16_t TIM_OCClear)
+void TIM_ClearOC3Ref(TIM_TypeDef* TIMx, uint16_t TIM_OCClear)
 {
   uint16_t tmpccmr2 = 0;
 
@@ -1561,7 +1564,7 @@ void TIM_ClearOC3Ref(struct timer_regs* TIMx, uint16_t TIM_OCClear)
   *            @arg TIM_OCClear_Disable: TIM Output clear disable
   * @retval None
   */
-void TIM_ClearOC4Ref(struct timer_regs* TIMx, uint16_t TIM_OCClear)
+void TIM_ClearOC4Ref(TIM_TypeDef* TIMx, uint16_t TIM_OCClear)
 {
   uint16_t tmpccmr2 = 0;
 
@@ -1590,7 +1593,7 @@ void TIM_ClearOC4Ref(struct timer_regs* TIMx, uint16_t TIM_OCClear)
   *            @arg TIM_OCPolarity_Low: Output Compare active low
   * @retval None
   */
-void TIM_OC1PolarityConfig(struct timer_regs* TIMx, uint16_t TIM_OCPolarity)
+void TIM_OC1PolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPolarity)
 {
   uint16_t tmpccer = 0;
 
@@ -1617,7 +1620,7 @@ void TIM_OC1PolarityConfig(struct timer_regs* TIMx, uint16_t TIM_OCPolarity)
   *            @arg TIM_OCNPolarity_Low: Output Compare active low
   * @retval None
   */
-void TIM_OC1NPolarityConfig(struct timer_regs* TIMx, uint16_t TIM_OCNPolarity)
+void TIM_OC1NPolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCNPolarity)
 {
   uint16_t tmpccer = 0;
   /* Check the parameters */
@@ -1644,7 +1647,7 @@ void TIM_OC1NPolarityConfig(struct timer_regs* TIMx, uint16_t TIM_OCNPolarity)
   *            @arg TIM_OCPolarity_Low: Output Compare active low
   * @retval None
   */
-void TIM_OC2PolarityConfig(struct timer_regs* TIMx, uint16_t TIM_OCPolarity)
+void TIM_OC2PolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPolarity)
 {
   uint16_t tmpccer = 0;
 
@@ -1671,7 +1674,7 @@ void TIM_OC2PolarityConfig(struct timer_regs* TIMx, uint16_t TIM_OCPolarity)
   *            @arg TIM_OCNPolarity_Low: Output Compare active low
   * @retval None
   */
-void TIM_OC2NPolarityConfig(struct timer_regs* TIMx, uint16_t TIM_OCNPolarity)
+void TIM_OC2NPolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCNPolarity)
 {
   uint16_t tmpccer = 0;
 
@@ -1698,7 +1701,7 @@ void TIM_OC2NPolarityConfig(struct timer_regs* TIMx, uint16_t TIM_OCNPolarity)
   *            @arg TIM_OCPolarity_Low: Output Compare active low
   * @retval None
   */
-void TIM_OC3PolarityConfig(struct timer_regs* TIMx, uint16_t TIM_OCPolarity)
+void TIM_OC3PolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPolarity)
 {
   uint16_t tmpccer = 0;
 
@@ -1725,7 +1728,7 @@ void TIM_OC3PolarityConfig(struct timer_regs* TIMx, uint16_t TIM_OCPolarity)
   *            @arg TIM_OCNPolarity_Low: Output Compare active low
   * @retval None
   */
-void TIM_OC3NPolarityConfig(struct timer_regs* TIMx, uint16_t TIM_OCNPolarity)
+void TIM_OC3NPolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCNPolarity)
 {
   uint16_t tmpccer = 0;
  
@@ -1752,7 +1755,7 @@ void TIM_OC3NPolarityConfig(struct timer_regs* TIMx, uint16_t TIM_OCNPolarity)
   *            @arg TIM_OCPolarity_Low: Output Compare active low
   * @retval None
   */
-void TIM_OC4PolarityConfig(struct timer_regs* TIMx, uint16_t TIM_OCPolarity)
+void TIM_OC4PolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPolarity)
 {
   uint16_t tmpccer = 0;
 
@@ -1783,7 +1786,7 @@ void TIM_OC4PolarityConfig(struct timer_regs* TIMx, uint16_t TIM_OCPolarity)
   *          This parameter can be: TIM_CCx_Enable or TIM_CCx_Disable. 
   * @retval None
   */
-void TIM_CCxCmd(struct timer_regs* TIMx, uint16_t TIM_Channel, uint16_t TIM_CCx)
+void TIM_CCxCmd(TIM_TypeDef* TIMx, uint16_t TIM_Channel, uint16_t TIM_CCx)
 {
   uint16_t tmp = 0;
 
@@ -1813,7 +1816,7 @@ void TIM_CCxCmd(struct timer_regs* TIMx, uint16_t TIM_Channel, uint16_t TIM_CCx)
   *          This parameter can be: TIM_CCxN_Enable or TIM_CCxN_Disable. 
   * @retval None
   */
-void TIM_CCxNCmd(struct timer_regs* TIMx, uint16_t TIM_Channel, uint16_t TIM_CCxN)
+void TIM_CCxNCmd(TIM_TypeDef* TIMx, uint16_t TIM_Channel, uint16_t TIM_CCxN)
 {
   uint16_t tmp = 0;
 
@@ -1897,7 +1900,7 @@ void TIM_CCxNCmd(struct timer_regs* TIMx, uint16_t TIM_Channel, uint16_t TIM_CCx
   *         the configuration information for the specified TIM peripheral.
   * @retval None
   */
-void TIM_ICInit(struct timer_regs* TIMx, TIM_ICInitTypeDef* TIM_ICInitStruct)
+void TIM_ICInit(TIM_TypeDef* TIMx, TIM_ICInitTypeDef* TIM_ICInitStruct)
 {
   /* Check the parameters */
   assert_param(IS_TIM_LIST1_PERIPH(TIMx));
@@ -1972,7 +1975,7 @@ void TIM_ICStructInit(TIM_ICInitTypeDef* TIM_ICInitStruct)
   *         the configuration information for the specified TIM peripheral.
   * @retval None
   */
-void TIM_PWMIConfig(struct timer_regs* TIMx, TIM_ICInitTypeDef* TIM_ICInitStruct)
+void TIM_PWMIConfig(TIM_TypeDef* TIMx, TIM_ICInitTypeDef* TIM_ICInitStruct)
 {
   uint16_t icoppositepolarity = TIM_ICPolarity_Rising;
   uint16_t icoppositeselection = TIM_ICSelection_DirectTI;
@@ -2029,7 +2032,7 @@ void TIM_PWMIConfig(struct timer_regs* TIMx, TIM_ICInitTypeDef* TIM_ICInitStruct
   * @param  TIMx: where x can be 1 to 14 except 6 and 7, to select the TIM peripheral.
   * @retval Capture Compare 1 Register value.
   */
-uint32_t TIM_GetCapture1(struct timer_regs* TIMx)
+uint32_t TIM_GetCapture1(TIM_TypeDef* TIMx)
 {
   /* Check the parameters */
   assert_param(IS_TIM_LIST1_PERIPH(TIMx));
@@ -2044,7 +2047,7 @@ uint32_t TIM_GetCapture1(struct timer_regs* TIMx)
   *         peripheral.
   * @retval Capture Compare 2 Register value.
   */
-uint32_t TIM_GetCapture2(struct timer_regs* TIMx)
+uint32_t TIM_GetCapture2(TIM_TypeDef* TIMx)
 {
   /* Check the parameters */
   assert_param(IS_TIM_LIST2_PERIPH(TIMx));
@@ -2058,7 +2061,7 @@ uint32_t TIM_GetCapture2(struct timer_regs* TIMx)
   * @param  TIMx: where x can be 1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
   * @retval Capture Compare 3 Register value.
   */
-uint32_t TIM_GetCapture3(struct timer_regs* TIMx)
+uint32_t TIM_GetCapture3(TIM_TypeDef* TIMx)
 {
   /* Check the parameters */
   assert_param(IS_TIM_LIST3_PERIPH(TIMx)); 
@@ -2072,7 +2075,7 @@ uint32_t TIM_GetCapture3(struct timer_regs* TIMx)
   * @param  TIMx: where x can be 1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
   * @retval Capture Compare 4 Register value.
   */
-uint32_t TIM_GetCapture4(struct timer_regs* TIMx)
+uint32_t TIM_GetCapture4(TIM_TypeDef* TIMx)
 {
   /* Check the parameters */
   assert_param(IS_TIM_LIST3_PERIPH(TIMx));
@@ -2092,7 +2095,7 @@ uint32_t TIM_GetCapture4(struct timer_regs* TIMx)
   *            @arg TIM_ICPSC_DIV8: capture is done once every 8 events
   * @retval None
   */
-void TIM_SetIC1Prescaler(struct timer_regs* TIMx, uint16_t TIM_ICPSC)
+void TIM_SetIC1Prescaler(TIM_TypeDef* TIMx, uint16_t TIM_ICPSC)
 {
   /* Check the parameters */
   assert_param(IS_TIM_LIST1_PERIPH(TIMx));
@@ -2117,7 +2120,7 @@ void TIM_SetIC1Prescaler(struct timer_regs* TIMx, uint16_t TIM_ICPSC)
   *            @arg TIM_ICPSC_DIV8: capture is done once every 8 events
   * @retval None
   */
-void TIM_SetIC2Prescaler(struct timer_regs* TIMx, uint16_t TIM_ICPSC)
+void TIM_SetIC2Prescaler(TIM_TypeDef* TIMx, uint16_t TIM_ICPSC)
 {
   /* Check the parameters */
   assert_param(IS_TIM_LIST2_PERIPH(TIMx));
@@ -2141,7 +2144,7 @@ void TIM_SetIC2Prescaler(struct timer_regs* TIMx, uint16_t TIM_ICPSC)
   *            @arg TIM_ICPSC_DIV8: capture is done once every 8 events
   * @retval None
   */
-void TIM_SetIC3Prescaler(struct timer_regs* TIMx, uint16_t TIM_ICPSC)
+void TIM_SetIC3Prescaler(TIM_TypeDef* TIMx, uint16_t TIM_ICPSC)
 {
   /* Check the parameters */
   assert_param(IS_TIM_LIST3_PERIPH(TIMx));
@@ -2165,7 +2168,7 @@ void TIM_SetIC3Prescaler(struct timer_regs* TIMx, uint16_t TIM_ICPSC)
   *            @arg TIM_ICPSC_DIV8: capture is done once every 8 events
   * @retval None
   */
-void TIM_SetIC4Prescaler(struct timer_regs* TIMx, uint16_t TIM_ICPSC)
+void TIM_SetIC4Prescaler(TIM_TypeDef* TIMx, uint16_t TIM_ICPSC)
 {  
   /* Check the parameters */
   assert_param(IS_TIM_LIST3_PERIPH(TIMx));
@@ -2218,7 +2221,7 @@ void TIM_SetIC4Prescaler(struct timer_regs* TIMx, uint16_t TIM_ICPSC)
   *         contains the BDTR Register configuration  information for the TIM peripheral.
   * @retval None
   */
-void TIM_BDTRConfig(struct timer_regs* TIMx, TIM_BDTRInitTypeDef *TIM_BDTRInitStruct)
+void TIM_BDTRConfig(TIM_TypeDef* TIMx, TIM_BDTRInitTypeDef *TIM_BDTRInitStruct)
 {
   /* Check the parameters */
   assert_param(IS_TIM_LIST4_PERIPH(TIMx));
@@ -2262,7 +2265,7 @@ void TIM_BDTRStructInit(TIM_BDTRInitTypeDef* TIM_BDTRInitStruct)
   *          This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void TIM_CtrlPWMOutputs(struct timer_regs* TIMx, FunctionalState NewState)
+void TIM_CtrlPWMOutputs(TIM_TypeDef* TIMx, FunctionalState NewState)
 {
   /* Check the parameters */
   assert_param(IS_TIM_LIST4_PERIPH(TIMx));
@@ -2287,7 +2290,7 @@ void TIM_CtrlPWMOutputs(struct timer_regs* TIMx, FunctionalState NewState)
   *          This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void TIM_SelectCOM(struct timer_regs* TIMx, FunctionalState NewState)
+void TIM_SelectCOM(TIM_TypeDef* TIMx, FunctionalState NewState)
 {
   /* Check the parameters */
   assert_param(IS_TIM_LIST4_PERIPH(TIMx));
@@ -2312,7 +2315,7 @@ void TIM_SelectCOM(struct timer_regs* TIMx, FunctionalState NewState)
   *          This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void TIM_CCPreloadControl(struct timer_regs* TIMx, FunctionalState NewState)
+void TIM_CCPreloadControl(TIM_TypeDef* TIMx, FunctionalState NewState)
 { 
   /* Check the parameters */
   assert_param(IS_TIM_LIST4_PERIPH(TIMx));
@@ -2369,7 +2372,7 @@ void TIM_CCPreloadControl(struct timer_regs* TIMx, FunctionalState NewState)
   *          This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void TIM_ITConfig(struct timer_regs* TIMx, uint16_t TIM_IT, FunctionalState NewState)
+void TIM_ITConfig(TIM_TypeDef* TIMx, uint16_t TIM_IT, FunctionalState NewState)
 {  
   /* Check the parameters */
   assert_param(IS_TIM_ALL_PERIPH(TIMx));
@@ -2407,7 +2410,7 @@ void TIM_ITConfig(struct timer_regs* TIMx, uint16_t TIM_IT, FunctionalState NewS
   *        
   * @retval None
   */
-void TIM_GenerateEvent(struct timer_regs* TIMx, uint16_t TIM_EventSource)
+void TIM_GenerateEvent(TIM_TypeDef* TIMx, uint16_t TIM_EventSource)
 { 
   /* Check the parameters */
   assert_param(IS_TIM_ALL_PERIPH(TIMx));
@@ -2440,7 +2443,7 @@ void TIM_GenerateEvent(struct timer_regs* TIMx, uint16_t TIM_EventSource)
   *
   * @retval The new state of TIM_FLAG (SET or RESET).
   */
-FlagStatus TIM_GetFlagStatus(struct timer_regs* TIMx, uint16_t TIM_FLAG)
+FlagStatus TIM_GetFlagStatus(TIM_TypeDef* TIMx, uint16_t TIM_FLAG)
 { 
   ITStatus bitstatus = RESET;  
   /* Check the parameters */
@@ -2482,7 +2485,7 @@ FlagStatus TIM_GetFlagStatus(struct timer_regs* TIMx, uint16_t TIM_FLAG)
   *    
   * @retval None
   */
-void TIM_ClearFlag(struct timer_regs* TIMx, uint16_t TIM_FLAG)
+void TIM_ClearFlag(TIM_TypeDef* TIMx, uint16_t TIM_FLAG)
 {  
   /* Check the parameters */
   assert_param(IS_TIM_ALL_PERIPH(TIMx));
@@ -2510,7 +2513,7 @@ void TIM_ClearFlag(struct timer_regs* TIMx, uint16_t TIM_FLAG)
   *     
   * @retval The new state of the TIM_IT(SET or RESET).
   */
-ITStatus TIM_GetITStatus(struct timer_regs* TIMx, uint16_t TIM_IT)
+ITStatus TIM_GetITStatus(TIM_TypeDef* TIMx, uint16_t TIM_IT)
 {
   ITStatus bitstatus = RESET;  
   uint16_t itstatus = 0x0, itenable = 0x0;
@@ -2551,7 +2554,7 @@ ITStatus TIM_GetITStatus(struct timer_regs* TIMx, uint16_t TIM_IT)
   *      
   * @retval None
   */
-void TIM_ClearITPendingBit(struct timer_regs* TIMx, uint16_t TIM_IT)
+void TIM_ClearITPendingBit(TIM_TypeDef* TIMx, uint16_t TIM_IT)
 {
   /* Check the parameters */
   assert_param(IS_TIM_ALL_PERIPH(TIMx));
@@ -2588,7 +2591,7 @@ void TIM_ClearITPendingBit(struct timer_regs* TIMx, uint16_t TIM_IT)
   *         between: TIM_DMABurstLength_1Transfer and TIM_DMABurstLength_18Transfers.
   * @retval None
   */
-void TIM_DMAConfig(struct timer_regs* TIMx, uint16_t TIM_DMABase, uint16_t TIM_DMABurstLength)
+void TIM_DMAConfig(TIM_TypeDef* TIMx, uint16_t TIM_DMABase, uint16_t TIM_DMABurstLength)
 {
   /* Check the parameters */
   assert_param(IS_TIM_LIST3_PERIPH(TIMx));
@@ -2615,7 +2618,7 @@ void TIM_DMAConfig(struct timer_regs* TIMx, uint16_t TIM_DMABase, uint16_t TIM_D
   *          This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void TIM_DMACmd(struct timer_regs* TIMx, uint16_t TIM_DMASource, FunctionalState NewState)
+void TIM_DMACmd(TIM_TypeDef* TIMx, uint16_t TIM_DMASource, FunctionalState NewState)
 { 
   /* Check the parameters */
   assert_param(IS_TIM_LIST5_PERIPH(TIMx)); 
@@ -2641,7 +2644,7 @@ void TIM_DMACmd(struct timer_regs* TIMx, uint16_t TIM_DMASource, FunctionalState
   *          This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void TIM_SelectCCDMA(struct timer_regs* TIMx, FunctionalState NewState)
+void TIM_SelectCCDMA(TIM_TypeDef* TIMx, FunctionalState NewState)
 {
   /* Check the parameters */
   assert_param(IS_TIM_LIST3_PERIPH(TIMx));
@@ -2680,7 +2683,7 @@ void TIM_SelectCCDMA(struct timer_regs* TIMx, FunctionalState NewState)
   *         peripheral.
   * @retval None
   */
-void TIM_InternalClockConfig(struct timer_regs* TIMx)
+void TIM_InternalClockConfig(TIM_TypeDef* TIMx)
 {
   /* Check the parameters */
   assert_param(IS_TIM_LIST2_PERIPH(TIMx));
@@ -2701,7 +2704,7 @@ void TIM_InternalClockConfig(struct timer_regs* TIMx)
   *            @arg TIM_TS_ITR3: Internal Trigger 3
   * @retval None
   */
-void TIM_ITRxExternalClockConfig(struct timer_regs* TIMx, uint16_t TIM_InputTriggerSource)
+void TIM_ITRxExternalClockConfig(TIM_TypeDef* TIMx, uint16_t TIM_InputTriggerSource)
 {
   /* Check the parameters */
   assert_param(IS_TIM_LIST2_PERIPH(TIMx));
@@ -2731,7 +2734,7 @@ void TIM_ITRxExternalClockConfig(struct timer_regs* TIMx, uint16_t TIM_InputTrig
   *          This parameter must be a value between 0x0 and 0xF.
   * @retval None
   */
-void TIM_TIxExternalClockConfig(struct timer_regs* TIMx, uint16_t TIM_TIxExternalCLKSource,
+void TIM_TIxExternalClockConfig(TIM_TypeDef* TIMx, uint16_t TIM_TIxExternalCLKSource,
                                 uint16_t TIM_ICPolarity, uint16_t ICFilter)
 {
   /* Check the parameters */
@@ -2771,7 +2774,7 @@ void TIM_TIxExternalClockConfig(struct timer_regs* TIMx, uint16_t TIM_TIxExterna
   *          This parameter must be a value between 0x00 and 0x0F
   * @retval None
   */
-void TIM_ETRClockMode1Config(struct timer_regs* TIMx, uint16_t TIM_ExtTRGPrescaler,
+void TIM_ETRClockMode1Config(TIM_TypeDef* TIMx, uint16_t TIM_ExtTRGPrescaler,
                             uint16_t TIM_ExtTRGPolarity, uint16_t ExtTRGFilter)
 {
   uint16_t tmpsmcr = 0;
@@ -2818,7 +2821,7 @@ void TIM_ETRClockMode1Config(struct timer_regs* TIMx, uint16_t TIM_ExtTRGPrescal
   *          This parameter must be a value between 0x00 and 0x0F
   * @retval None
   */
-void TIM_ETRClockMode2Config(struct timer_regs* TIMx, uint16_t TIM_ExtTRGPrescaler, 
+void TIM_ETRClockMode2Config(TIM_TypeDef* TIMx, uint16_t TIM_ExtTRGPrescaler, 
                              uint16_t TIM_ExtTRGPolarity, uint16_t ExtTRGFilter)
 {
   /* Check the parameters */
@@ -2853,21 +2856,21 @@ void TIM_ETRClockMode2Config(struct timer_regs* TIMx, uint16_t TIM_ExtTRGPrescal
     ==================================
     [..]
       (#) Configure the Master Timers using the following functions:
-        (++) void TIM_SelectOutputTrigger(struct timer_regs* TIMx, uint16_t TIM_TRGOSource); 
-        (++) void TIM_SelectMasterSlaveMode(struct timer_regs* TIMx, uint16_t TIM_MasterSlaveMode);  
+        (++) void TIM_SelectOutputTrigger(TIM_TypeDef* TIMx, uint16_t TIM_TRGOSource); 
+        (++) void TIM_SelectMasterSlaveMode(TIM_TypeDef* TIMx, uint16_t TIM_MasterSlaveMode);  
       (#) Configure the Slave Timers using the following functions: 
-        (++) void TIM_SelectInputTrigger(struct timer_regs* TIMx, uint16_t TIM_InputTriggerSource);  
-        (++) void TIM_SelectSlaveMode(struct timer_regs* TIMx, uint16_t TIM_SlaveMode); 
+        (++) void TIM_SelectInputTrigger(TIM_TypeDef* TIMx, uint16_t TIM_InputTriggerSource);  
+        (++) void TIM_SelectSlaveMode(TIM_TypeDef* TIMx, uint16_t TIM_SlaveMode); 
           
     *** Case of Timers and external trigger(ETR pin) ***
     ====================================================
     [..]           
       (#) Configure the External trigger using this function:
-        (++) void TIM_ETRConfig(struct timer_regs* TIMx, uint16_t TIM_ExtTRGPrescaler, uint16_t TIM_ExtTRGPolarity,
+        (++) void TIM_ETRConfig(TIM_TypeDef* TIMx, uint16_t TIM_ExtTRGPrescaler, uint16_t TIM_ExtTRGPolarity,
                                uint16_t ExtTRGFilter);
       (#) Configure the Slave Timers using the following functions: 
-        (++) void TIM_SelectInputTrigger(struct timer_regs* TIMx, uint16_t TIM_InputTriggerSource);  
-        (++) void TIM_SelectSlaveMode(struct timer_regs* TIMx, uint16_t TIM_SlaveMode); 
+        (++) void TIM_SelectInputTrigger(TIM_TypeDef* TIMx, uint16_t TIM_InputTriggerSource);  
+        (++) void TIM_SelectSlaveMode(TIM_TypeDef* TIMx, uint16_t TIM_SlaveMode); 
 
 @endverbatim
   * @{
@@ -2889,7 +2892,7 @@ void TIM_ETRClockMode2Config(struct timer_regs* TIMx, uint16_t TIM_ExtTRGPrescal
   *            @arg TIM_TS_ETRF: External Trigger input
   * @retval None
   */
-void TIM_SelectInputTrigger(struct timer_regs* TIMx, uint16_t TIM_InputTriggerSource)
+void TIM_SelectInputTrigger(TIM_TypeDef* TIMx, uint16_t TIM_InputTriggerSource)
 {
   uint16_t tmpsmcr = 0;
 
@@ -2932,7 +2935,7 @@ void TIM_SelectInputTrigger(struct timer_regs* TIMx, uint16_t TIM_InputTriggerSo
   *
   * @retval None
   */
-void TIM_SelectOutputTrigger(struct timer_regs* TIMx, uint16_t TIM_TRGOSource)
+void TIM_SelectOutputTrigger(TIM_TypeDef* TIMx, uint16_t TIM_TRGOSource)
 {
   /* Check the parameters */
   assert_param(IS_TIM_LIST5_PERIPH(TIMx));
@@ -2956,7 +2959,7 @@ void TIM_SelectOutputTrigger(struct timer_regs* TIMx, uint16_t TIM_TRGOSource)
   *            @arg TIM_SlaveMode_External1: Rising edges of the selected trigger (TRGI) clock the counter
   * @retval None
   */
-void TIM_SelectSlaveMode(struct timer_regs* TIMx, uint16_t TIM_SlaveMode)
+void TIM_SelectSlaveMode(TIM_TypeDef* TIMx, uint16_t TIM_SlaveMode)
 {
   /* Check the parameters */
   assert_param(IS_TIM_LIST2_PERIPH(TIMx));
@@ -2979,7 +2982,7 @@ void TIM_SelectSlaveMode(struct timer_regs* TIMx, uint16_t TIM_SlaveMode)
   *            @arg TIM_MasterSlaveMode_Disable: No action
   * @retval None
   */
-void TIM_SelectMasterSlaveMode(struct timer_regs* TIMx, uint16_t TIM_MasterSlaveMode)
+void TIM_SelectMasterSlaveMode(TIM_TypeDef* TIMx, uint16_t TIM_MasterSlaveMode)
 {
   /* Check the parameters */
   assert_param(IS_TIM_LIST2_PERIPH(TIMx));
@@ -3009,7 +3012,7 @@ void TIM_SelectMasterSlaveMode(struct timer_regs* TIMx, uint16_t TIM_MasterSlave
   *          This parameter must be a value between 0x00 and 0x0F
   * @retval None
   */
-void TIM_ETRConfig(struct timer_regs* TIMx, uint16_t TIM_ExtTRGPrescaler,
+void TIM_ETRConfig(TIM_TypeDef* TIMx, uint16_t TIM_ExtTRGPrescaler,
                    uint16_t TIM_ExtTRGPolarity, uint16_t ExtTRGFilter)
 {
   uint16_t tmpsmcr = 0;
@@ -3067,7 +3070,7 @@ void TIM_ETRConfig(struct timer_regs* TIMx, uint16_t TIM_ExtTRGPrescaler,
   *            @arg TIM_ICPolarity_Rising: IC Rising edge.
   * @retval None
   */
-void TIM_EncoderInterfaceConfig(struct timer_regs* TIMx, uint16_t TIM_EncoderMode,
+void TIM_EncoderInterfaceConfig(TIM_TypeDef* TIMx, uint16_t TIM_EncoderMode,
                                 uint16_t TIM_IC1Polarity, uint16_t TIM_IC2Polarity)
 {
   uint16_t tmpsmcr = 0;
@@ -3119,7 +3122,7 @@ void TIM_EncoderInterfaceConfig(struct timer_regs* TIMx, uint16_t TIM_EncoderMod
   *          This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void TIM_SelectHallSensor(struct timer_regs* TIMx, FunctionalState NewState)
+void TIM_SelectHallSensor(TIM_TypeDef* TIMx, FunctionalState NewState)
 {
   /* Check the parameters */
   assert_param(IS_TIM_LIST2_PERIPH(TIMx));
@@ -3170,7 +3173,7 @@ void TIM_SelectHallSensor(struct timer_regs* TIMx, FunctionalState NewState)
   *                                 (HSE divided by a programmable prescaler)  
   * @retval None
   */
-void TIM_RemapConfig(struct timer_regs* TIMx, uint16_t TIM_Remap)
+void TIM_RemapConfig(TIM_TypeDef* TIMx, uint16_t TIM_Remap)
 {
  /* Check the parameters */
   assert_param(IS_TIM_LIST6_PERIPH(TIMx));
@@ -3201,7 +3204,7 @@ void TIM_RemapConfig(struct timer_regs* TIMx, uint16_t TIM_Remap)
   *          This parameter must be a value between 0x00 and 0x0F.
   * @retval None
   */
-static void TI1_Config(struct timer_regs* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,
+static void TI1_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,
                        uint16_t TIM_ICFilter)
 {
   uint16_t tmpccmr1 = 0, tmpccer = 0;
@@ -3242,7 +3245,7 @@ static void TI1_Config(struct timer_regs* TIMx, uint16_t TIM_ICPolarity, uint16_
   *          This parameter must be a value between 0x00 and 0x0F.
   * @retval None
   */
-static void TI2_Config(struct timer_regs* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,
+static void TI2_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,
                        uint16_t TIM_ICFilter)
 {
   uint16_t tmpccmr1 = 0, tmpccer = 0, tmp = 0;
@@ -3284,7 +3287,7 @@ static void TI2_Config(struct timer_regs* TIMx, uint16_t TIM_ICPolarity, uint16_
   *          This parameter must be a value between 0x00 and 0x0F.
   * @retval None
   */
-static void TI3_Config(struct timer_regs* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,
+static void TI3_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,
                        uint16_t TIM_ICFilter)
 {
   uint16_t tmpccmr2 = 0, tmpccer = 0, tmp = 0;
@@ -3325,7 +3328,7 @@ static void TI3_Config(struct timer_regs* TIMx, uint16_t TIM_ICPolarity, uint16_
   *          This parameter must be a value between 0x00 and 0x0F.
   * @retval None
   */
-static void TI4_Config(struct timer_regs* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,
+static void TI4_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,
                        uint16_t TIM_ICFilter)
 {
   uint16_t tmpccmr2 = 0, tmpccer = 0, tmp = 0;

@@ -1,10 +1,7 @@
-#include <asm/stm32_systick.h>
-#include <periph/coremap.h>
-#include <periph/map.h>
+#include <zillot/stm32/stm32_systick.h>
+#include <zillot/armv7e-m/arm_nvic.h>
 
-#include <asm/nvic.h>
-
-int __systick_config = 1;
+uint32_t __systick_config = 0;
 
 int stm32_systick_config(uint32_t ticks)
 {
