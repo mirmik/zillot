@@ -4,6 +4,7 @@
 #include <zillot/stm32/usart.h>
 #include <zillot/stm32/pin.h>
 #include <zillot/common/irqtable.h>
+#include <chip/irqdefs.h>
 
 void zillot::stm32::usart::init_gpio(zillot::stm32::pin tx, zillot::stm32::pin rx, int af)
 {
@@ -111,6 +112,7 @@ static void _irqhandler(void* priv)
 void zillot::stm32::usart::irqinit()
 {
 	irqtable_set_handler(irqno, &_irqhandler, (void*) this);
+	nvic_enable_irq(irqno);
 }
 
 int zillot::stm32::usart::setup(int32_t baud, char parity,
@@ -122,7 +124,6 @@ int zillot::stm32::usart::setup(int32_t baud, char parity,
 
 	stm32_usart_setup(regs, baud, parity, databits, stopbits);
 	irqinit();
-	nvic_enable_irq(irqno);
 
 	return 0;
 }

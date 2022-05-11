@@ -3,12 +3,12 @@
 #include <stm32xxxx.h>
 #include <igris/time/systime.h>
 
-static int __active_mode = 0;
-static int __systembus = 0;
+//static int __active_mode = 0;
+//static int __systembus = 0;
 
 int __dividers[2] = {1, 1};
 
-void stm32_clockbus_hsi_mode() 
+/*void stm32_clockbus_hsi_mode() 
 {
 	//volatile int i;
 	//RCC->CR = RCC_CR_HSION;
@@ -24,13 +24,13 @@ void stm32_clockbus_hsi_mode()
 	__systembus = CLOCKBUS_HSI;
 	stm32_clockbus_reevaluate();
 }
-
+*/
 void stm32_clockbus_set_dividers(int a, int b) 
 {
 	__dividers[0] = a;
 	__dividers[1] = b;
 }
-
+/*
 void stm32_clockbus_hse_mode() 
 {
 	volatile int i;
@@ -90,9 +90,9 @@ void stm32_clockbus_reevaluate()
 			stm32_clockbus_freq[CLOCKBUS_APB2] = stm32_clockbus_freq[CLOCKBUS_PLL] / __dividers[1];
 			break;
 	}
-}
+}*/
 
-void stm32_clockbus_systime_setup() 
+/*void stm32_clockbus_systime_setup() 
 {
 	stm32_systick_config(stm32_clockbus_freq[__systembus] / 1000);
 	//sysclock_set_frequency(stm32_clockbus_freq[__systembus]);
@@ -109,4 +109,4 @@ int stm32_clockbus_enable_pll_mode(uint32_t freq)
 	stm32_clockbus_systime_setup();
 
 	return 0;
-}
+}*/

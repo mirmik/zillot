@@ -11,7 +11,7 @@ licant.module("zillot.arm",
 )
 
 licant.module("zillot.armv7e-m",
-	sources = [],
+	sources = ["armv7e-m/arm_nvic.c"],
 	include_paths = ["armv7e-m/internal"],
 	mdepends = [
 		"zillot.arm"
