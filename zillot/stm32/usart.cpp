@@ -78,28 +78,25 @@ int zillot::stm32::usart::hasrx()
 	return stm32_usart_avail(regs);
 }
 
-static void _irqhandler(void* priv)
+void zillot::stm32::usart::irq_handler()
 {
-	zillot::stm32::usart * dev = (zillot::stm32::usart *) priv;
-	USART_TypeDef * regs = dev->regs;
-
 	if (stm32_rxirq_status(regs)){
-		dev->handler(dev->handarg, UART_IRQCODE_RX);
+		handler(handarg, UART_IRQCODE_RX);
 	}
 
 	else if (stm32_txirq_status(regs)){
-		dev->handler(dev->handarg, UART_IRQCODE_TX);
+		handler(handarg, UART_IRQCODE_TX);
 	}
 
 	else if (stm32_tcirq_status(regs)) 
 	{
-		dev->handler(dev->handarg, UART_IRQCODE_TC);		
+		handler(handarg, UART_IRQCODE_TC);		
 	}
 
 	else if (stm32_overrun_irq_status(regs)) 
 	{
 		stm32_drop_overrun_flag(regs);
-		dev->handler(dev->handarg, UART_IRQCODE_RX_OVERRUN);	
+		handler(handarg, UART_IRQCODE_RX_OVERRUN);	
 	}
 
 	else 
@@ -107,6 +104,12 @@ static void _irqhandler(void* priv)
 		//dpr("stm32: unh usart irq usart->ISR: ");
 		//stm32_debug_print_usart_interrupt_status_register(dev->regs);
 	}
+}
+
+static void _irqhandler(void *arg)
+{
+	zillot::stm32::usart* dev = (zillot::stm32::usart*) arg; 
+	dev->irq_handler();
 }
 
 void zillot::stm32::usart::irqinit()

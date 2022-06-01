@@ -27,6 +27,8 @@ namespace zillot
 
 			void init_gpio(zillot::stm32::pin tx, zillot::stm32::pin rx, int af);
 			void irqinit();
+
+			void irq_handler();
 		};
 	}
 }

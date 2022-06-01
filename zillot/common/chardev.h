@@ -37,6 +37,9 @@ namespace zillot
 		virtual size_t room() = 0;
 		virtual size_t avail() = 0;
 
+		void set_rx_callback(igris::delegate<void> cb) { rx_callback = cb; }
+		void set_tx_callback(igris::delegate<void> cb) { tx_callback = cb; }
+
         void set_flag(uint16_t flags) 
         {
         	this->flags = flags;
