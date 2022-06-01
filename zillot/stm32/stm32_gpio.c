@@ -116,7 +116,7 @@ int stm32_gpio_set_alternate(GPIO_TypeDef* g, uint32_t mask, int32_t alternate)
 	return 0;
 }
 
-void stm32_gpio_set_maxspeed(GPIO_TypeDef* regs, uint16_t map,
+/*void stm32_gpio_set_maxspeed(GPIO_TypeDef* regs, uint16_t map,
                              enum stm32_gpio_maxspeed_e maxspeed)
 {
 #if defined CHIP_STM32F1XX || defined CHIP_STM32F2XX 
@@ -138,4 +138,4 @@ void stm32_gpio_set_maxspeed(GPIO_TypeDef* regs, uint16_t map,
 #else
 #	error "Wrong family"
 #endif
-}
+}*/

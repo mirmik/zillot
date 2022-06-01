@@ -1,6 +1,10 @@
 #ifndef STM32XXXX_H
 #define STM32XXXX_H
 
+#define STM32F4XX 1
+#define STM32F4xx 1
+#define STM32F446 1
+
 #ifdef STM32G4XX
 #include "stm32g4xx.h"
 #elif defined(STM32F4XX)

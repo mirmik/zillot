@@ -1,5 +1,5 @@
-#include <asm/stm32_adc.h>
-#include <asm/stm32_rcc.h>
+#include <zillot/stm32/stm32_adc.h>
+#include <zillot/stm32/stm32_rcc.h>
 
 #include <igris/util/bits.h>
 

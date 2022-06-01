@@ -2,7 +2,7 @@
 #define GENOS_ARM_STM32_ADC_H
 
 #include <sys/cdefs.h>
-#include <periph/map.h>
+#include <stm32xxxx.h>
 
 #include <igris/util/bits.h>
 #include <igris/dprint.h>
