@@ -1,7 +1,6 @@
 #include <zillot/stm32/stm32_clockbus.h>
 #include <zillot/stm32/stm32_systick.h>
 #include <stm32xxxx.h>
-#include <igris/time/systime.h>
 
 //static int __active_mode = 0;
 //static int __systembus = 0;
