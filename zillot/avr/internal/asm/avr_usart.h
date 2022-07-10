@@ -16,7 +16,7 @@ struct usart_regs
 } __attribute__((packed));
 
 
-static inline int avr_usart_sendbyte(struct usart_regs* regs, char c)
+static inline int avr_usart_sendbyte(struct usart_regs* regs, unsigned char c)
 {
 	regs->udr = c;
 	return 1;
@@ -73,7 +73,7 @@ static inline void avr_usart_setup(
 	(void) parity;
 	(void) databits;
 	(void) stopbits;
-	
+
 
 	regs->ucsr_a |= 1 << U2X0;
 	uint16_t baud_setting = (F_CPU / 4 / baud - 1) / 2;

@@ -56,7 +56,7 @@ namespace zillot
 #define ZILLOT_UARTRING(name, uart, tsize, rsize) \
 char CONCAT2(txbuf, __LINE__)[tsize];                     \
 char CONCAT2(rxbuf, __LINE__)[rsize];                     \
-zillot::uartring name((uart),                             \
+zillot::uartring name(&(uart),                             \
 	igris::buffer{CONCAT2(txbuf, __LINE__), tsize},       \
 	igris::buffer{CONCAT2(rxbuf, __LINE__), rsize});
 

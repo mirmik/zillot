@@ -3,8 +3,9 @@
 #include <avr/io.h>
 #include <avr/io.h>
 
-int usart0_diag_putchar(void* _, char c)
+int usart0_diag_putchar(void* priv, char c)
 {
+	(void) priv;
 	irqstate_t save = irqs_save();
 	UCSR0A |= 1<<TXC0;
 	while ((UCSR0A & (1 << UDRE0)) == 0) {};  

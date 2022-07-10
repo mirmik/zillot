@@ -21,7 +21,7 @@ namespace zillot
 			int enable(int en) override;
 			int ctrirqs(uint8_t cmd) override;
 			int recvbyte() override;
-			int sendbyte(int c) override;
+			int sendbyte(unsigned char c) override;
 			int cantx() override;
 			int hasrx() override;
 

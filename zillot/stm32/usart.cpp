@@ -63,7 +63,7 @@ int zillot::stm32::usart::recvbyte()
 
 }
 
-int zillot::stm32::usart::sendbyte(int symbol)
+int zillot::stm32::usart::sendbyte(unsigned char symbol)
 {
 	return stm32_usart_putc(regs, symbol);
 }

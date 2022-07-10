@@ -57,7 +57,7 @@ int zillot::avr::usart::recvbyte()
     return avr_usart_recvbyte(regs);
 }
 
-int zillot::avr::usart::sendbyte(int symbol)
+int zillot::avr::usart::sendbyte(unsigned char symbol)
 {
     return avr_usart_sendbyte(regs, symbol);
 }
@@ -109,9 +109,6 @@ int zillot::avr::usart::setup(int32_t baud, char parity,
 {
     avr_usart_enable_tx(regs, 1);
     avr_usart_enable_rx(regs, 1);
-
     avr_usart_setup(regs, baud, parity, databits, stopbits);
-    avr_usart_rxirq(regs, 1);
-
     return 0;
 }

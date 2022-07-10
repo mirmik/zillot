@@ -16,15 +16,20 @@ namespace zillot
         {
         public:
             usart_regs* regs;
-            int irqno;
+
+#ifdef ZILLOT_IRQTABLE
+          int irqno;
+          usart(usart_regs * _regs, int irqno) : regs(_regs), irqno(irqno) {}
+#else
+            usart(usart_regs * _regs) : regs(_regs) {}
+#endif
 
         public:
-            usart(usart_regs * _regs, int irqno) : regs(_regs), irqno(irqno) {}
             int setup(int32_t baud, char parity, uint8_t databits, uint8_t stopbits) override;
             int enable(int en) override;
             int ctrirqs(uint8_t cmd) override;
             int recvbyte() override;
-            int sendbyte(int c) override;
+            int sendbyte(unsigned char c) override;
             int cantx() override;
             int hasrx() override;
             //void init_gpio(zillot::stm32::pin tx, zillot::stm32::pin rx, int af);
@@ -34,19 +39,18 @@ namespace zillot
 }
 
 #define __DECLARE_ISR_RX(vect, arg)                                            \
-    ISR(vect) { arg.dev.handler(arg.dev.handarg, UART_IRQCODE_RX); }
+    ISR(vect) { arg.handler(arg.handarg, UART_IRQCODE_RX); }
 
 // Да так должно быть: ISR_UDRE и IRQCODE_TX
 #define __DECLARE_ISR_UDRE(vect, arg)                                          \
-    ISR(vect) { arg.dev.handler(arg.dev.handarg, UART_IRQCODE_TX); }
+    ISR(vect) { arg.handler(arg.handarg, UART_IRQCODE_TX); }
 
 // Да так должно быть: ISR_TX и IRQCODE_TC
 #define __DECLARE_ISR_TX(vect, arg)                                            \
-    ISR(vect) { arg.dev.handler(arg.dev.handarg, UART_IRQCODE_TC); }
+    ISR(vect) { arg.handler(arg.handarg, UART_IRQCODE_TC); }
 
-#define DECLARE_AVR_USART_WITH_IRQS(name, avrlib_name, prefix)                 \
-    avr_usart_device_s name = {                                                \
-        UART_INIT(&avr_usart_device_ops, nullptr, nullptr), avrlib_name};      \
+#define AVR_USART_WITH_IRQS(name, avrlib_name, prefix)                         \
+    zillot::avr::usart name(avrlib_name);                                      \
     __DECLARE_ISR_RX(prefix##_RX_vect, name)                                   \
     __DECLARE_ISR_UDRE(prefix##_UDRE_vect, name)                               \
     __DECLARE_ISR_TX(prefix##_TX_vect, name)

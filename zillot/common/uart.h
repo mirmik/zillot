@@ -4,6 +4,7 @@
 #include <sys/cdefs.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <igris/util/stub.h>
 
 #define UART_IRQCODE_RX 0
 #define UART_IRQCODE_TX 1 // Можно положить следующий байт
@@ -34,10 +35,15 @@ namespace zillot
 		virtual int enable(int en) = 0;
 		virtual int ctrirqs(uint8_t cmd) = 0;
 		virtual int recvbyte() = 0;
-		virtual int sendbyte(int c) = 0;
+		virtual int sendbyte(unsigned char c) = 0;
 		virtual int cantx() = 0;
 		virtual int hasrx() = 0;
 		virtual ~uart() = default;
+		void setup_irq_handler(uart_irq_handler_t handler, void* handarg) 
+		{
+			this->handler=handler;
+			this->handarg=handarg;
+		}
 	};
 }
 
