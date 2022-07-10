@@ -53,7 +53,7 @@ namespace zillot
 	};
 }
 
-#define ZILLOT_UARTRING_DECLARE(name, uart, tsize, rsize) \
+#define ZILLOT_UARTRING(name, uart, tsize, rsize) \
 char CONCAT2(txbuf, __LINE__)[tsize];                     \
 char CONCAT2(rxbuf, __LINE__)[rsize];                     \
 zillot::uartring name((uart),                             \

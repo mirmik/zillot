@@ -4,9 +4,7 @@ licant.module("zillot.arduino.avr-systime",
 	sources = [
 		"arduino-avr-systime.c"
 	],
-	mdepends=[
-		("igris.systime", "jiffies")
-	]
+	mdepends=[]
 )
 
 licant.module("zillot.arduino-compat", 

@@ -1,29 +1,37 @@
-/*#ifndef GENOS_DRIVERS_AVR_UART
-#define GENOS_DRIVERS_AVR_UART
+#ifndef ZILLOT_DRIVERS_AVR_UART
+#define ZILLOT_DRIVERS_AVR_UART
 
 #include <asm/avr_usart.h>
 #include <igris/util/macro.h>
-#include <zillot/serial/uart.h>
+#include <zillot/common/uart.h>
 
 #include <avr/interrupt.h>
 #include <avr/io.h>
 
-typedef struct avr_usart_device_s
+namespace zillot 
 {
-    struct uart_s dev;
-    struct usart_regs *regs;
-} avr_usart_device_s;
+    namespace avr 
+    {
+        class usart : public zillot::uart 
+        {
+        public:
+            usart_regs* regs;
+            int irqno;
 
-extern const struct uart_operations avr_usart_device_ops;
-
-__BEGIN_DECLS
-
-void avr_usart_device_init(avr_usart_device_s *dev);
-void avr_usart_device_rx_irq_handler(void *arg);
-void avr_usart_device_dre_irq_handler(void *arg);
-void avr_usart_device_tx_irq_handler(void *arg);
-
-__END_DECLS
+        public:
+            usart(usart_regs * _regs, int irqno) : regs(_regs), irqno(irqno) {}
+            int setup(int32_t baud, char parity, uint8_t databits, uint8_t stopbits) override;
+            int enable(int en) override;
+            int ctrirqs(uint8_t cmd) override;
+            int recvbyte() override;
+            int sendbyte(int c) override;
+            int cantx() override;
+            int hasrx() override;
+            //void init_gpio(zillot::stm32::pin tx, zillot::stm32::pin rx, int af);
+            void irqinit();
+        };
+    }
+}
 
 #define __DECLARE_ISR_RX(vect, arg)                                            \
     ISR(vect) { arg.dev.handler(arg.dev.handarg, UART_IRQCODE_RX); }
@@ -43,4 +51,4 @@ __END_DECLS
     __DECLARE_ISR_UDRE(prefix##_UDRE_vect, name)                               \
     __DECLARE_ISR_TX(prefix##_TX_vect, name)
 
-#endif*/
+#endif

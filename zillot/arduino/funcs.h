@@ -53,6 +53,8 @@ static inline void interrupts() { irqs_enable(); }
 
 static inline void noInterrupts() { irqs_disable(); }
 
+static inline void delay(int32_t arg) { igris::delay(arg); }
+
 /*static inline void delayMicroseconds(int us)
 {
     delay(us/1000 + 1);

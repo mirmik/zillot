@@ -4,8 +4,3 @@ int main()
 {
 
 }
-
-extern "C" void _exit()
-{
-
-}

@@ -3,7 +3,7 @@
 #include <zillot/armv7e-m/arm_nvic.h>
 #include <zillot/stm32/usart.h>
 #include <zillot/stm32/pin.h>
-#include <zillot/common/irqtable.h>
+#include <zillot/irqtable/irqtable.h>
 #include <chip/irqdefs.h>
 
 void zillot::stm32::usart::init_gpio(zillot::stm32::pin tx, zillot::stm32::pin rx, int af)

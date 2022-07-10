@@ -26,8 +26,8 @@ namespace zillot
 	class uart
 	{
 	public:
-		uart_irq_handler_t  handler;
-		void*               handarg;
+		uart_irq_handler_t  handler = nullptr;
+		void*               handarg = nullptr;
 
 	public:	
 		virtual int setup(int32_t baud, char parity, uint8_t databits, uint8_t stopbits) = 0;
@@ -37,6 +37,7 @@ namespace zillot
 		virtual int sendbyte(int c) = 0;
 		virtual int cantx() = 0;
 		virtual int hasrx() = 0;
+		virtual ~uart() = default;
 	};
 }
 

@@ -16,6 +16,7 @@ int main()
 
     while (1)
     {
+        dprln(igris::millis());
         digitalWrite(13, 1);
         delay(500);
         digitalWrite(13, 0);

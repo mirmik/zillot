@@ -2,6 +2,7 @@
 #define GENOS_ARDUINO_UNO_PINOUT_H
 
 #include <zillot/arduino/arduino_pin.h>
+#include <periph/map.h>
 
 const struct arduino_pin PINOUT[] = 
 {

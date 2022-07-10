@@ -24,8 +24,11 @@ __END_DECLS
 #include <asm/irq.h>
 #else
 __BEGIN_DECLS
+typedef int irqstate_t;
 void irqs_enable() {}
 void irqs_disable() {}
+int irqs_save() { return 0; }
+void irqs_restore(int) {}
 __END_DECLS
 #endif
 

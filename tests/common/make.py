@@ -6,7 +6,7 @@ from licant.modules import submodule, module
 from licant.libs import include
 
 licant.include("igris")
-licant.execute("../zillot.g.py")
+licant.execute("../../zillot.g.py")
 
 application("runtests",
 	sources = [ "*.cpp" ],
@@ -22,6 +22,7 @@ application("runtests",
 	ccstd="c11",
 	cxx_flags = "-g -Werror=all -Werror=pedantic -Wno-gnu-zero-variadic-macro-arguments",
 	cc_flags = "-g -Werror=all -Werror=pedantic -Wno-gnu-zero-variadic-macro-arguments",
+	defines=["__NOARCH=1"]
 )
 
 licant.ex("runtests")

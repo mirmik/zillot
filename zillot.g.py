@@ -33,6 +33,10 @@ licant.module("zillot.common",
 	sources=["zillot/common/*.cpp"]
 )
 
+licant.module("zillot.irqtable",
+	sources=["zillot/irqtable/*.cpp"]
+)
+
 licant.module("zillot",
 	mdepends=[
 		"zillot.include",

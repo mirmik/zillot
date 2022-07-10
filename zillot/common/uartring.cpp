@@ -80,6 +80,7 @@ int zillot::uartring::release()
 
 int zillot::uartring::open(void * controller_id)
 {
+	(void) controller_id;
 	if (refs == 0)
 	{
 		udev->ctrirqs(UART_CTRIRQS_TXOFF);

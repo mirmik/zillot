@@ -2,6 +2,7 @@
 #define GENOS_ARDUINO_MEGA_PINOUT_H
 
 #include <zillot/arduino/arduino_pin.h>
+#include <periph/map.h>
 
 const struct arduino_pin PINOUT[] = {
     {GPIOE, 1 << 0}, // 0

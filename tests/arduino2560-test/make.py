@@ -7,22 +7,27 @@ licant.include("igris")
 
 licant.cxx_application("firmware.elf",
 	toolchain = licant.gcc_toolchain("avr-"),
-	sources = ["main.c"],
+	sources = ["main.cpp"],
+	include_paths=["/usr/lib/avr/include/"],
 	mdepends = [
+		"igris.libc",
+		"igris.std",
+		"igris.posix",
 		"igris.include",
 		"igris.util",
 		("igris.systime", "jiffies"),
 		("igris.syslock", "irqs"),
 		("igris.dprint", "diag"),
-
 		"zillot.include",
-		"zillot.chip.avr.atmega2560",
+		"zillot.avr.atmega2560",
 		"zillot.arduino.mega",
 	],
 
 	cxx_flags = "-ffunction-sections -fdata-sections",
 	cc_flags = "-ffunction-sections -fdata-sections",
-	ld_flags = "-Wl,--gc-sections"
+	ld_flags = "-nostdinc -Wl,--gc-sections",
+	libs=["gcc"],
+	defines=["WITHOUT_ATOF64"]
 )
 
 default_file = "/dev/ttyACM0"
