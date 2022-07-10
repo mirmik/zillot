@@ -12,6 +12,7 @@ licant.module("zillot.avr",
 		"avr_gpio.c",
 		"avr_timer.c",
 		"debug_blink.S",
+		"avr_i2c_device.c",
 		"diag.c",
 	],
 

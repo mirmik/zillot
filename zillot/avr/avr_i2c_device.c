@@ -1,6 +1,6 @@
 #include <igris/sync/semaphore.h>
-#include <zillot/i2c/avr_i2c_device.h>
-#include <zillot/i2c/i2c_device.h>
+#include <zillot/avr/avr_i2c_device.h>
+//#include <zillot/i2c/i2c_device.h>
 
 #define COMMON_FLAGS (1 << TWINT | 1 << TWEN | 1 << TWIE)
 

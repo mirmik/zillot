@@ -2,6 +2,7 @@
 #include <zillot/diag.h>
 #include <avr/io.h>
 #include <avr/io.h>
+#include <stddef.h>
 
 int usart0_diag_putchar(void* priv, char c)
 {

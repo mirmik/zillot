@@ -1,7 +1,6 @@
 #ifndef ZILLOT_SERIAL_UARTRING_H
 #define ZILLOT_SERIAL_UARTRING_H
 
-#include <sys/cdefs.h>
 #include <zillot/common/chardev.h>
 #include <zillot/common/uart.h>
 #include <igris/buffer.h>

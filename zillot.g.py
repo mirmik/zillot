@@ -30,7 +30,10 @@ licant.module("zillot.arduino.avr.systime",
 )
 
 licant.module("zillot.common",
-	sources=["zillot/common/*.cpp"]
+	sources=[
+		"zillot/common/*.cpp",
+		"zillot/i2c/i2c_device.c"
+	]
 )
 
 licant.module("zillot.irqtable",
