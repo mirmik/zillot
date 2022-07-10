@@ -76,3 +76,4 @@ xxx
 *.bin
 *.elf
 firmware
+runtests
