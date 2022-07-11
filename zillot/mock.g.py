@@ -1,4 +1,4 @@
 licant.module("zillot.mock",
-	sources=["zillot/mock/*.cpp"],
-	include_paths=["zillot/mock/internal"]
+	sources=["mock/*.cpp", "mock/*.c"],
+	include_paths=["mock/internal"]
 )

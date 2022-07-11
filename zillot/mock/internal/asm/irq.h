@@ -3,6 +3,8 @@
 
 typedef int irqstate_t;
 
+#define irqs_enable() (0)
+#define irqs_disable() (0)
 #define irqs_save() (0)
 #define irqs_restore(arg) ((void)arg)
 

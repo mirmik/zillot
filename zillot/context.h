@@ -1,10 +1,11 @@
 #ifndef ZILLOT_CONTEXT_H
 #define ZILLOT_CONTEXT_H
 
-#include "igris/compiler.h"
+#include <igris/compiler.h>
+#include <stdint.h>
 
 #if !__NOARCH
-#include "asm/context.h"
+#include <asm/context.h>
 #endif
 
 struct context;
