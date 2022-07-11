@@ -1,7 +1,7 @@
 #ifndef AVR_GPIO_H
 #define AVR_GPIO_H
 
-#include "inttypes.h"
+#include <stdint.h>
 #include <igris/compiler.h>
 
 struct gpio_regs {
