@@ -1,8 +1,8 @@
 #ifndef STM32_CLOCKBUS_H
 #define STM32_CLOCKBUS_H
 
-#include <sys/cdefs.h>
 #include <stdint.h>
+#include <sys/cdefs.h>
 
 #define CLOCKBUS_HSI 0
 #define CLOCKBUS_HSE 1
@@ -19,7 +19,13 @@ void stm32_clockbus_hsi_mode();
 void stm32_clockbus_hse_mode();
 void stm32_clockbus_reevaluate();
 void stm32_clockbus_systime_setup();
-void stm32_clockbus_set_dividers(int a, int b);
+
+void stm32_clockbus_set_hpre_divider(int divider);
+uint16_t stm32_clockbus_get_hpre_divider();
+void stm32_clockbus_set_ppre1_divider(int divider);
+uint16_t stm32_clockbus_get_ppre1_divider();
+void stm32_clockbus_set_ppre2_divider(int divider);
+uint16_t stm32_clockbus_get_ppre2_divider();
 
 __END_DECLS
 

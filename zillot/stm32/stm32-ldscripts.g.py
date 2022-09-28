@@ -1,3 +1,5 @@
+import licant
+
 licant.module("stm32.irqtable_ldscript.common",
 	ldscripts = ["ldscripts/stm32_common.ld"]
 )

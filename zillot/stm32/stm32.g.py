@@ -18,10 +18,7 @@ licant.module("zillot.stm32.common",
 	mdepends = [
 		"zillot.include",
 		#"cpu.stm32.irqtable", 
-	],
-	cxx_flags = "-mthumb -mcpu=cortex-m4 -fno-exceptions -fno-rtti -fno-threadsafe-statics -mfloat-abi=hard -mfpu=fpv4-sp-d16  -D__FPU_USED=1",
-	cc_flags = "-mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16  -D__FPU_USED=1",
-	ld_flags = "-mthumb -mcpu=cortex-m4 -fno-exceptions -fno-rtti  -mfloat-abi=hard -mfpu=fpv4-sp-d16  -D__FPU_USED=1",
+	]
 )
 
 licant.module("zillot.stm32.irqtable",
