@@ -6,7 +6,7 @@ from licant.modules import submodule, module
 from licant.libs import include
 
 licant.include("igris")
-licant.execute("../../zillot.g.py")
+licant.include("zillot", "../../zillot.g.py")
 
 application("runtests",
             sources=["*.cpp"],

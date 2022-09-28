@@ -2,8 +2,8 @@
 import licant
 import os
 
-licant.include("zillot")
 licant.include("igris")
+licant.include("zillot", "../../zillot.g.py")
 
 licant.cxx_application("arduino2560-firmware.elf",
                        builddir="arduino2560build",
