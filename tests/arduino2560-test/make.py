@@ -5,45 +5,50 @@ import os
 licant.include("zillot")
 licant.include("igris")
 
-licant.cxx_application("firmware.elf",
-	toolchain = licant.gcc_toolchain("avr-"),
-	sources = ["main.cpp"],
-	include_paths=["/usr/lib/avr/include/"],
-	mdepends = [
-		"igris.libc",
-		"igris.std",
-		"igris.posix",
-		"igris.include",
-		"igris.util",
-		("igris.systime", "jiffies"),
-		("igris.syslock", "irqs"),
-		("igris.dprint", "diag"),
-		"igris.cxx_support",
-		"zillot",
-		"zillot.avr.atmega2560",
-		"zillot.arduino.mega",
-	],
+licant.cxx_application("arduino2560-firmware.elf",
+                       builddir="arduino2560build",
+                       toolchain=licant.gcc_toolchain("avr-"),
+                       sources=["main.cpp"],
+                       include_paths=["/usr/lib/avr/include/"],
+                       mdepends=[
+                           "igris.libc",
+                           "igris.compat.std",
+                           "igris.posix",
+                           "igris.include",
+                           "igris.util",
+                           ("igris.systime", "jiffies"),
+                           ("igris.syslock", "irqs"),
+                           ("igris.dprint", "diag"),
+                           "igris.cxx_support",
+                           "zillot",
+                           "zillot.avr.atmega2560",
+                           "zillot.arduino.mega",
+                       ],
 
-	cxx_flags = "-ffunction-sections -fdata-sections",
-	cc_flags = "-ffunction-sections -fdata-sections",
-	ld_flags = "-nostdinc -Wl,--gc-sections",
-	libs=["gcc"],
-	defines=["WITHOUT_ATOF64"]
-)
+                       cxx_flags="-ffunction-sections -fdata-sections",
+                       cc_flags="-ffunction-sections -fdata-sections",
+                       ld_flags="-nostdinc -Wl,--gc-sections",
+                       libs=["gcc"],
+                       defines=["WITHOUT_ATOF64"]
+                       )
 
 default_file = "/dev/ttyACM0"
 
-@licant.routine(deps=["firmware.elf"])
+
+@licant.routine(deps=["arduino2560-firmware.elf"])
 def install(src="firmware.hex", tgt=default_file, *args):
-	for cmd in [
-		"avr-objcopy -O ihex -R .eeprom -R .fuse firmware.elf firmware.hex",
-		f"avrdude -P{tgt} -v -cwiring -patmega2560 -b115200 -D -Uflash:w:./{src} -u"
-	]:
-		print(cmd)
-		os.system(cmd)
+    for cmd in [
+            "avr-objcopy -O ihex -R .eeprom -R .fuse arduino2560-firmware.elf arduino2560-firmware.hex",
+            f"avrdude -P{tgt} -v -cwiring -patmega2560 -b115200 -D -Uflash:w:./{src} -u"
+    ]:
+        print(cmd)
+        os.system(cmd)
+
 
 @licant.routine
 def terminal(path=default_file):
-	os.system("sudo gtkterm -p {} -s 115200 --parity none".format(path))
+    os.system("sudo gtkterm -p {} -s 115200 --parity none".format(path))
 
-licant.ex("firmware.elf")
+
+if __name__ == "__main__":
+    licant.ex("arduino2560-firmware.elf")
