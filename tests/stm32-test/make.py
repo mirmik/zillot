@@ -11,7 +11,7 @@ licant.cxx_application("stm32-firmware.elf",
                        sources=["main.cpp"],
                        mdepends=[
                            "igris.include",
-                           "igris.dprint",
+                           ("igris.dprint", "zillot.diag"),
                            "igris.util",
                            "igris.utilxx",
                            ("igris.syslock", "irqs"),
@@ -19,10 +19,9 @@ licant.cxx_application("stm32-firmware.elf",
                            "zillot.stm32f407vg",
                            "newlib-stub"
                        ],
-
-                       cxx_flags="-ffunction-sections -fdata-sections",
-                       cc_flags="-ffunction-sections -fdata-sections",
-                       ld_flags="-nostdinc -Wl,--gc-sections",
+                       cxx_flags="-fmax-errors=1 -mthumb -mcpu=cortex-m4 -fno-exceptions -fno-rtti -fno-threadsafe-statics -mfloat-abi=hard -mfpu=fpv4-sp-d16  -D__FPU_USED=1",
+                       cc_flags="-fmax-errors=1 -mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16  -D__FPU_USED=1",
+                       ld_flags=" -Wl,--gc-sections -fmax-errors=1 -mthumb -mcpu=cortex-m4 -fno-exceptions -fno-rtti  -mfloat-abi=hard -mfpu=fpv4-sp-d16  -D__FPU_USED=1",
                        )
 
 if __name__ == "__main__":
