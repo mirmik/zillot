@@ -28,7 +28,8 @@ SECTIONS
 		. = ALIGN(4);
 	} >FLASH
 
-	/* The program code and other data goes into FLASH */.text :
+	/* The program code and other data goes into FLASH */
+	.text :
 	{
 		. = ALIGN(4);
 		*(.text)
@@ -39,11 +40,19 @@ SECTIONS
 
 		KEEP (*(.init))
 		KEEP (*(.fini))
+		*(.ARM.extab* .gnu.linkonce.armextab.*)
 
 		. = ALIGN(4);
 		_etext = .;
 	} >FLASH
 
+	/* .ARM.exidx is sorted, so has to go in its own output section.  */
+	__exidx_start = .;
+	.ARM.exidx :
+	{
+		*(.ARM.exidx* .gnu.linkonce.armexidx.*)
+	} >FLASH
+	__exidx_end = .;
 
  	/* Constant data goes into FLASH */
   	.rodata :
@@ -108,7 +117,6 @@ SECTIONS
 		_ebss = .;         /* define a global symbol at bss end */
 		__bss_end__ = _ebss;
 	} >RAM
-
 
 	/* this is to define the start of the heap, and make sure we have a minimum size */
 	.heap :
