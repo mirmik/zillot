@@ -22,6 +22,17 @@ RCC_CFGR_PPRE2_DIV1; stm32_clockbus_set_dividers(1, 1);
 }
 */
 
+void stm32_clockbus_init_simple_hsi_mode()
+{
+    stm32_clockbus_freq[CLOCKBUS_HSI] = 16000000;
+
+    stm32_clockbus_set_hpre_divider(1);
+    stm32_clockbus_set_ppre1_divider(1);
+    stm32_clockbus_set_ppre2_divider(1);
+
+    stm32_clockbus_reevaluate();
+}
+
 uint32_t hpre_divider_value(uint16_t divider)
 {
     switch (divider)

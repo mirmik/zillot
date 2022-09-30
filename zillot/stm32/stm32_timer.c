@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <zillot/stm32/stm32_timer.h>
 
 /**
@@ -8,76 +9,83 @@
  */
 void TIM_OCStructInit(TIM_OCInitTypeDef *TIM_OCInitStruct)
 {
-	/* Set the default configuration */
-	TIM_OCInitStruct->TIM_OCMode = TIM_OCMode_Timing;
-	TIM_OCInitStruct->TIM_OutputState = TIM_OutputState_Disable;
-	TIM_OCInitStruct->TIM_OutputNState = TIM_OutputNState_Disable;
-	TIM_OCInitStruct->TIM_Pulse = 0x00000000;
-	TIM_OCInitStruct->TIM_OCPolarity = TIM_OCPolarity_High;
-	TIM_OCInitStruct->TIM_OCNPolarity = TIM_OCPolarity_High;
-	TIM_OCInitStruct->TIM_OCIdleState = TIM_OCIdleState_Reset;
-	TIM_OCInitStruct->TIM_OCNIdleState = TIM_OCNIdleState_Reset;
+    /* Set the default configuration */
+    TIM_OCInitStruct->TIM_OCMode = TIM_OCMode_Timing;
+    TIM_OCInitStruct->TIM_OutputState = TIM_OutputState_Disable;
+    TIM_OCInitStruct->TIM_OutputNState = TIM_OutputNState_Disable;
+    TIM_OCInitStruct->TIM_Pulse = 0x00000000;
+    TIM_OCInitStruct->TIM_OCPolarity = TIM_OCPolarity_High;
+    TIM_OCInitStruct->TIM_OCNPolarity = TIM_OCPolarity_High;
+    TIM_OCInitStruct->TIM_OCIdleState = TIM_OCIdleState_Reset;
+    TIM_OCInitStruct->TIM_OCNIdleState = TIM_OCNIdleState_Reset;
 }
 
 void TIM_OC1Init(TIM_TypeDef *TIMx, TIM_OCInitTypeDef *TIM_OCInitStruct)
 {
-	uint16_t tmpccmrx = 0, tmpccer = 0, tmpcr2 = 0;
+    uint16_t tmpccmrx = 0, tmpccer = 0, tmpcr2 = 0;
 
-	/* Disable the Channel 1: Reset the CC1E Bit */
-	TIMx->CCER &= (uint16_t)~TIM_CCER_CC1E;
+    /* Disable the Channel 1: Reset the CC1E Bit */
+    TIMx->CCER &= (uint16_t)~TIM_CCER_CC1E;
 
-	/* Get the TIMx CCER register value */
-	tmpccer = TIMx->CCER;
-	/* Get the TIMx CR2 register value */
-	tmpcr2 = TIMx->CR2;
+    /* Get the TIMx CCER register value */
+    tmpccer = TIMx->CCER;
+    /* Get the TIMx CR2 register value */
+    tmpcr2 = TIMx->CR2;
 
-	/* Get the TIMx CCMR1 register value */
-	tmpccmrx = TIMx->CCMR1;
+    /* Get the TIMx CCMR1 register value */
+    tmpccmrx = TIMx->CCMR1;
 
-	/* Reset the Output Compare Mode Bits */
-	tmpccmrx &= (uint16_t)~TIM_CCMR1_OC1M;
-	tmpccmrx &= (uint16_t)~TIM_CCMR1_CC1S;
-	/* Select the Output Compare Mode */
-	tmpccmrx |= TIM_OCInitStruct->TIM_OCMode;
+    /* Reset the Output Compare Mode Bits */
+    tmpccmrx &= (uint16_t)~TIM_CCMR1_OC1M;
+    tmpccmrx &= (uint16_t)~TIM_CCMR1_CC1S;
+    /* Select the Output Compare Mode */
+    tmpccmrx |= TIM_OCInitStruct->TIM_OCMode;
 
-	/* Reset the Output Polarity level */
-	tmpccer &= (uint16_t)~TIM_CCER_CC1P;
-	/* Set the Output Compare Polarity */
-	tmpccer |= TIM_OCInitStruct->TIM_OCPolarity;
+    /* Reset the Output Polarity level */
+    tmpccer &= (uint16_t)~TIM_CCER_CC1P;
+    /* Set the Output Compare Polarity */
+    tmpccer |= TIM_OCInitStruct->TIM_OCPolarity;
 
-	/* Set the Output State */
-	tmpccer |= TIM_OCInitStruct->TIM_OutputState;
+    /* Set the Output State */
+    tmpccer |= TIM_OCInitStruct->TIM_OutputState;
 
-	if ((TIMx == TIM1) || (TIMx == TIM8))
-	{
-		/* Reset the Output N Polarity level */
-		tmpccer &= (uint16_t)~TIM_CCER_CC1NP;
-		/* Set the Output N Polarity */
-		tmpccer |= TIM_OCInitStruct->TIM_OCNPolarity;
-		/* Reset the Output N State */
-		tmpccer &= (uint16_t)~TIM_CCER_CC1NE;
+    if (false
+#ifdef TIM1
+        || (TIMx == TIM1)
+#endif
+#ifdef TIM8
+        || (TIMx == TIM8)
+#endif
+    )
+    {
+        /* Reset the Output N Polarity level */
+        tmpccer &= (uint16_t)~TIM_CCER_CC1NP;
+        /* Set the Output N Polarity */
+        tmpccer |= TIM_OCInitStruct->TIM_OCNPolarity;
+        /* Reset the Output N State */
+        tmpccer &= (uint16_t)~TIM_CCER_CC1NE;
 
-		/* Set the Output N State */
-		tmpccer |= TIM_OCInitStruct->TIM_OutputNState;
-		/* Reset the Output Compare and Output Compare N IDLE State */
-		tmpcr2 &= (uint16_t)~TIM_CR2_OIS1;
-		tmpcr2 &= (uint16_t)~TIM_CR2_OIS1N;
-		/* Set the Output Idle state */
-		tmpcr2 |= TIM_OCInitStruct->TIM_OCIdleState;
-		/* Set the Output N Idle state */
-		tmpcr2 |= TIM_OCInitStruct->TIM_OCNIdleState;
-	}
-	/* Write to TIMx CR2 */
-	TIMx->CR2 = tmpcr2;
+        /* Set the Output N State */
+        tmpccer |= TIM_OCInitStruct->TIM_OutputNState;
+        /* Reset the Output Compare and Output Compare N IDLE State */
+        tmpcr2 &= (uint16_t)~TIM_CR2_OIS1;
+        tmpcr2 &= (uint16_t)~TIM_CR2_OIS1N;
+        /* Set the Output Idle state */
+        tmpcr2 |= TIM_OCInitStruct->TIM_OCIdleState;
+        /* Set the Output N Idle state */
+        tmpcr2 |= TIM_OCInitStruct->TIM_OCNIdleState;
+    }
+    /* Write to TIMx CR2 */
+    TIMx->CR2 = tmpcr2;
 
-	/* Write to TIMx CCMR1 */
-	TIMx->CCMR1 = tmpccmrx;
+    /* Write to TIMx CCMR1 */
+    TIMx->CCMR1 = tmpccmrx;
 
-	/* Set the Capture Compare Register value */
-	TIMx->CCR1 = TIM_OCInitStruct->TIM_Pulse;
+    /* Set the Capture Compare Register value */
+    TIMx->CCR1 = TIM_OCInitStruct->TIM_Pulse;
 
-	/* Write to TIMx CCER */
-	TIMx->CCER = tmpccer;
+    /* Write to TIMx CCER */
+    TIMx->CCER = tmpccer;
 }
 
 /**
@@ -103,45 +111,45 @@ void TIM_OC1Init(TIM_TypeDef *TIMx, TIM_OCInitTypeDef *TIM_OCInitStruct)
  * @retval None
  */
 
-void TIM_EncoderInterfaceConfig(TIM_TypeDef *TIMx, uint16_t TIM_EncoderMode,
-								uint16_t TIM_IC1Polarity,
-								uint16_t TIM_IC2Polarity)
+void TIM_EncoderInterfaceConfig(TIM_TypeDef *TIMx,
+                                uint16_t TIM_EncoderMode,
+                                uint16_t TIM_IC1Polarity,
+                                uint16_t TIM_IC2Polarity)
 {
-	uint16_t tmpsmcr = 0;
-	uint16_t tmpccmr1 = 0;
-	uint16_t tmpccer = 0;
+    uint16_t tmpsmcr = 0;
+    uint16_t tmpccmr1 = 0;
+    uint16_t tmpccer = 0;
 
+    /* Get the TIMx SMCR register value */
+    tmpsmcr = TIMx->SMCR;
 
-	/* Get the TIMx SMCR register value */
-	tmpsmcr = TIMx->SMCR;
+    /* Get the TIMx CCMR1 register value */
+    tmpccmr1 = TIMx->CCMR1;
 
-	/* Get the TIMx CCMR1 register value */
-	tmpccmr1 = TIMx->CCMR1;
+    /* Get the TIMx CCER register value */
+    tmpccer = TIMx->CCER;
 
-	/* Get the TIMx CCER register value */
-	tmpccer = TIMx->CCER;
+    /* Set the encoder Mode */
+    tmpsmcr &= (uint16_t)~TIM_SMCR_SMS;
+    tmpsmcr |= TIM_EncoderMode;
 
-	/* Set the encoder Mode */
-	tmpsmcr &= (uint16_t)~TIM_SMCR_SMS;
-	tmpsmcr |= TIM_EncoderMode;
+    /* Select the Capture Compare 1 and the Capture Compare 2 as input */
+    tmpccmr1 &= ((uint16_t)~TIM_CCMR1_CC1S) & ((uint16_t)~TIM_CCMR1_CC2S);
+    tmpccmr1 |= TIM_CCMR1_CC1S_0 | TIM_CCMR1_CC2S_0;
 
-	/* Select the Capture Compare 1 and the Capture Compare 2 as input */
-	tmpccmr1 &= ((uint16_t)~TIM_CCMR1_CC1S) & ((uint16_t)~TIM_CCMR1_CC2S);
-	tmpccmr1 |= TIM_CCMR1_CC1S_0 | TIM_CCMR1_CC2S_0;
+    /* Set the TI1 and the TI2 Polarities */
+    tmpccer &= ((uint16_t)~TIM_CCER_CC1P) & ((uint16_t)~TIM_CCER_CC2P);
+    tmpccer |= (uint16_t)(TIM_IC1Polarity |
+                          (uint16_t)(TIM_IC2Polarity << (uint16_t)4));
 
-	/* Set the TI1 and the TI2 Polarities */
-	tmpccer &= ((uint16_t)~TIM_CCER_CC1P) & ((uint16_t)~TIM_CCER_CC2P);
-	tmpccer |= (uint16_t)(TIM_IC1Polarity |
-						  (uint16_t)(TIM_IC2Polarity << (uint16_t)4));
+    /* Write to TIMx SMCR */
+    TIMx->SMCR = tmpsmcr;
 
-	/* Write to TIMx SMCR */
-	TIMx->SMCR = tmpsmcr;
+    /* Write to TIMx CCMR1 */
+    TIMx->CCMR1 = tmpccmr1;
 
-	/* Write to TIMx CCMR1 */
-	TIMx->CCMR1 = tmpccmr1;
-
-	/* Write to TIMx CCER */
-	TIMx->CCER = tmpccer;
+    /* Write to TIMx CCER */
+    TIMx->CCER = tmpccer;
 }
 
 /**
@@ -171,16 +179,16 @@ void TIM_EncoderInterfaceConfig(TIM_TypeDef *TIMx, uint16_t TIM_EncoderMode,
  */
 void TIM_ITConfig(TIM_TypeDef *TIMx, uint16_t TIM_IT, FunctionalState NewState)
 {
-	if (NewState != DISABLE)
-	{
-		/* Enable the Interrupt sources */
-		TIMx->DIER |= TIM_IT;
-	}
-	else
-	{
-		/* Disable the Interrupt sources */
-		TIMx->DIER &= (uint16_t)~TIM_IT;
-	}
+    if (NewState != DISABLE)
+    {
+        /* Enable the Interrupt sources */
+        TIMx->DIER |= TIM_IT;
+    }
+    else
+    {
+        /* Disable the Interrupt sources */
+        TIMx->DIER &= (uint16_t)~TIM_IT;
+    }
 }
 
 /**
@@ -192,100 +200,107 @@ void TIM_ITConfig(TIM_TypeDef *TIMx, uint16_t TIM_IT, FunctionalState NewState)
  */
 void TIM_Cmd(TIM_TypeDef *TIMx, FunctionalState NewState)
 {
-	if (NewState != DISABLE)
-	{
-		/* Enable the TIM Counter */
-		TIMx->CR1 |= TIM_CR1_CEN;
-	}
-	else
-	{
-		/* Disable the TIM Counter */
-		TIMx->CR1 &= (uint16_t)~TIM_CR1_CEN;
-	}
+    if (NewState != DISABLE)
+    {
+        /* Enable the TIM Counter */
+        TIMx->CR1 |= TIM_CR1_CEN;
+    }
+    else
+    {
+        /* Disable the TIM Counter */
+        TIMx->CR1 &= (uint16_t)~TIM_CR1_CEN;
+    }
 }
 
 void TIM_ClearITPendingBit(TIM_TypeDef *TIMx, uint16_t TIM_IT)
 {
-	TIMx->SR = (uint16_t)~TIM_IT;
+    TIMx->SR = (uint16_t)~TIM_IT;
 }
 
-ITStatus TIM_GetITStatus(TIM_TypeDef * TIMx, uint16_t TIM_IT)
+ITStatus TIM_GetITStatus(TIM_TypeDef *TIMx, uint16_t TIM_IT)
 {
-  ITStatus bitstatus = RESET;  
-  uint16_t itstatus = 0x0, itenable = 0x0;
-  /* Check the parameters */
+    ITStatus bitstatus = RESET;
+    uint16_t itstatus = 0x0, itenable = 0x0;
+    /* Check the parameters */
 
-  itstatus = TIMx->SR & TIM_IT;
-  
-  itenable = TIMx->DIER & TIM_IT;
-  if ((itstatus != (uint16_t)RESET) && (itenable != (uint16_t)RESET))
-  {
-    bitstatus = SET;
-  }
-  else
-  {
-    bitstatus = RESET;
-  }
-  return bitstatus;
+    itstatus = TIMx->SR & TIM_IT;
+
+    itenable = TIMx->DIER & TIM_IT;
+    if ((itstatus != (uint16_t)RESET) && (itenable != (uint16_t)RESET))
+    {
+        bitstatus = SET;
+    }
+    else
+    {
+        bitstatus = RESET;
+    }
+    return bitstatus;
 }
 
-void TIM_OC3Init(TIM_TypeDef *TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)
+void TIM_OC3Init(TIM_TypeDef *TIMx, TIM_OCInitTypeDef *TIM_OCInitStruct)
 {
-  uint16_t tmpccmrx = 0, tmpccer = 0, tmpcr2 = 0;
-   
-  /* Disable the Channel 3: Reset the CC2E Bit */
-  TIMx->CCER &= (uint16_t)~TIM_CCER_CC3E;
-  
-  /* Get the TIMx CCER register value */
-  tmpccer = TIMx->CCER;
-  /* Get the TIMx CR2 register value */
-  tmpcr2 =  TIMx->CR2;
-  
-  /* Get the TIMx CCMR2 register value */
-  tmpccmrx = TIMx->CCMR2;
-    
-  /* Reset the Output Compare mode and Capture/Compare selection Bits */
-  tmpccmrx &= (uint16_t)~TIM_CCMR2_OC3M;
-  tmpccmrx &= (uint16_t)~TIM_CCMR2_CC3S;  
-  /* Select the Output Compare Mode */
-  tmpccmrx |= TIM_OCInitStruct->TIM_OCMode;
-  
-  /* Reset the Output Polarity level */
-  tmpccer &= (uint16_t)~TIM_CCER_CC3P;
-  /* Set the Output Compare Polarity */
-  tmpccer |= (uint16_t)(TIM_OCInitStruct->TIM_OCPolarity << 8);
-  
-  /* Set the Output State */
-  tmpccer |= (uint16_t)(TIM_OCInitStruct->TIM_OutputState << 8);
-    
-  if((TIMx == TIM1) || (TIMx == TIM8))
-  {    
-    /* Reset the Output N Polarity level */
-    tmpccer &= (uint16_t)~TIM_CCER_CC3NP;
-    /* Set the Output N Polarity */
-    tmpccer |= (uint16_t)(TIM_OCInitStruct->TIM_OCNPolarity << 8);
-    /* Reset the Output N State */
-    tmpccer &= (uint16_t)~TIM_CCER_CC3NE;
-    
-    /* Set the Output N State */
-    tmpccer |= (uint16_t)(TIM_OCInitStruct->TIM_OutputNState << 8);
-    /* Reset the Output Compare and Output Compare N IDLE State */
-    tmpcr2 &= (uint16_t)~TIM_CR2_OIS3;
-    tmpcr2 &= (uint16_t)~TIM_CR2_OIS3N;
-    /* Set the Output Idle state */
-    tmpcr2 |= (uint16_t)(TIM_OCInitStruct->TIM_OCIdleState << 4);
-    /* Set the Output N Idle state */
-    tmpcr2 |= (uint16_t)(TIM_OCInitStruct->TIM_OCNIdleState << 4);
-  }
-  /* Write to TIMx CR2 */
-  TIMx->CR2 = tmpcr2;
-  
-  /* Write to TIMx CCMR2 */
-  TIMx->CCMR2 = tmpccmrx;
-  
-  /* Set the Capture Compare Register value */
-  TIMx->CCR3 = TIM_OCInitStruct->TIM_Pulse;
-  
-  /* Write to TIMx CCER */
-  TIMx->CCER = tmpccer;
+    uint16_t tmpccmrx = 0, tmpccer = 0, tmpcr2 = 0;
+
+    /* Disable the Channel 3: Reset the CC2E Bit */
+    TIMx->CCER &= (uint16_t)~TIM_CCER_CC3E;
+
+    /* Get the TIMx CCER register value */
+    tmpccer = TIMx->CCER;
+    /* Get the TIMx CR2 register value */
+    tmpcr2 = TIMx->CR2;
+
+    /* Get the TIMx CCMR2 register value */
+    tmpccmrx = TIMx->CCMR2;
+
+    /* Reset the Output Compare mode and Capture/Compare selection Bits */
+    tmpccmrx &= (uint16_t)~TIM_CCMR2_OC3M;
+    tmpccmrx &= (uint16_t)~TIM_CCMR2_CC3S;
+    /* Select the Output Compare Mode */
+    tmpccmrx |= TIM_OCInitStruct->TIM_OCMode;
+
+    /* Reset the Output Polarity level */
+    tmpccer &= (uint16_t)~TIM_CCER_CC3P;
+    /* Set the Output Compare Polarity */
+    tmpccer |= (uint16_t)(TIM_OCInitStruct->TIM_OCPolarity << 8);
+
+    /* Set the Output State */
+    tmpccer |= (uint16_t)(TIM_OCInitStruct->TIM_OutputState << 8);
+
+    if (false
+#ifdef TIM1
+        || (TIMx == TIM1)
+#endif
+#ifdef TIM8
+        || (TIMx == TIM8)
+#endif
+    )
+    {
+        /* Reset the Output N Polarity level */
+        tmpccer &= (uint16_t)~TIM_CCER_CC3NP;
+        /* Set the Output N Polarity */
+        tmpccer |= (uint16_t)(TIM_OCInitStruct->TIM_OCNPolarity << 8);
+        /* Reset the Output N State */
+        tmpccer &= (uint16_t)~TIM_CCER_CC3NE;
+
+        /* Set the Output N State */
+        tmpccer |= (uint16_t)(TIM_OCInitStruct->TIM_OutputNState << 8);
+        /* Reset the Output Compare and Output Compare N IDLE State */
+        tmpcr2 &= (uint16_t)~TIM_CR2_OIS3;
+        tmpcr2 &= (uint16_t)~TIM_CR2_OIS3N;
+        /* Set the Output Idle state */
+        tmpcr2 |= (uint16_t)(TIM_OCInitStruct->TIM_OCIdleState << 4);
+        /* Set the Output N Idle state */
+        tmpcr2 |= (uint16_t)(TIM_OCInitStruct->TIM_OCNIdleState << 4);
+    }
+    /* Write to TIMx CR2 */
+    TIMx->CR2 = tmpcr2;
+
+    /* Write to TIMx CCMR2 */
+    TIMx->CCMR2 = tmpccmrx;
+
+    /* Set the Capture Compare Register value */
+    TIMx->CCR3 = TIM_OCInitStruct->TIM_Pulse;
+
+    /* Write to TIMx CCER */
+    TIMx->CCER = tmpccer;
 }

@@ -23,9 +23,9 @@ licant.module("zillot.stm32.common",
 
 licant.module("zillot.stm32.irqtable",
               sources=[
-                  "src/stm32_vectors.S",
+                  "stm32_vectors.S",
+                  "stm32_start.c",
               ],
-              ldscripts=["ldscripts/stm32_common_alt.ld"],
               )
 
 licant.module("zillot.stm32f4",
@@ -49,7 +49,7 @@ licant.module("zillot.stm32g4",
 licant.module("zillot.stm32f401re",
               mdepends=["zillot.stm32f4"],
               defines=["CHIP_STM32F401", "STM32F401xE", "STM32F4XX"],
-              ldscripts=["ldscripts/stm32f401re.ld"]
+              # ldscripts=["ldscripts/stm32f401re.ld"]
               )
 
 licant.module("zillot.stm32f407vg",
