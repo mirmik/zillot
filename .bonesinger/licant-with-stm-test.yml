@@ -24,6 +24,6 @@ pipeline:
           killall st-util
 
       - name: run stm test
-        run: /home/mirmik/project/onboardtest/onboardtest-listener /dev/ttyACM0
+        run: onboardtest-listener /dev/ttyACM0
 
     success_info: "Pipeline: {{pipeline_name}}\nCommit: {{commit_hash}}\nMessage: {{commit_message}}\n"
