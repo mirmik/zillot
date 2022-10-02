@@ -44,3 +44,40 @@ context_save_and_displace:
     str     r2, [r0, #60]
 
     ldr     pc, =__context_displace_vector__
+
+
+.global context_save
+context_save:
+    stmia   r0, {r0 - r12, r14}
+    str     sp, [r0, #56]
+    mrs     r2, CONTROL
+    str     r2, [r0, #60]
+
+    mov	    pc, lr
+
+
+.global setjmp
+setjmp:
+    stmia   r0, {r0 - r12, r14}
+    str     sp, [r0, #56]
+    mrs     r2, CONTROL
+    str     r2, [r0, #60]
+    
+    ldr     r0, =0
+    mov	    pc, lr
+
+.global longjmp
+longjmp:
+    str     r1, [r0, #64]
+
+	mov		r1, r0
+	ldr     sp, [r1, #56]
+    ldr     r2, [r1, #60]
+    msr     CONTROL, r2
+
+    add     r0, r1, #56
+    ldmdb   r0, {r2 - r12, r14}
+    ldr     r0, [r1]
+    ldr     r1, [r1, #4]
+
+    mov	    pc, lr

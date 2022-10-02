@@ -14,6 +14,7 @@ licant.module("zillot.stm32.common",
                   "stm32_gpio.c",
                   "stm32_diag.c",
                   "stm32_watchdog.c",
+                  "internal/asm/setjmp.c",
               ],
               mdepends=[
                   "zillot.include",

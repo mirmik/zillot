@@ -15,6 +15,9 @@ extern uint32_t stm32_clockbus_freq[6];
 
 __BEGIN_DECLS
 
+void stm32_clockbus_enable_hsi_mode();
+
+void stm32_clockbus_simple_hsi_mode();
 void stm32_clockbus_hsi_mode();
 void stm32_clockbus_hse_mode();
 void stm32_clockbus_reevaluate();
