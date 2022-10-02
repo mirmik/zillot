@@ -20,6 +20,7 @@ pipeline:
       - name: restart stm
         run: |
           st-util &
+          sleep 1
           killall st-util
 
       - name: run stm test

@@ -8,7 +8,7 @@ TEST_CASE("test0")
 
 TEST_CASE("test1")
 {
-    NOS_CHECK_EQ(1, 0);
+    NOS_CHECK_EQ(1, 1);
 }
 
 TEST_CASE("test3")
