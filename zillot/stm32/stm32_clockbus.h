@@ -17,11 +17,9 @@ __BEGIN_DECLS
 
 void stm32_clockbus_enable_hsi_mode();
 
-void stm32_clockbus_simple_hsi_mode();
-void stm32_clockbus_hsi_mode();
-void stm32_clockbus_hse_mode();
-void stm32_clockbus_reevaluate();
-void stm32_clockbus_systime_setup();
+// void stm32_clockbus_hsi_mode();
+// void stm32_clockbus_hse_mode();
+// void stm32_clockbus_systime_setup();
 
 void stm32_clockbus_set_hpre_divider(int divider);
 uint16_t stm32_clockbus_get_hpre_divider();
