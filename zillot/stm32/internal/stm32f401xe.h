@@ -3368,6 +3368,7 @@ USB_OTG_HostChannelTypeDef;
 #define  TIM_CR1_OPM                         ((uint32_t)0x0008)            /*!<One pulse mode        */
 #define  TIM_CR1_DIR                         ((uint32_t)0x0010)            /*!<Direction             */
 
+#define  TIM_CR1_CMS_Pos                     (5U)
 #define  TIM_CR1_CMS                         ((uint32_t)0x0060)            /*!<CMS[1:0] bits (Center-aligned mode selection) */
 #define  TIM_CR1_CMS_0                       ((uint32_t)0x0020)            /*!<Bit 0 */
 #define  TIM_CR1_CMS_1                       ((uint32_t)0x0040)            /*!<Bit 1 */

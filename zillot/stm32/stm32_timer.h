@@ -76,10 +76,23 @@ static inline void stm32_timer_enable(TIM_TypeDef * tim, uint8_t en)
 	bits_lvl(tim->CR1, TIM_CR1_CEN, en);
 }
 
-static inline void stm32_timer_set_counter_mode(TIM_TypeDef * tim, uint8_t mode) 
+static inline void stm32_timer_set_center_aligned_mode(TIM_TypeDef * tim, uint8_t mode) 
 {
-	bits_lvl(tim->CR1, TIM_CR1_DIR, mode);
+	bits_assign(tim->CR1, TIM_CR1_CMS, (mode<<TIM_CR1_CMS_Pos));
 }
+
+enum TimerDirection 
+{
+  TimerDirectionUp = 0,
+  TimerDirectionDown = 1
+};
+
+// Управляет направлением счёта в случае, если CMS == 0.
+static inline void stm32_timer_set_direction(TIM_TypeDef * tim, enum TimerDirection mode) 
+{
+  bits_lvl(tim->CR1, TIM_CR1_DIR, mode);
+}
+
 
 static inline void stm32_timer_set_one_pulse_mode(TIM_TypeDef * tim, uint8_t en) 
 {
