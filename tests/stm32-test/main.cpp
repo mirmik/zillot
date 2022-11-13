@@ -49,13 +49,10 @@ void _syncronization()
 void conf_clock()
 {
     stm32_clockbus_enable_hsi_mode();
-
     stm32_clockbus_freq[CLOCKBUS_HSI] = HSI_FREQ;
     stm32_clockbus_set_hpre_divider(1);
     stm32_clockbus_set_ppre1_divider(1);
     stm32_clockbus_set_ppre2_divider(1);
-    // stm32_clockbus_reevaluate();
-
     stm32_clockbus_freq[CLOCKBUS_APB1] = HSI_FREQ;
     stm32_clockbus_freq[CLOCKBUS_APB2] = HSI_FREQ;
 }
