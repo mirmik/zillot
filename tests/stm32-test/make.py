@@ -70,6 +70,27 @@ def remote_stutil(ip):
 
 
 @licant.routine
+def remote_test_start(ip):
+    os.system(f"ssh mirmik@{ip} 'onboardtest-listener /dev/ttyACM0'")
+
+
+@licant.routine
+def remote_test(ip):
+    #licant.do("remote_install", ip)
+    #licant.do("remote_test_start", ip)
+
+    print("Uploading...")
+    os.system("arm-none-eabi-objcopy -O binary stm32-firmware.elf stm32-firmware.bin")
+    os.system(f"scp stm32-firmware.bin mirmik@{ip}:~/stm32-firmware.bin")
+    os.system(
+        f"ssh mirmik@{ip} 'st-flash --reset write stm32-firmware.bin 0x8000000'")
+
+    print()
+    print("Start test:")
+    os.system(f"ssh mirmik@{ip} 'onboardtest-listener /dev/ttyACM0'")
+
+
+@licant.routine
 def remote_gdb(ip):
     os.system(f"gdb-multiarch stm32-firmware.elf -ex 'target remote {ip}:4242'")
 
