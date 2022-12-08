@@ -24,32 +24,32 @@ namespace zillot
             pin(const pin &oth) = default;
             pin &operator=(const pin &oth) = default;
 
-            void write(int val) override
+            void write(int val) const override
             {
                 stm32_gpio_write(regs, mask, val);
             }
 
-            int read() override
+            int read() const override
             {
                 return stm32_gpio_read(regs, mask);
             }
 
-            void toggle() override
+            void toggle() const override
             {
                 return stm32_gpio_toggle(regs, mask);
             }
 
-            void pull_up(int lvl) override
+            void pull_up(int lvl) const override
             {
                 return stm32_gpio_pull_up(regs, mask, lvl);
             }
 
-            int setup(uint32_t mode) override
+            int setup(uint32_t mode) const override
             {
                 return stm32_gpio_setup(regs, mask, mode);
             }
 
-            void setup_alternate(int afno)
+            void setup_alternate(int afno) const
             {
                 stm32_gpio_set_alternate(regs, mask, afno);
             }

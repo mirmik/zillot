@@ -13,3 +13,8 @@ licant.module("stm32.irqtable_ldscript.stm32f401re",
               ldscripts=["ldscripts/stm32f401re.ld"],
               mdepends=["stm32.irqtable_ldscript.common"]
               )
+
+licant.module("stm32.irqtable_ldscript.stm32f446re",
+              ldscripts=["ldscripts/stm32f446re.ld"],
+              mdepends=["stm32.irqtable_ldscript.common"]
+              )

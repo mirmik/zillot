@@ -18,7 +18,6 @@ licant.module("zillot.stm32.common",
               ],
               mdepends=[
                   "zillot.include",
-                  # "cpu.stm32.irqtable",
               ]
               )
 
@@ -69,6 +68,11 @@ licant.module("zillot.stm32g431rb",
               defines=["CHIP_STM32G431xx", "STM32G431xx"],
               mdepends=["zillot.stm32g4"],
               ldscripts=["ldscripts/stm32g431rb.ld"]
+              )
+
+licant.module("zillot.stm32f446re",
+              mdepends=["zillot.stm32f4"],
+              defines=["CHIP_STM32F446", "STM32F446xx", "STM32F4XX", "CONFIG_STM32_STM32F446"]
               )
 
 licant.module("zillot.stm32.spl",
