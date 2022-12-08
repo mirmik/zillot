@@ -98,14 +98,14 @@ int main()
     stm32_timer_channel_enable_pwm(TIM2, 2);
     stm32_timer_set_counter(TIM2, 0);
 
-    /*std::vector<MusicSign> music = parse_flipper_music(
+    std::vector<MusicSign> music0 = parse_flipper_music(
         140,
         8,
         5,
         "4C, 2F, A, F, 2A, 4G, 2F, 4D, 2C, 4C, 2F, A, F, 2A, 4G, 1C6, 4A, "
-        "4C6., A, C6, A, 2F, 4C, 4D., F, F, D, 2C, 4C, 2F, A, F, 2A, 4G, 1F");*/
+        "4C6., A, C6, A, 2F, 4C, 4D., F, F, D, 2C, 4C, 2F, A, F, 2A, 4G, 1F");
 
-    std::vector<MusicSign> music = parse_flipper_music(
+    std::vector<MusicSign> music1 = parse_flipper_music(
         260,
         4,
         5,
@@ -114,22 +114,42 @@ int main()
         "G, 2B, G, 2B, G, 2C6, B, 2A#, F#, G., 8B, A#, 2A#4, B4, 2B., 2P, G, "
         "2B, G, 2B, G, 2D6, C#6, 2C6, G#, C6., 8B, A#, 2A#4, G, 2E., 2P");
 
+    std::vector<MusicSign> music2 = parse_flipper_music(
+        130,
+        8,
+        5,
+        "E6, P, E, B, 4P, E, A, G, A, E, B, P, G, A, D6, 4P, D, B, 4P, D, A, "
+        "G, A, D, F#, P, G, A, D6, 4P, F#, B, 4P, F#, D6, C6, B, F#, A, P, G, "
+        "F#, E, P, C, E, B, B4, C, D, D6, C6, B, F#, A, P, G, A, E6, 4P, E, B, "
+        "4P, E, A, G, A, E, B, P, G, A, D6, 4P, D, B, 4P, D, A, G, A, D, F#, "
+        "P, G, A, D6, 4P, F#, B, 4P, F#, D6, C6, B, F#, A, P, G, F#, E, P, C, "
+        "E, B, B4, C, D, D6, C6, B, F#, A, P, G, A, E6");
+
     irqs_enable();
-    for (auto s : music)
+
+    std::vector<std::vector<MusicSign>> musics = {music0, music1, music2};
+    while (1)
     {
-        dpr(s.text.c_str());
-        dpr(" ");
-        dprln(s.octave_no);
+        for (auto music : musics)
+        {
+            for (auto s : music)
+            {
+                dpr(s.text.c_str());
+                dpr(" ");
+                dprln(s.octave_no);
 
-        stm32_timer_enable(TIM2, 1);
-        stm32_timer_set_counter(TIM2, 0);
-        if (s.freq != 0)
-            set_pwm_freq(s.freq);
-        else
+                stm32_timer_enable(TIM2, 1);
+                stm32_timer_set_counter(TIM2, 0);
+                if (s.freq != 0)
+                    set_pwm_freq(s.freq);
+                else
+                    stm32_timer_enable(TIM2, 0);
+                igris::delay(s.duration);
+            }
             stm32_timer_enable(TIM2, 0);
-        igris::delay(s.duration);
+            igris::delay(1000);
+        }
     }
-
     stm32_timer_enable(TIM2, 0);
 
     while (1)
