@@ -23,7 +23,6 @@
 // NUCLEO-F446RE
 // Buzzer on D3 pin
 
-
 #define HSI_FREQ 16000000
 
 // stm32f401re led
@@ -102,14 +101,14 @@ int main()
     stm32_timer_channel_enable_pwm(TIM2, 2);
     stm32_timer_set_counter(TIM2, 0);
 
-    std::vector<MusicSign> music0 = parse_flipper_music(
+    std::vector<MusicSign> amazing_grace = parse_flipper_music(
         140,
         8,
         5,
         "4C, 2F, A, F, 2A, 4G, 2F, 4D, 2C, 4C, 2F, A, F, 2A, 4G, 1C6, 4A, "
         "4C6., A, C6, A, 2F, 4C, 4D., F, F, D, 2C, 4C, 2F, A, F, 2A, 4G, 1F");
 
-    std::vector<MusicSign> music1 = parse_flipper_music(
+    std::vector<MusicSign> hedwig_theme = parse_flipper_music(
         260,
         4,
         5,
@@ -118,7 +117,7 @@ int main()
         "G, 2B, G, 2B, G, 2C6, B, 2A#, F#, G., 8B, A#, 2A#4, B4, 2B., 2P, G, "
         "2B, G, 2B, G, 2D6, C#6, 2C6, G#, C6., 8B, A#, 2A#4, G, 2E., 2P");
 
-    std::vector<MusicSign> music2 = parse_flipper_music(
+    std::vector<MusicSign> marble_machine = parse_flipper_music(
         130,
         8,
         5,
@@ -131,7 +130,8 @@ int main()
 
     irqs_enable();
 
-    std::vector<std::vector<MusicSign>> musics = {music0, music1, music2};
+    std::vector<std::vector<MusicSign>> musics = {
+        amazing_grace, hedwig_theme, marble_machine};
     while (1)
     {
         for (auto music : musics)
