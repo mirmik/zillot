@@ -1,3 +1,4 @@
+
 #include <asm/irq.h>
 #include <igris/time/jiffies-systime.h>
 #include <igris/time/systime.h>
@@ -128,10 +129,26 @@ int main()
         "P, G, A, D6, 4P, F#, B, 4P, F#, D6, C6, B, F#, A, P, G, F#, E, P, C, "
         "E, B, B4, C, D, D6, C6, B, F#, A, P, G, A, E6");
 
+    std::vector<MusicSign> saltarelo = parse_flipper_music(
+        120,
+        8,
+        5,
+        "16C4, 16B3, 16A3, 16G3, 16A3, 16B3, 16C4, 16D4, 16B3, 8C4, "
+        "16G3, 16A3, 16B3, 16C4, 16A3, 16B3, 16G3, 16C4, 16B3, 16C4, "
+        "8D4, 16E4, 16C4, 16G4, 16F4, 8E4, 16D4, 16C4, 16G4, 16F4, "
+        "8E4, 16D4, 16C4, 16B3, 16C4, 8A3, 16E4, 16A3, 16E4, 16E4, "
+        "8A3., 16C4, 16B3, 16C4, 16A3, 16B3, 16C4, 32D4, 32C4, 16D4, "
+        "16B3, 8C4., 16E4, 16D4, 16C4, 8B3, 16A3, 8C4, 16D4, 8E4, "
+        "16D4, 16C4, 16B3, 16C4, 8A3, 16B3, 16G3, 16A3, 16B3, 8C4, "
+        "16G3, 16A3, 16B3, 16C4, 16A3, 16B3, 16G3, 16C4, 16B3, 16C4, "
+        "8D4, 16E4, 16C4, 16G4, 16F4, 8E4, 16D4, 16C4, 16G4, 16F4, "
+        "8E4, 16D4, 16C4, 16B3, 16C4, 8A3, 16E4, 16A3, 16E4, 16E4, "
+        "8A3., 16C4, 16B3, 16C4, 16A3, 16B3, 16C4, 32D4, 32C4, 16D4, "
+        "16B3, 8C4.");
     irqs_enable();
 
     std::vector<std::vector<MusicSign>> musics = {
-        amazing_grace, hedwig_theme, marble_machine};
+        amazing_grace, hedwig_theme, marble_machine, saltarelo};
     while (1)
     {
         for (auto music : musics)
@@ -140,7 +157,9 @@ int main()
             {
                 dpr(s.text.c_str());
                 dpr(" ");
-                dprln(s.octave_no);
+                dpr(s.octave_no);
+                dpr(" ");
+                dprln(s.duration);
 
                 stm32_timer_enable(TIM2, 1);
                 stm32_timer_set_counter(TIM2, 0);
@@ -151,7 +170,7 @@ int main()
                 igris::delay(s.duration);
             }
             stm32_timer_enable(TIM2, 0);
-            igris::delay(1000);
+            // igris::delay(1000);
         }
     }
     stm32_timer_enable(TIM2, 0);

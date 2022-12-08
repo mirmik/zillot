@@ -65,9 +65,17 @@ MusicSign parse_sign(const std::string_view &sign,
 
     if (isdigit(*it))
     {
-        auto duration_div = *it - '0';
+        char buf[10];
+        memset(buf, 0, 10);
+        char *ptr = buf;
+
+        while (isdigit(*it))
+        {
+            *ptr++ = *it++;
+        }
+        int n = igris_atoi32(buf, 10, nullptr);
+        auto duration_div = n;
         music_sign.duration = note_duration_ms / duration_div;
-        ++it;
     }
     else
     {
