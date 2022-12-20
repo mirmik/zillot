@@ -76,6 +76,31 @@ void set_pwm_freq(double sound_freq)
     stm32_timer_set_counter(TIM2, 0);
 }
 
+void play_music(const std::vector<MusicSign> &music)
+{
+    for (auto s : music)
+    {
+        dpr(s.text.c_str());
+        dpr(" ");
+        dpr(s.octave_no);
+        dpr(" ");
+        dpr(s.duration);
+        dpr(" ");
+        dprln(s.freq);
+
+        stm32_timer_enable(TIM2, 1);
+        stm32_timer_set_counter(TIM2, 0);
+        if (s.freq != 0)
+            set_pwm_freq(s.freq);
+        else
+        {
+            set_pwm_freq(0);
+            stm32_timer_enable(TIM2, 0);
+        }
+        igris::delay(s.duration);
+    }
+}
+
 int main()
 {
     irqtable_init();
@@ -102,13 +127,30 @@ int main()
     stm32_timer_channel_enable_pwm(TIM2, 2);
     stm32_timer_set_counter(TIM2, 0);
 
-    std::vector<MusicSign> amazing_grace = parse_flipper_music(
+    std::string ESTR =
+        "G4, E5, E5, D5, E5, C5, G4, G4, G4, E5, E5, F5, D5, 2G5., G5, A4, A4, "
+        "F5, F5, E5, D5, C5, G4, E5, E5, D5, E5, 2C5., P";
+    std::string E4STR =
+        "G3, E4, E4, D4, E4, C4, G3, G3, G3, E4, E4, F4, D4, 2G4., G4, A3, A3, "
+        "F4, F4, E4, D4, C4, G3, E4, E4, D4, E4, 2C4., P";
+
+    /*std::vector<MusicSign> elochka160 = parse_flipper_music(160, 4, 4, ESTR);
+    std::vector<MusicSign> elochka200 = parse_flipper_music(200, 4, 4, ESTR);
+    std::vector<MusicSign> elochka240 = parse_flipper_music(240, 4, 4, ESTR);
+    std::vector<MusicSign> elochka280 = parse_flipper_music(280, 4, 4, ESTR);
+    std::vector<MusicSign> elochka320 = parse_flipper_music(320, 4, 4, ESTR);
+    std::vector<MusicSign> elochka360 = parse_flipper_music(360, 4, 4, ESTR);
+    std::vector<MusicSign> elochka400 = parse_flipper_music(400, 4, 4, ESTR);
+    std::vector<MusicSign> elochka440 = parse_flipper_music(440, 4, 4, ESTR);*/
+    // std::vector<MusicSign> elochka480 = parse_flipper_music(480, 4, 4, ESTR);
+
+    /*std::vector<MusicSign> amazing_grace = parse_flipper_music(
         140,
         8,
         5,
         "4C, 2F, A, F, 2A, 4G, 2F, 4D, 2C, 4C, 2F, A, F, 2A, 4G, 1C6, 4A, "
         "4C6., A, C6, A, 2F, 4C, 4D., F, F, D, 2C, 4C, 2F, A, F, 2A, 4G, 1F");
-
+*/
     std::vector<MusicSign> hedwig_theme = parse_flipper_music(
         260,
         4,
@@ -129,92 +171,30 @@ int main()
         "P, G, A, D6, 4P, F#, B, 4P, F#, D6, C6, B, F#, A, P, G, F#, E, P, C, "
         "E, B, B4, C, D, D6, C6, B, F#, A, P, G, A, E6");
 
-    std::vector<MusicSign> saltarelo = parse_flipper_music(
-        120,
-        8,
-        5,
-        "16C4, 16B3, 16A3, 16G3, 16A3, 16B3, 16C4, 16D4, 16B3, 8C4, "
-        "16G3, 16A3, 16B3, 16C4, 16A3, 16B3, 16G3, 16C4, 16B3, 16C4, "
-        "8D4, 16E4, 16C4, 16G4, 16F4, 8E4, 16D4, 16C4, 16G4, 16F4, "
-        "8E4, 16D4, 16C4, 16B3, 16C4, 8A3, 16E4, 16A3, 16E4, 16E4, "
-        "8A3., 16C4, 16B3, 16C4, 16A3, 16B3, 16C4, 32D4, 32C4, 16D4, "
-        "16B3, 8C4., 16E4, 16D4, 16C4, 8B3, 16A3, 8C4, 16D4, 8E4, "
-        "16D4, 16C4, 16B3, 16C4, 8A3, 16B3, 16G3, 16A3, 16B3, 8C4, "
-        "16G3, 16A3, 16B3, 16C4, 16A3, 16B3, 16G3, 16C4, 16B3, 16C4, "
-        "8D4, 16E4, 16C4, 16G4, 16F4, 8E4, 16D4, 16C4, 16G4, 16F4, "
-        "8E4, 16D4, 16C4, 16B3, 16C4, 8A3, 16E4, 16A3, 16E4, 16E4, "
-        "8A3., 16C4, 16B3, 16C4, 16A3, 16B3, 16C4, 32D4, 32C4, 16D4, "
-        "16B3, 8C4.");
-
-    /*std::vector<MusicSign> teleman = parse_flipper_music(
-        120,
-        8,
-        5,
-        "64P., 64P., 64P., 64P., 64P., 64P., 64P., 64P., 64P., 64P., 64P., "
-        "64E5, 128A4, 64P., 64P., 256C#5., 512D5, 128E5, 128A4, 64P., 64P., "
-        "128D5, 128A4, 128B4, 256F#4., 512G4, 128A4, 128D4, 128F#5, 256G5, "
-        "256F#5, 256E5, 256D5, 128C#5., 256B4, 128A4, 128P, 128D5, 128D5, "
-        "64D5, 128D5, 128P, 128B4, 128E5, 16E5, 64P, 256D5, 256C#5, 256B4, "
-        "256A4, 128P, 128G#4, 128D5, 64C#5., 128D5, 64C#5, 128D5, 128A4, "
-        "128B4, 256F#4., 512G4, 128A4, 128D4, 64P., 64P., 128D5, 128A4, 128B4, "
-        "128D5, 128A4, 128B4, 128D4, 128F#4, 128G4, 64P., 256F#4., 512G4, "
-        "128A4, 128D4, 64D4, 128P, 64P., 128A4, 128A4, 256G4, 256F#4, 128F#5, "
-        "256G5, 256F#5, 256E5, 256D5, 128D4, 128E4, 128D4, 128D3, 128C#3, "
-        "128D3, 64E4, 128C#4, 256C#5., 512D5, 128E5, 128A4, 64A3, 128P, 64A2, "
-        "128P, 128D5, 128A4, 128B4, 64F#4, 128G4, 64P., 256F#4., 512G4, 128A4, "
-        "128D4, 64D4, 128P, 64P., 128E5., 256C#5, 128D5, 128E4, 128B4, 64E4, "
-        "128A4, 128G4, 128E5., 256C#5, 128D5, 128G3, 128A3, 128A2, 64D5, 128P, "
-        "64F#4, 128D5, 128A4, 128B4, 128G4, 64D5, 128P, 64D4, 64D3, 128P, 64P, "
-        "128P, 64D4, 256F#4., 512G4, 128A4, 128D4, 64P., 128B4, 128G#4., "
-        "256A4, 128B3, 128F#4, 64B3, 128E4, 128D4, 128B4, 128G#4., 256A4, "
-        "128D3, 128E3, 128E2, 64A4., 64A3., 64C#4., 64A4., 64A2., 64P., 64P., "
-        "128A5, 128E5, 128F#5, 128C#5, 128A4, 128A4, 128A3, 128C#4, 128D4, "
-        "64P., 256C#5., 512D5, 128E5, 128A4, 64E4, 64A4, 128C#4, 64A3, 128P, "
-        "64P., 64P., 64P., 128A5, 128E5, 128F#5, 64E4, 64C#5, 128P, 64A3, "
-        "128P, 64P., 256C#5., 512D5, 128E5, 128A4, 64A4., 64P., 64P., 64D4, "
-        "64A4, 128D4, 128G4, 128B4, 64F#3, 128G3, 64P., 64D4., 64F#4., 64A4., "
-        "64D3., 128F#5, 256G5, 256F#5, 256E5, 256D5, 128A4, 128A4, 128G#4, "
-        "128D4, 64E4, 128D4, 128C#4, 128B3, 128C#5., 256B4, 128A4, 64A4., "
-        "64E4, 128C#4, 64A3, 128P, 64P, 128P, 64D4, 64A4, 64F#3, 128P, 128P, "
-        "128B4, 128A4, 128P, 128D4, 128D4, 128P, 128G4, 128F#4, 128P, 128G3, "
-        "128D3, 64B4, 128P, 64D4, 128P, 64G4, 128P, 64G2, 128P, 128P, 128C#5, "
-        "128B4, 128P, 128E4, 128E4, 128P, 128A4, 128G#4, 128P, 128A3, 128E3, "
-        "256C#5., 512D5, 128E5, 128B4, 64E4, 128E4, 256A4., 512B4, 128C#5, "
-        "128G#4, 64A2, 128P, 256C#5., 512D5, 128E5, 128B4, 64A3, 128E4, "
-        "256A4., 512B4, 128C#5, 128G#4, 64P, 128P, 64C#5, 128P, 64E4, 128F#4, "
-        "128B4, 64A4, 128P, 64A2, 128D3, 64P, 128P, 64D4., 64G#4., 64B2., "
-        "64E5., 64C#4., 64A4., 64A4., 64A2., 64P., 64F#4, 128G4, 64P., 64P., "
-        "64D4., 64P., 128F#5, 256G5, 256F#5, 256E5, 256D5, 128A4, 256B4, "
-        "256A4, 256G4, 256F#4, 128D4, 64B3, 128D3, 64G2, 256C#5., 512D5, "
-        "128E5, 128A4, 64E4., 256C#5., 512D5, 128E5, 128A4, 64E4, 128C#4, "
-        "64A2., 64P., 64F#4, 128G4, 64P.");*/
-
     irqs_enable();
 
     std::vector<std::vector<MusicSign>> musics = {
-        amazing_grace, hedwig_theme, marble_machine, saltarelo};
+        //    elochka160,
+        //   elochka200,
+        //    elochka240,
+        //    elochka280,
+        //    elochka360,
+        //    elochka400,
+        //    elochka440,
+        //    elochka480,
+        hedwig_theme,
+        marble_machine,
+        // amazing_grace,
+        // amazing_grace, hedwig_theme, marble_machine, saltarelo
+    };
     while (1)
     {
+        // play_music(parse_flipper_music(200, 4, 4, E4STR));
+        play_music(parse_flipper_music(200, 4, 4, ESTR));
+
         for (auto music : musics)
         {
-            for (auto s : music)
-            {
-                dpr(s.text.c_str());
-                dpr(" ");
-                dpr(s.octave_no);
-                dpr(" ");
-                dprln(s.duration);
-
-                stm32_timer_enable(TIM2, 1);
-                stm32_timer_set_counter(TIM2, 0);
-                if (s.freq != 0)
-                    set_pwm_freq(s.freq);
-                else
-                    stm32_timer_enable(TIM2, 0);
-                igris::delay(s.duration);
-            }
-            stm32_timer_enable(TIM2, 0);
-            // igris::delay(1000);
+            play_music(music);
         }
     }
     stm32_timer_enable(TIM2, 0);
