@@ -137,6 +137,45 @@ static inline void stm32_timer_ovf_irq_enable(TIM_TypeDef *tim, uint8_t en)
     bits_lvl(tim->DIER, TIM_DIER_UIE, en);
 }
 
+static inline void stm32_timer_channel_cc_irq_clear(TIM_TypeDef *tim, int ch)
+{
+    switch (ch)
+    {
+    case 1:
+        tim->SR &= ~TIM_SR_CC1IF;
+        break;
+    case 2:
+        tim->SR &= ~TIM_SR_CC2IF;
+        break;
+    case 3:
+        tim->SR &= ~TIM_SR_CC3IF;
+        break;
+    case 4:
+        tim->SR &= ~TIM_SR_CC4IF;
+        break;
+    }
+}
+
+static inline void
+stm32_timer_channel_cc_irq_enable(TIM_TypeDef *tim, int ch, uint8_t en)
+{
+    switch (ch)
+    {
+    case 1:
+        bits_lvl(tim->DIER, TIM_DIER_CC1IE, en);
+        break;
+    case 2:
+        bits_lvl(tim->DIER, TIM_DIER_CC2IE, en);
+        break;
+    case 3:
+        bits_lvl(tim->DIER, TIM_DIER_CC3IE, en);
+        break;
+    case 4:
+        bits_lvl(tim->DIER, TIM_DIER_CC4IE, en);
+        break;
+    }
+}
+
 static inline void stm32_timer_drop_ovf_flag(TIM_TypeDef *tim)
 {
     bits_clr(tim->SR, TIM_SR_UIF);
