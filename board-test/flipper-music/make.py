@@ -47,22 +47,25 @@ licant.cxx_application("stm32-firmware.elf",
 
 @licant.routine(deps=["stm32-firmware.elf"])
 def flash():
-    os.system("arm-none-eabi-objcopy -O binary stm32-firmware.elf stm32-firmware.bin")
+    os.system(
+        "arm-none-eabi-objcopy -O binary stm32-firmware.elf stm32-firmware.bin")
     os.system("st-flash write stm32-firmware.bin 0x8000000")
 
 
 @licant.routine(deps=["stm32-firmware.elf"])
 def install():
-    os.system("arm-none-eabi-objcopy -O binary stm32-firmware.elf stm32-firmware.bin")
+    os.system(
+        "arm-none-eabi-objcopy -O binary stm32-firmware.elf stm32-firmware.bin")
     os.system("st-flash write stm32-firmware.bin 0x8000000")
 
 
 @licant.routine
 def remote_install(ip):
-    os.system("arm-none-eabi-objcopy -O binary stm32-firmware.elf stm32-firmware.bin")
-    os.system(f"scp stm32-firmware.bin mirmik@{ip}:~/stm32-firmware.bin")
     os.system(
-        f"ssh mirmik@{ip} 'st-flash --reset write stm32-firmware.bin 0x8000000'")
+        "arm-none-eabi-objcopy -O binary stm32-firmware.elf stm32-firmware.bin")
+    os.system(f"scp stm32-firmware.bin rfmeas@{ip}:~/stm32-firmware.bin")
+    os.system(
+        f"ssh rfmeas@{ip} 'st-flash --reset write stm32-firmware.bin 0x8000000'")
 
 
 @licant.routine
@@ -78,7 +81,8 @@ def remote_test_start(ip):
 @licant.routine
 def remote_test(ip):
     print("Uploading...")
-    os.system("arm-none-eabi-objcopy -O binary stm32-firmware.elf stm32-firmware.bin")
+    os.system(
+        "arm-none-eabi-objcopy -O binary stm32-firmware.elf stm32-firmware.bin")
     os.system(f"scp stm32-firmware.bin mirmik@{ip}:~/stm32-firmware.bin")
     os.system(
         f"ssh mirmik@{ip} 'st-flash --reset write stm32-firmware.bin 0x8000000'")
@@ -90,7 +94,8 @@ def remote_test(ip):
 
 @licant.routine
 def remote_gdb(ip):
-    os.system(f"gdb-multiarch stm32-firmware.elf -ex 'target remote {ip}:4242'")
+    os.system(
+        f"gdb-multiarch stm32-firmware.elf -ex 'target remote {ip}:4242'")
 
 
 if __name__ == "__main__":

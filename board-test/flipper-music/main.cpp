@@ -99,6 +99,8 @@ void play_music(const std::vector<MusicSign> &music)
         }
         igris::delay(s.duration);
     }
+
+    stm32_timer_enable(TIM2, 0);
 }
 
 int main()
@@ -129,10 +131,8 @@ int main()
 
     std::string ESTR =
         "G4, E5, E5, D5, E5, C5, G4, G4, G4, E5, E5, F5, D5, 2G5., G5, A4, A4, "
-        "F5, F5, E5, D5, C5, G4, E5, E5, D5, E5, 2C5., P";
-    std::string E4STR =
-        "G3, E4, E4, D4, E4, C4, G3, G3, G3, E4, E4, F4, D4, 2G4., G4, A3, A3, "
-        "F4, F4, E4, D4, C4, G3, E4, E4, D4, E4, 2C4., P";
+        "F5, F5, E5, D5, C5, G4, E5, E5, D5, E5, 2C5., G5, A4, A4, F5, F5, E5, "
+        "D5, C5, G4, E5, E5, D5, E5, 2C5.";
 
     /*std::vector<MusicSign> elochka160 = parse_flipper_music(160, 4, 4, ESTR);
     std::vector<MusicSign> elochka200 = parse_flipper_music(200, 4, 4, ESTR);
@@ -151,6 +151,24 @@ int main()
         "4C, 2F, A, F, 2A, 4G, 2F, 4D, 2C, 4C, 2F, A, F, 2A, 4G, 1C6, 4A, "
         "4C6., A, C6, A, 2F, 4C, 4D., F, F, D, 2C, 4C, 2F, A, F, 2A, 4G, 1F");
 */
+
+    std::vector<MusicSign> bells = parse_flipper_music(
+        105,
+        4,
+        5,
+        "8E, 8E, 4E, 8E, 8E, 4E, 8E, 8G, 8C, 8D, 2E, 8F, 8F, 8F, "
+        "8F, 8E, 8E, 8E, 8E, 8E, 8D, 8D, 8E, 4D, 4G, 8E, 8E, 4E, "
+        "8E, 8E, 4E, 8E, 8G, 8C, 8D, 2E, 8F, 8F, 8F, 8F, 8E, 8E, "
+        "8E, 8E, 8G, 8G, 8F, 8D, 2C");
+
+    std::vector<MusicSign> cold = parse_flipper_music(
+        110,
+        4,
+        5,
+        "4B5, 8G#5, 8G#5, 4B5, 8G#5, 8G#5, 8B5, 8A5, 8G#5, 8F#5, 2E5, 4C#6, "
+        "8E6, 8C#6, 4B5, 8G#5, 8G#5, 8B5, 8A5, 8G#5, 8F#5, 2E5, 4C#6, 8E6, "
+        "8C#6, 4B5, 8G#5, 8G#5, 8B5, 8A5, 8G#5, 8F#5, 2E5");
+
     std::vector<MusicSign> hedwig_theme = parse_flipper_music(
         260,
         4,
@@ -190,12 +208,18 @@ int main()
     while (1)
     {
         // play_music(parse_flipper_music(200, 4, 4, E4STR));
-        play_music(parse_flipper_music(200, 4, 4, ESTR));
 
-        for (auto music : musics)
+        play_music(cold);
+        igris::delay(60000);
+        play_music(bells);
+        igris::delay(60000);
+        play_music(parse_flipper_music(200, 4, 4, ESTR));
+        igris::delay(60000);
+
+        /*for (auto music : musics)
         {
             play_music(music);
-        }
+        }*/
     }
     stm32_timer_enable(TIM2, 0);
 
