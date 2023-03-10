@@ -16,6 +16,10 @@ void stm32_rcc_enable_gpio(GPIO_TypeDef * gpio)
 		case GPIOA_BASE : RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN; break;
 #endif
 
+#ifdef RCC_AHB4ENR_GPIOAEN
+		case GPIOA_BASE : RCC->AHB4ENR |= RCC_AHB4ENR_GPIOAEN; break;
+#endif
+
 #ifdef RCC_AHB1ENR_GPIOBEN
 		case GPIOB_BASE : RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN; break;
 #endif
@@ -24,12 +28,20 @@ void stm32_rcc_enable_gpio(GPIO_TypeDef * gpio)
 		case GPIOB_BASE : RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN; break;
 #endif
 
+#ifdef RCC_AHB4ENR_GPIOBEN
+		case GPIOB_BASE : RCC->AHB4ENR |= RCC_AHB4ENR_GPIOBEN; break;
+#endif
+
 #ifdef RCC_AHB1ENR_GPIOCEN
 		case GPIOC_BASE : RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN; break;
 #endif
 
 #ifdef RCC_AHB2ENR_GPIOCEN
 		case GPIOC_BASE : RCC->AHB2ENR |= RCC_AHB2ENR_GPIOCEN; break;
+#endif
+
+#ifdef RCC_AHB4ENR_GPIOCEN
+		case GPIOC_BASE : RCC->AHB4ENR |= RCC_AHB4ENR_GPIOCEN; break;
 #endif
 
 #ifdef RCC_AHB1ENR_GPIODEN

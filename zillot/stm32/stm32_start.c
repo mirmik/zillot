@@ -32,7 +32,7 @@ void cxx_invoke_fini_array(void) {
 
 void __start(void) 
 {
-	irqs_disable();
+	//irqs_disable();
 
 	/*data section copy*/
 	memcpy(&_sdata, &_sidata, (unsigned int) (&_edata - &_sdata));
