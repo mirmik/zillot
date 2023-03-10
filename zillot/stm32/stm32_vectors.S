@@ -64,6 +64,8 @@ _vectors:
 #  include "chip//stm32f37xxx_vectors.h"
 #elif defined(STM32F4xx)
 #  include "chip//stm32f40xxx_vectors.h"
+#elif defined(STM32H7XX)
+#  include "chip//stm32h72xxx_vectors.h"
 #else
 #  error "No vectors for STM32 chip"
 #endif
@@ -109,6 +111,8 @@ handlers:
 #  include "chip//stm32f37xxx_vectors.h"
 #elif defined(STM32F4xx)
 #  include "chip//stm32f40xxx_vectors.h"
+#elif defined(STM32H7xx)
+#  include "chip//stm32h72xxx_vectors.h"
 #else
 #  error "No handlers for STM32 chip"
 #endif

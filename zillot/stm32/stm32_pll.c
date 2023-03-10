@@ -47,7 +47,7 @@ unsigned stm32_init_pll_clocking(struct stm32_pll_settings *s)
 
     return 0;
 }
-#elif defined(STM32G4XX) || defined(STM32L4XX) || defined(STM32F7XX)
+#elif defined(STM32G4XX) || defined(STM32L4XX) || defined(STM32F7XX) || defined(STM32H7XX)
 
 unsigned stm32_init_pll_clocking(struct stm32_pll_settings *s)
 {

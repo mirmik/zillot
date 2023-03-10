@@ -167,7 +167,7 @@ void stm32_usart_set_databits(USART_TypeDef * regs, uint8_t databits)
 			bits_set(regs->CR1, USART_CR1_M);
 			break;
 
-#elif defined(STM32G4XX)
+#elif defined(STM32G4XX) || defined(STM32H7XX) 
 		case 7:
 			bits_clr(regs->CR1, USART_CR1_M0);
 			bits_set(regs->CR1, USART_CR1_M1);

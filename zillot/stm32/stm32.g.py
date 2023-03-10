@@ -4,7 +4,6 @@ licant.module("zillot.stm32.common",
               include_paths=["internal"],
               sources=[
                   "usart.cpp",
-
                   "stm32_usart.c",
                   "stm32_pll.c",
                   "stm32_timer.c",
@@ -20,6 +19,26 @@ licant.module("zillot.stm32.common",
                   "zillot.include",
               ]
               )
+
+licant.module("zillot.stm32.common.h7",
+              include_paths=["internal"],
+              sources=[
+                  #"usart.cpp",
+                  #"stm32_usart.c",
+                  #"stm32_pll.c",
+                  #"stm32_timer.c",
+                  #"stm32_clockbus.c",
+                  #"stm32_systick.c",
+                  "stm32_rcc.c",
+                  "stm32_gpio.c",
+                  #"stm32_diag.c",
+                  #"stm32_watchdog.c",
+                  #"internal/asm/setjmp.c",
+              ],
+              mdepends=[
+                  "zillot.include",
+              ]
+            )
 
 licant.module("zillot.stm32.irqtable",
               sources=[
@@ -37,6 +56,15 @@ licant.module("zillot.stm32f4",
               #sources = ["src/stm32f4/stm32f4_sysinit.c"]
               )
 
+licant.module("zillot.stm32h7",
+              defines=["STM32H7XX", "STM32H7xx"],
+              mdepends=[
+                  "zillot.stm32.common.h7",
+                  "zillot.armv7e-m"
+              ],
+              include_paths=["internal/cmsis_core"]
+              )
+
 licant.module("zillot.stm32g4",
               defines=["STM32G4XX", "STM32G4xx"],
               mdepends=[
@@ -44,6 +72,11 @@ licant.module("zillot.stm32g4",
                   "zillot.cortex-m4",
               ],
               #sources = [ "src/stm32g4/stm32g4_sysinit.c" ]
+              )
+
+licant.module("zillot.stm32h723zg",
+              mdepends=["zillot.stm32h7"],
+              defines=["CHIP_STM32H723ZG", "STM32H723XX", "STM32H7XX"],
               )
 
 licant.module("zillot.stm32f401re",

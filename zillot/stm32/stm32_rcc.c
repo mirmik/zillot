@@ -166,13 +166,17 @@ void stm32_rcc_enable_timer(TIM_TypeDef* t)
 #endif
 
 #ifdef TIM12_BASE
+	#ifdef RCC_APB1ENR_TIM12EN
 		case TIM12_BASE:
 			RCC->APB1ENR |= RCC_APB1ENR_TIM12EN; break;
+	#endif
 #endif
 
 #ifdef TIM13_BASE
+	#ifdef RCC_APB1ENR_TIM13EN
 		case TIM13_BASE:
 			RCC->APB1ENR |= RCC_APB1ENR_TIM13EN; break;
+	#endif
 #endif
 
 #ifdef RCC_APB1ENR_TIM14EN
@@ -250,5 +254,11 @@ void stm32_rcc_enable_spi(SPI_TypeDef* regs)
 
 void stm32_rcc_enable_syscfg()
 {
-	RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
+	#if defined(RCC_APB2ENR_SYSCFGEN)
+		RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
+	#elif defined(RCC_APB4ENR_SYSCFGEN)
+		RCC->APB4ENR |= RCC_APB4ENR_SYSCFGEN;
+	#else 
+		#error "SysCfg enable register is not supported"
+	#endif
 }
