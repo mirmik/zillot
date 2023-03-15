@@ -15,6 +15,7 @@ void stm32_clockbus_enable_hsi_mode()
         ;
 }
 
+#ifdef RCC_CFGR_HPRE_DIV1
 uint32_t hpre_divider_value(uint16_t divider)
 {
     switch (divider)
@@ -40,7 +41,37 @@ uint32_t hpre_divider_value(uint16_t divider)
     }
     return 0;
 }
+#endif
 
+#ifdef RCC_D1CFGR_HPRE_DIV1
+uint32_t hpre_divider_value(uint16_t divider)
+{
+    switch (divider)
+    {
+    case 1:
+        return RCC_D1CFGR_HPRE_DIV1;
+    case 2:
+        return RCC_D1CFGR_HPRE_DIV2;
+    case 4:
+        return RCC_D1CFGR_HPRE_DIV4;
+    case 8:
+        return RCC_D1CFGR_HPRE_DIV8;
+    case 16:
+        return RCC_D1CFGR_HPRE_DIV16;
+    case 64:
+        return RCC_D1CFGR_HPRE_DIV64;
+    case 128:
+        return RCC_D1CFGR_HPRE_DIV128;
+    case 256:
+        return RCC_D1CFGR_HPRE_DIV256;
+    case 512:
+        return RCC_D1CFGR_HPRE_DIV512;
+    }
+    return 0;
+}
+#endif
+
+#ifdef RCC_CFGR_PPRE1_DIV1
 uint32_t ppre1_divider_value(uint16_t divider)
 {
     switch (divider)
@@ -58,7 +89,9 @@ uint32_t ppre1_divider_value(uint16_t divider)
     }
     return 0;
 }
+#endif
 
+#ifdef RCC_CFGR_PPRE2_DIV1
 uint32_t ppre2_divider_value(uint16_t divider)
 {
     switch (divider)
@@ -76,7 +109,9 @@ uint32_t ppre2_divider_value(uint16_t divider)
     }
     return 0;
 }
+#endif
 
+#ifdef RCC_CFGR_HPRE_DIV1
 uint16_t hpre_value_to_divider(uint32_t value)
 {
     switch (value)
@@ -102,7 +137,9 @@ uint16_t hpre_value_to_divider(uint32_t value)
     }
     return 0;
 }
+#endif
 
+#ifdef RCC_CFGR_PPRE1_DIV1
 uint16_t ppre1_value_to_divider(uint32_t value)
 {
     switch (value)
@@ -120,7 +157,9 @@ uint16_t ppre1_value_to_divider(uint32_t value)
     }
     return 0;
 }
+#endif
 
+#ifdef RCC_CFGR_PPRE2_DIV1
 uint16_t ppre2_value_to_divider(uint32_t value)
 {
     switch (value)
@@ -138,42 +177,63 @@ uint16_t ppre2_value_to_divider(uint32_t value)
     }
     return 0;
 }
+#endif
 
+#ifdef RCC_CFGR_HPRE
 void stm32_clockbus_set_hpre_divider(int divider)
 {
     uint32_t value = hpre_divider_value(divider);
     bits_assign(RCC->CFGR, RCC_CFGR_HPRE, value);
 }
+#endif
 
+#ifdef RCC_D1CFGR_HPRE
+void stm32_clockbus_set_hpre_divider(int divider)
+{
+    uint32_t value = hpre_divider_value(divider);
+    bits_assign(RCC->D1CFGR, RCC_D1CFGR_HPRE, value);
+}
+#endif
+
+#ifdef RCC_CFGR_HPRE
 uint16_t stm32_clockbus_get_hpre_divider()
 {
     uint32_t value = bits_mask(RCC->CFGR, RCC_CFGR_HPRE);
     return hpre_value_to_divider(value);
 }
+#endif
 
+#ifdef RCC_CFGR_PPRE1
 void stm32_clockbus_set_ppre1_divider(int divider)
 {
     uint32_t value = ppre1_divider_value(divider);
     bits_assign(RCC->CFGR, RCC_CFGR_PPRE1, value);
 }
+#endif
 
+#ifdef RCC_CFGR_PPRE1
 uint16_t stm32_clockbus_get_ppre1_divider()
 {
     uint32_t value = bits_mask(RCC->CFGR, RCC_CFGR_PPRE1);
     return ppre1_value_to_divider(value);
 }
+#endif
 
+#ifdef RCC_CFGR_PPRE2
 void stm32_clockbus_set_ppre2_divider(int divider)
 {
     uint32_t value = ppre2_divider_value(divider);
     bits_assign(RCC->CFGR, RCC_CFGR_PPRE2, value);
 }
+#endif
 
+#ifdef RCC_CFGR_PPRE2
 uint16_t stm32_clockbus_get_ppre2_divider()
 {
     uint32_t value = bits_mask(RCC->CFGR, RCC_CFGR_PPRE2);
     return ppre2_value_to_divider(value);
 }
+#endif
 
 /*
 void stm32_clockbus_hse_mode()
