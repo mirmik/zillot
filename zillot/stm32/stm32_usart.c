@@ -123,6 +123,12 @@ uint8_t stm32_usart_clockbus(USART_TypeDef *regs)
         break;
 #endif
 
+#ifdef RCC_APB1LENR_UART8EN
+    case UART8_BASE:
+        return CLOCKBUS_APB1;
+        break;
+#endif
+
     default:
         BUG();
     };
@@ -131,18 +137,19 @@ uint8_t stm32_usart_clockbus(USART_TypeDef *regs)
 
 void stm32_usart_set_baudrate(USART_TypeDef *regs, uint32_t baud)
 {
-    uint32_t busfreq = stm32_clockbus_freq[stm32_usart_clockbus(regs)];
+    clockbus_clock_e busindex = stm32_usart_clockbus(regs);
+    uint32_t busfreq = stm32_clockbus_freq[busindex];
 
 #ifdef LPUART1
     if (regs == LPUART1)
-        // regs->BRR = ((double)(busfreq) / baud * 256);	 //190 //200
+    {
         regs->BRR = ((double)(busfreq) / baud * 256);
-    // regs->BRR = ((double)(busfreq) / baud * 200);
-    else
-        regs->BRR = busfreq / baud;
-#else
-    regs->BRR = busfreq / baud;
+        return;
+    }
 #endif
+    // regs->BRR = busfreq / baud;
+
+    regs->BRR = busfreq / baud;
 }
 
 void stm32_usart_set_parity(USART_TypeDef *regs, char parity)

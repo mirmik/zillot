@@ -1,90 +1,108 @@
+#include <asm/irq.h>
+#include <igris/time/jiffies-systime.h>
+#include <igris/time/systime.h>
+#include <igris/util/cpu_delay.h>
+#include <zillot/irqtable/irqtable.h>
+#include <zillot/stm32/pin.h>
 #include <zillot/stm32/stm32_gpio.h>
 #include <zillot/stm32/stm32_rcc.h>
 #include <zillot/stm32/stm32_systick.h>
+#include <zillot/stm32/stm32_usart.h>
 #include <zillot/stm32/stm32h7_pll.h>
-#include <zillot/stm32/pin.h>
-#include <zillot/irqtable/irqtable.h>
-#include <igris/util/cpu_delay.h>
-#include <igris/time/jiffies-systime.h>
-#include <igris/time/systime.h>
-#include <asm/irq.h>
 
-	zillot::stm32::pin green_led{GPIOB, 1<<6};
-	zillot::stm32::pin red_led{GPIOB, 1<<7};
+zillot::stm32::pin green_led{GPIOB, 1 << 6};
+zillot::stm32::pin red_led{GPIOB, 1 << 7};
 
-void enable_pll_clocking() 
+void enable_pll_clocking()
 {
-	stm32_disable_pll();
+    stm32_disable_pll();
 
-	stm32h7_set_pll1_source_hse();
-	stm32h7_set_pll1_coefficients(16, 168, 8);
-	
-	bits_assign(RCC->D1CFGR, RCC_D1CFGR_D1PPRE_Msk, 
-		(0b100)<<RCC_D1CFGR_D1PPRE_Pos);
+    stm32h7_set_pll1_source_hse();
+    stm32h7_set_pll1_coefficients(16, 72, 4);
 
-	bits_assign(RCC->D2CFGR, RCC_D2CFGR_D2PPRE1_Msk, 
-		(0b100)<<RCC_D2CFGR_D2PPRE1_Pos);
+    auto sourse_freq = stm32_clockbus_freq[CLOCKBUS_HSE];
+    int64_t sysfreq = sourse_freq / 16 * 72 / 4;
 
-	bits_assign(RCC->D2CFGR, RCC_D2CFGR_D2PPRE2_Msk, 
-		(0b100)<<RCC_D2CFGR_D2PPRE2_Pos);
-
-	bits_assign(RCC->D1CFGR, RCC_D3CFGR_D3PPRE_Msk, 
-		(0b100)<<RCC_D3CFGR_D3PPRE_Pos);
-
-	int systick_freq = 1000;
-	int64_t sysfreq = 32000000 / 16 * 168 / 8;
-	stm32_systick_config(sysfreq / systick_freq);
-	systime_set_frequency(systick_freq);
-	irqtable_set_handler(
-        SysTick_IRQn, (void (*)(void *))jiffies_increment, NULL);
-
-	stm32_enable_pll();
-	stm32_system_clock_mux_pll(0);
+    stm32_enable_pll();
+    stm32_system_clock_mux_pll(0);
+    stm32_clockbus_freq[CLOCKBUS_PLL] = sysfreq;
 }
 
-void enable_hse_clocking() 
+void enable_hse_clocking()
 {
-	int systick_freq = 1000;
-	int64_t sysfreq = 32000000;
-	stm32_systick_config(sysfreq / systick_freq);
-	systime_set_frequency(systick_freq);
-	irqtable_set_handler(
+    int systick_freq = 1000;
+    int64_t sysfreq = stm32_clockbus_freq[CLOCKBUS_HSE];
+    stm32_systick_config(sysfreq / systick_freq);
+    systime_set_frequency(systick_freq);
+    irqtable_set_handler(
         SysTick_IRQn, (void (*)(void *))jiffies_increment, NULL);
 }
 
-int main() 
+int main()
 {
-	irqs_disable();
-	irqtable_init();
+    stm32_clockbus_freq[CLOCKBUS_HSI] = 64000000;
+    stm32_clockbus_freq[CLOCKBUS_HSE] = 25000000;
 
-	// enable clocking from hse
-	stm32_enable_hse();
-	stm32_system_clock_mux_hse();
+    irqs_disable();
+    irqtable_init();
 
-	enable_pll_clocking();
-	
-	stm32_rcc_enable_gpio(GPIOA);
-	stm32_rcc_enable_gpio(GPIOB);
-	stm32_rcc_enable_gpio(GPIOC);
+    // enable clocking from hse
+    stm32_enable_hse();
+    stm32_system_clock_mux_hse();
 
-	green_led.setup(GPIO_MODE_OUTPUT);
-	red_led.setup(GPIO_MODE_OUTPUT);
-	green_led.set(0);
-	red_led.set(0);
+    stm32_clockbus_set_d1cpre_divider(1);
+    stm32_clockbus_set_hpre_divider(1);
+    stm32_clockbus_set_d1ppre_divider(1);
+    stm32_clockbus_set_d2ppre1_divider(1);
+    stm32_clockbus_set_d2ppre2_divider(1);
+    stm32_clockbus_set_d3ppre_divider(1);
 
-	irqs_enable();
+    enable_pll_clocking();
+    clockbus_reeval_clocks();
 
-	while(1) {
-		green_led.set(1);
-		red_led.set(0);
+    int systick_freq = 1000;
+    stm32_systick_config(stm32_clockbus_freq[CLOCKBUS_SYSTICK] / systick_freq);
+    systime_set_frequency(systick_freq);
+    irqtable_set_handler(
+        SysTick_IRQn, (void (*)(void *))jiffies_increment, NULL);
 
-		igris::delay(1000);
-		//cpu_delay(1000000);
+    stm32_rcc_enable_gpio(GPIOA);
+    stm32_rcc_enable_gpio(GPIOB);
+    stm32_rcc_enable_gpio(GPIOC);
+    stm32_rcc_enable_gpio(GPIOE);
+    stm32_rcc_enable_usart(UART8);
 
-		green_led.set(0);
-		red_led.set(1);
+    zillot::stm32::pin(GPIOE, 1 << 0).setup(GPIO_MODE_ALTERNATE);
+    zillot::stm32::pin(GPIOE, 1 << 1).setup(GPIO_MODE_ALTERNATE);
+    zillot::stm32::pin(GPIOE, 1 << 0).setup_alternate(8);
+    zillot::stm32::pin(GPIOE, 1 << 1).setup_alternate(8);
 
-		igris::delay(1000);
-		//cpu_delay(1000000);
-	}
+    stm32_usart_setup(UART8, 115200, 'n', 8, 1);
+    stm32_usart_enable(UART8, true);
+
+    green_led.setup(GPIO_MODE_OUTPUT);
+    red_led.setup(GPIO_MODE_OUTPUT);
+
+    green_led.set(0);
+    red_led.set(0);
+
+    irqs_enable();
+
+    while (1)
+    {
+        green_led.set(1);
+        red_led.set(0);
+
+        igris::delay(1000);
+        //  cpu_delay(1000000);
+        stm32_usart_putc(UART8, 'U');
+        // igris::delay(1);
+
+        green_led.set(0);
+        red_led.set(1);
+
+        igris::delay(1000);
+        stm32_usart_putc(UART8, 'U');
+        //  cpu_delay(1000000);
+    }
 }
