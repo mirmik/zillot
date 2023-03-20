@@ -264,6 +264,7 @@ uint16_t stm32_clockbus_get_hpre_divider()
 }
 #endif
 
+#ifdef RCC_D1CFGR_D1CPRE
 uint16_t d1cpre_value_to_divider(uint32_t value)
 {
     switch (value)
@@ -281,7 +282,6 @@ uint16_t d1cpre_value_to_divider(uint32_t value)
     }
     return 0;
 }
-
 uint32_t d1cpre_divider_value(uint16_t divider)
 {
     switch (divider)
@@ -299,6 +299,7 @@ uint32_t d1cpre_divider_value(uint16_t divider)
     }
     return 0;
 }
+#endif
 
 #ifdef RCC_D1CFGR_D1CPRE
 uint16_t stm32_clockbus_get_d1cpre_divider()
@@ -306,7 +307,6 @@ uint16_t stm32_clockbus_get_d1cpre_divider()
     uint32_t value = bits_mask(RCC->CFGR, RCC_D1CFGR_D1CPRE);
     return d1cpre_value_to_divider(value);
 }
-
 void stm32_clockbus_set_d1cpre_divider(int divider)
 {
     uint32_t value = d1cpre_divider_value(divider);
@@ -320,9 +320,6 @@ void stm32_clockbus_set_ppre2_divider(int divider)
     uint32_t value = ppre2_divider_value(divider);
     bits_assign(RCC->CFGR, RCC_CFGR_PPRE2, value);
 }
-#endif
-
-#ifdef RCC_CFGR_PPRE2
 uint16_t stm32_clockbus_get_ppre2_divider()
 {
     uint32_t value = bits_mask(RCC->CFGR, RCC_CFGR_PPRE2);
@@ -330,6 +327,7 @@ uint16_t stm32_clockbus_get_ppre2_divider()
 }
 #endif
 
+#ifdef RCC_D1CFGR_D1PPRE
 uint32_t d1ppre_divider_value(uint16_t divider)
 {
     switch (divider)
@@ -347,7 +345,6 @@ uint32_t d1ppre_divider_value(uint16_t divider)
     }
     return 0;
 }
-
 uint16_t d1ppre_value_to_divider(uint32_t value)
 {
     switch (value)
@@ -365,7 +362,9 @@ uint16_t d1ppre_value_to_divider(uint32_t value)
     }
     return 0;
 }
+#endif
 
+#ifdef RCC_D2CFGR_D2PPRE2
 uint32_t d2ppre2_divider_value(uint16_t divider)
 {
     switch (divider)
@@ -383,7 +382,6 @@ uint32_t d2ppre2_divider_value(uint16_t divider)
     }
     return 0;
 }
-
 uint16_t d2ppre2_value_to_divider(uint32_t value)
 {
     switch (value)
@@ -401,7 +399,9 @@ uint16_t d2ppre2_value_to_divider(uint32_t value)
     }
     return 0;
 }
+#endif
 
+#ifdef RCC_D2CFGR_D2PPRE1
 uint32_t d2ppre1_divider_value(uint16_t divider)
 {
     switch (divider)
@@ -419,7 +419,9 @@ uint32_t d2ppre1_divider_value(uint16_t divider)
     }
     return 0;
 }
+#endif
 
+#ifdef RCC_D2CFGR_D2PPRE1
 uint16_t d2ppre1_value_to_divider(uint32_t value)
 {
     switch (value)
@@ -437,7 +439,9 @@ uint16_t d2ppre1_value_to_divider(uint32_t value)
     }
     return 0;
 }
+#endif
 
+#ifdef RCC_D3CFGR_D3PPRE
 uint32_t d3ppre_divider_value(uint16_t divider)
 {
     switch (divider)
@@ -455,7 +459,9 @@ uint32_t d3ppre_divider_value(uint16_t divider)
     }
     return 0;
 }
+#endif
 
+#ifdef RCC_D3CFGR_D3PPRE
 uint16_t d3ppre_value_to_divider(uint32_t value)
 {
     switch (value)
@@ -473,54 +479,59 @@ uint16_t d3ppre_value_to_divider(uint32_t value)
     }
     return 0;
 }
+#endif
 
+#ifdef RCC_D1CFGR_D1PPRE
 void stm32_clockbus_set_d1ppre_divider(int divider)
 {
     uint32_t value = d1ppre_divider_value(divider);
     bits_assign(RCC->D1CFGR, RCC_D1CFGR_D1PPRE, value);
 }
-
 uint16_t stm32_clockbus_get_d1ppre_divider()
 {
     uint32_t value = bits_mask(RCC->D1CFGR, RCC_D1CFGR_D1PPRE);
     return d1ppre_value_to_divider(value);
 }
+#endif
 
+#ifdef RCC_D2CFGR_D2PPRE2
 void stm32_clockbus_set_d2ppre2_divider(int divider)
 {
     uint32_t value = d2ppre2_divider_value(divider);
     bits_assign(RCC->D2CFGR, RCC_D2CFGR_D2PPRE2, value);
 }
-
 uint16_t stm32_clockbus_get_d2ppre2_divider()
 {
     uint32_t value = bits_mask(RCC->D2CFGR, RCC_D2CFGR_D2PPRE2);
     return d2ppre2_value_to_divider(value);
 }
+#endif
 
+#ifdef RCC_D2CFGR_D2PPRE1
 void stm32_clockbus_set_d2ppre1_divider(int divider)
 {
     uint32_t value = d2ppre1_divider_value(divider);
     bits_assign(RCC->D2CFGR, RCC_D2CFGR_D2PPRE1, value);
 }
-
 uint16_t stm32_clockbus_get_d2ppre1_divider()
 {
     uint32_t value = bits_mask(RCC->D2CFGR, RCC_D2CFGR_D2PPRE1);
     return d2ppre1_value_to_divider(value);
 }
+#endif
 
+#ifdef RCC_D3CFGR_D3PPRE
 void stm32_clockbus_set_d3ppre_divider(int divider)
 {
     uint32_t value = d3ppre_divider_value(divider);
     bits_assign(RCC->D3CFGR, RCC_D3CFGR_D3PPRE, value);
 }
-
 uint16_t stm32_clockbus_get_d3ppre_divider()
 {
     uint32_t value = bits_mask(RCC->D3CFGR, RCC_D3CFGR_D3PPRE);
     return d3ppre_value_to_divider(value);
 }
+#endif
 
 void clockbus_reeval_clocks()
 {
