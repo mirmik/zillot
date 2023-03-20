@@ -61,21 +61,36 @@ int stm32_usart_avail(USART_TypeDef *usart)
 
 int stm32_rxirq_status(USART_TypeDef *usart)
 {
-    // А тут точно нужна провека avail?
-    // Звучит, как будто бы просочилась логика из какой-то задачи.
-    return (usart->CR1 & USART_CR1_RXNEIE) && stm32_usart_avail(usart);
+// А тут точно нужна провека avail?
+// Звучит, как будто бы просочилась логика из какой-то задачи.
+// return (usart->CR1 & USART_CR1_RXNEIE) && stm32_usart_avail(usart);
+#if defined(USART_ISR_RXNE_RXFNE)
+    return usart->ISR & USART_ISR_RXNE_RXFNE;
+#elif defined(USART_ISR_RXNE)
+    return usart->ISR & USART_ISR_RXNE;
+#else
+#error "Not implemented"
+#endif
 }
 
 int stm32_txirq_status(USART_TypeDef *usart)
 {
-    // А тут точно нужна провека room?
-    // Звучит, как будто бы просочилась логика из какой-то задачи.
-    return (usart->CR1 & USART_CR1_TXEIE) && stm32_usart_room(usart);
+// А тут точно нужна провека room?
+// Звучит, как будто бы просочилась логика из какой-то задачи.
+// return (usart->CR1 & USART_CR1_TXEIE) && stm32_usart_room(usart);
+#if defined(USART_ISR_TXE_TXFNF)
+    return usart->ISR & USART_ISR_TXE_TXFNF;
+#elif defined(USART_ISR_TXE)
+    return usart->ISR & USART_ISR_TXE;
+#else
+#error "Not implemented"
+#endif
 }
 
 int stm32_tcirq_status(USART_TypeDef *usart)
 {
-    return (usart->CR1 & USART_CR1_TCIE) && (usart->ISR & USART_ISR_TC);
+    // return (usart->CR1 & USART_CR1_TCIE) && (usart->ISR & USART_ISR_TC);
+    return usart->ISR & USART_ISR_TC;
 }
 
 int stm32_overrun_irq_status(USART_TypeDef *usart)

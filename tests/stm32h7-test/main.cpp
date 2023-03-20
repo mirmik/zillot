@@ -1,4 +1,5 @@
 #include <asm/irq.h>
+#include <igris/sync/syslock.h>
 #include <igris/time/jiffies-systime.h>
 #include <igris/time/systime.h>
 #include <igris/util/cpu_delay.h>
@@ -99,11 +100,16 @@ int main()
 
     irqs_enable();
 
+    system_lock();
+    system_unlock();
+
     while (1)
     {
-        igris::delay(10);
+        igris::delay(100);
+        system_lock();
         green_led.toggle();
         red_led.toggle();
-        nos::println("HelloWorld!");
+        system_unlock();
+        nos::println("HelloWorld!", igris::millis());
     }
 }

@@ -533,7 +533,8 @@ uint16_t stm32_clockbus_get_d3ppre_divider()
 }
 #endif
 
-void clockbus_reeval_clocks()
+#ifdef STM32H7XX
+void clockbus_reeval_clocks_h7()
 {
     uint8_t sysclk_source = clockbus_sysclk_source();
     switch (sysclk_source)
@@ -567,4 +568,20 @@ void clockbus_reeval_clocks()
 
     stm32_clockbus_freq[CLOCKBUS_SYSTICK] =
         stm32_clockbus_freq[CLOCKBUS_D1CPRE];
+}
+#endif
+
+#ifdef STM32F4XX
+void clockbus_reeval_clocks_f4() {}
+#endif
+
+void clockbus_reeval_clocks()
+{
+#ifdef STM32H7XX
+    clockbus_reeval_clocks_h7();
+#endif
+
+#ifdef STM32F4XX
+    clockbus_reeval_clocks_f4();
+#endif
 }
