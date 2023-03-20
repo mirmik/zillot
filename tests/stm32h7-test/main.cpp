@@ -2,8 +2,11 @@
 #include <igris/time/jiffies-systime.h>
 #include <igris/time/systime.h>
 #include <igris/util/cpu_delay.h>
+#include <nos/io/generic_ostream.h>
+#include <nos/print.h>
 #include <zillot/irqtable/irqtable.h>
 #include <zillot/stm32/pin.h>
+#include <zillot/stm32/stm32_diag.h>
 #include <zillot/stm32/stm32_gpio.h>
 #include <zillot/stm32/stm32_rcc.h>
 #include <zillot/stm32/stm32_systick.h>
@@ -38,8 +41,15 @@ void enable_hse_clocking()
         SysTick_IRQn, (void (*)(void *))jiffies_increment, NULL);
 }
 
+nos::generic_ostream stdostream(+[](const void *data, size_t size) -> int
+                                {
+                                    debug_write((const char *)data, size);
+                                    return 1;
+                                });
+
 int main()
 {
+    nos::set_default_ostream(&stdostream);
     stm32_clockbus_freq[CLOCKBUS_HSI] = 64000000;
     stm32_clockbus_freq[CLOCKBUS_HSE] = 25000000;
 
@@ -79,30 +89,21 @@ int main()
 
     stm32_usart_setup(UART8, 115200, 'n', 8, 1);
     stm32_usart_enable(UART8, true);
+    stm32_diag_init(UART8);
 
     green_led.setup(GPIO_MODE_OUTPUT);
     red_led.setup(GPIO_MODE_OUTPUT);
 
     green_led.set(0);
-    red_led.set(0);
+    red_led.set(1);
 
     irqs_enable();
 
     while (1)
     {
-        green_led.set(1);
-        red_led.set(0);
-
-        igris::delay(1000);
-        //  cpu_delay(1000000);
-        stm32_usart_putc(UART8, 'U');
-        // igris::delay(1);
-
-        green_led.set(0);
-        red_led.set(1);
-
-        igris::delay(1000);
-        stm32_usart_putc(UART8, 'U');
-        //  cpu_delay(1000000);
+        igris::delay(10);
+        green_led.toggle();
+        red_led.toggle();
+        nos::println("HelloWorld!");
     }
 }
