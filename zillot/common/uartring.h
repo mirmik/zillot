@@ -27,6 +27,13 @@ namespace zillot
         {
         }
 
+        uartring(zillot::uart *udev, size_t rxlen, size_t txlen)
+            : zillot::chardev(), udev(udev),
+              rxring(RING_HEAD_INIT((unsigned int)rxlen)),
+              txring(RING_HEAD_INIT((unsigned int)txlen))
+        {
+        }
+
         uartring(const uartring &) = delete;
         uartring &operator=(const uartring &) = delete;
 
@@ -57,6 +64,8 @@ namespace zillot
             write(&c, 1);
         }
 
+        static void uartring_irq_handler_tx(void *priv);
+        static void uartring_irq_handler_rx(void *priv);
         static void uartring_irq_handler(void *priv, int code);
     };
 }

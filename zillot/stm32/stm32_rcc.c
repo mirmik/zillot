@@ -69,6 +69,12 @@ void stm32_rcc_enable_gpio(GPIO_TypeDef *gpio)
         break;
 #endif
 
+#ifdef RCC_AHB4ENR_GPIODEN
+    case GPIOD_BASE:
+        RCC->AHB4ENR |= RCC_AHB4ENR_GPIODEN;
+        break;
+#endif
+
 #ifdef RCC_AHB2ENR_GPIODEN
     case GPIOD_BASE:
         RCC->AHB2ENR |= RCC_AHB2ENR_GPIODEN;
@@ -99,9 +105,21 @@ void stm32_rcc_enable_gpio(GPIO_TypeDef *gpio)
         break;
 #endif
 
+#ifdef RCC_AHB4ENR_GPIOFEN
+    case GPIOF_BASE:
+        RCC->AHB4ENR |= RCC_AHB4ENR_GPIOFEN;
+        break;
+#endif
+
 #ifdef RCC_AHB1ENR_GPIOGEN
     case GPIOG_BASE:
         RCC->AHB1ENR |= RCC_AHB1ENR_GPIOGEN;
+        break;
+#endif
+
+#ifdef RCC_AHB4ENR_GPIOGEN
+    case GPIOG_BASE:
+        RCC->AHB4ENR |= RCC_AHB4ENR_GPIOGEN;
         break;
 #endif
 
@@ -169,6 +187,12 @@ void stm32_rcc_enable_usart(USART_TypeDef *usart)
 #ifdef RCC_APB1LENR_UART8EN
     case UART8_BASE:
         RCC->APB1LENR |= RCC_APB1LENR_UART8EN;
+        break;
+#endif
+
+#ifdef RCC_APB2ENR_USART10EN
+    case USART10_BASE:
+        RCC->APB2ENR |= RCC_APB2ENR_USART10EN;
         break;
 #endif
 

@@ -144,6 +144,12 @@ uint8_t stm32_usart_clockbus(USART_TypeDef *regs)
         break;
 #endif
 
+#ifdef RCC_APB2ENR_USART10EN
+    case USART10_BASE:
+        return CLOCKBUS_APB2;
+        break;
+#endif
+
     default:
         BUG();
     };

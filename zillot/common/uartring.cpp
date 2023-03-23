@@ -110,29 +110,17 @@ void zillot::uartring::clear()
 
 void zillot::uartring::uartring_irq_handler(void *priv, int code)
 {
-    struct zillot::uartring *uring = (struct zillot::uartring *)priv;
-
     switch (code)
     {
     case UART_IRQCODE_TX:
     {
-        if (ring_empty(&uring->txring))
-        {
-            uring->udev->ctrirqs(UART_CTRIRQS_TXOFF);
-            uring->tx_callback.invoke();
-            return;
-        }
-
-        char c = ring_getc(&uring->txring, uring->txbuffer);
-        uring->udev->sendbyte(c);
+        uartring_irq_handler_tx(priv);
         return;
     }
 
     case UART_IRQCODE_RX:
     {
-        char c = uring->udev->recvbyte();
-        ring_putc(&uring->rxring, uring->rxbuffer, c);
-        uring->rx_callback.invoke();
+        uartring_irq_handler_rx(priv);
         return;
     }
 
@@ -144,12 +132,36 @@ void zillot::uartring::uartring_irq_handler(void *priv, int code)
     }
 }
 
+void zillot::uartring::uartring_irq_handler_tx(void *priv)
+{
+    struct zillot::uartring *uring = (struct zillot::uartring *)priv;
+    if (ring_empty(&uring->txring))
+    {
+        uring->udev->ctrirqs(UART_CTRIRQS_TXOFF);
+        uring->tx_callback.invoke();
+        return;
+    }
+    char c = ring_getc(&uring->txring, uring->txbuffer);
+    uring->udev->sendbyte(c);
+}
+
+void zillot::uartring::uartring_irq_handler_rx(void *priv)
+{
+    struct zillot::uartring *uring = (struct zillot::uartring *)priv;
+    char c = uring->udev->recvbyte();
+    ring_putc(&uring->rxring, uring->rxbuffer, c);
+    uring->rx_callback.invoke();
+}
+
 void zillot::uartring::begin(zillot::uart *uart)
 {
     udev = uart;
+    if (rxbuffer == nullptr)
+        rxbuffer = (char *)malloc(rxring.size);
+    if (txbuffer == nullptr)
+        txbuffer = (char *)malloc(txring.size);
     uart->handler = uartring_irq_handler;
     uart->handarg = (void *)this;
-
     udev->enable(1);
     udev->ctrirqs(UART_CTRIRQS_RXON);
 }
