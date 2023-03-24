@@ -2,6 +2,7 @@
 #define STM32_CLOCKBUS_H
 
 #include <stdint.h>
+#include <stm32xxxx.h>
 #include <sys/cdefs.h>
 
 enum clockbus_clock_enum
