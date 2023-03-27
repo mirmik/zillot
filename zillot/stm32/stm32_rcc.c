@@ -403,3 +403,54 @@ void stm32_rcc_enable_syscfg()
 #error "SysCfg enable register is not supported"
 #endif
 }
+
+void stm32_set_flash_latency(int latency)
+{
+    uint32_t code;
+    switch (latency)
+    {
+    case 0:
+        code = FLASH_ACR_LATENCY_0WS;
+        break;
+    case 1:
+        code = FLASH_ACR_LATENCY_1WS;
+        break;
+    case 2:
+        code = FLASH_ACR_LATENCY_2WS;
+        break;
+    case 3:
+        code = FLASH_ACR_LATENCY_3WS;
+        break;
+    case 4:
+        code = FLASH_ACR_LATENCY_4WS;
+        break;
+    case 5:
+        code = FLASH_ACR_LATENCY_5WS;
+        break;
+    case 6:
+        code = FLASH_ACR_LATENCY_6WS;
+        break;
+    case 7:
+        code = FLASH_ACR_LATENCY_7WS;
+        break;
+
+    default:
+        BUG();
+    }
+
+    FLASH->ACR = (FLASH->ACR & ~FLASH_ACR_LATENCY) | code;
+}
+
+#ifdef FLASH_ACR_ICEN
+void stm32_enable_icache()
+{
+    FLASH->ACR |= FLASH_ACR_ICEN;
+}
+#endif
+
+#ifdef FLASH_ACR_DCEN
+void stm32_enable_dcache()
+{
+    FLASH->ACR |= FLASH_ACR_DCEN;
+}
+#endif

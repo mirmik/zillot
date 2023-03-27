@@ -101,6 +101,10 @@ static inline int stm32_system_clock_mux_pll(int pllno)
 #endif
 }
 
+void stm32_set_flash_latency(int latency);
+void stm32_enable_icache();
+void stm32_enable_dcache();
+
 __END_DECLS
 
 #endif
