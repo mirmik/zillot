@@ -19,12 +19,16 @@ void context_init(struct context *ctx,
                   void *param,
                   uint8_t irqen);
 
-void context_save(struct context *next);
+int context_save(struct context *next, int code);
 void context_load(struct context *next);
 void context_save_and_displace(struct context *cntxt);
 
 void context_dprint(struct context *cntxt);
 void __context_drop__();
+void context_set_variable(struct context *ctx, int val);
+
+void *context_get_sp(struct context *ctx);
+void context_set_sp(struct context *ctx, void *sp);
 
 __END_DECLS
 
