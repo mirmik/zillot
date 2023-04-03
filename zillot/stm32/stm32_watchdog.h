@@ -1,7 +1,7 @@
 #ifndef STM32_WATCHDOG_H
 #define STM32_WATCHDOG_H
 
-#include <sys/cdefs.h>
+#include <igris/compiler.h>
 #include <stdint.h>
 
 __BEGIN_DECLS

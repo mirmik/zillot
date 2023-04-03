@@ -1,8 +1,8 @@
 #ifndef ASM_STM32_RCC_H
 #define ASM_STM32_RCC_H
 
+#include <igris/compiler.h>
 #include <stm32xxxx.h>
-#include <sys/cdefs.h>
 #include <zillot/stm32/stm32_clockbus.h>
 
 __BEGIN_DECLS

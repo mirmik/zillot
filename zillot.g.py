@@ -48,3 +48,8 @@ licant.module("zillot",
                   "igris.semaphore",
               ]
               )
+
+licant.module("zillot.posix-stub", 
+                include_paths=["zillot/posix-stub"],
+                sources=["zillot/posix-stub/*.cpp", "zillot/posix-stub/*.c"]
+)
