@@ -160,7 +160,6 @@ void stm32_usart_set_baudrate(USART_TypeDef *regs, uint32_t baud)
 {
     clockbus_clock_e busindex = stm32_usart_clockbus(regs);
     uint32_t busfreq = stm32_clockbus_freq[busindex];
-
 #ifdef LPUART1
     if (regs == LPUART1)
     {
@@ -168,8 +167,6 @@ void stm32_usart_set_baudrate(USART_TypeDef *regs, uint32_t baud)
         return;
     }
 #endif
-    // regs->BRR = busfreq / baud;
-
     regs->BRR = busfreq / baud;
 }
 
