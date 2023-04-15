@@ -106,8 +106,10 @@ static void _irqhandler(void *priv)
 
     else
     {
-        // dpr("stm32: unh usart irq usart->ISR: ");
-        // stm32_debug_print_usart_interrupt_status_register(dev->regs);
+        dpr("stm32: unh usart irq usart->ISR: ");
+        stm32_debug_print_usart_interrupt_status_register(dev->regs);
+        dln();
+        // abort();
     }
 }
 

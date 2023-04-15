@@ -132,7 +132,7 @@ void stm32_gpio_set_maxspeed(GPIO_TypeDef *regs,
     bits_masked_assign_multimap(regs->CRH, hmap, maxspeed, 4);
 
 #elif defined CHIP_STM32F3XX || defined CHIP_STM32F4XX || defined STM32F4xx || \
-    defined CHIP_STM32L4XX || defined STM32G4XX || defined STM32F7XX
+    defined CHIP_STM32L4XX || defined STM32G4XX || defined STM32F7XX || defined STM32H7XX 
     bits_masked_assign_multimap(regs->OSPEEDR, map, maxspeed, 2);
 
 #else

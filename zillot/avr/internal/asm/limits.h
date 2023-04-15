@@ -9,7 +9,6 @@
 #ifndef AVR_LIMITS_H_
 #define AVR_LIMITS_H_
 
-#include <asm-generic/limits16.h>
+#include <igris/types-generic/limits16.h>
 
 #endif /* AVR_LIMITS_H_ */
-

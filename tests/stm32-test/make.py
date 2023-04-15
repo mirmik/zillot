@@ -15,7 +15,7 @@ licant.cxx_application("stm32-firmware.elf",
                        mdepends=[
                            "igris.libc",
                            "igris.std",
-                           "igris.posix",
+                           "zillot.posix-stub",
                            "igris.include",
                            "igris.cxx_support",
                            "igris.printf_impl",

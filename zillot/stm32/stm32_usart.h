@@ -1,9 +1,9 @@
 #ifndef STM32_USART_H
 #define STM32_USART_H
 
+#include <igris/compiler.h>
 #include <igris/util/bits.h>
 #include <igris/util/bug.h>
-#include <sys/cdefs.h>
 #include <zillot/stm32/stm32_rcc.h>
 
 __BEGIN_DECLS

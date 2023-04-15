@@ -1,9 +1,9 @@
 #ifndef STM32_ASM_TIMER_H
 #define STM32_ASM_TIMER_H
 
+#include <igris/compiler.h>
 #include <igris/util/bits.h>
 #include <stm32xxxx.h>
-#include <sys/cdefs.h>
 
 #define STM32_TIMER_DOWNCOUNT 1
 #define STM32_TIMER_UPCOUNT 0
