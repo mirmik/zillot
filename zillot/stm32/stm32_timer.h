@@ -181,6 +181,39 @@ static inline void stm32_timer_drop_ovf_flag(TIM_TypeDef *tim)
     bits_clr(tim->SR, TIM_SR_UIF);
 }
 
+static inline void
+stm32_timer_encoder_interface_config(TIM_TypeDef *TIMx,
+                                     uint16_t TIM_EncoderMode,
+                                     uint16_t TIM_IC1Polarity,
+                                     uint16_t TIM_IC2Polarity)
+{
+    // Считываем регистры во временные переменные
+    uint16_t tmpsmcr = TIMx->SMCR;
+    uint16_t tmpccmr1 = TIMx->CCMR1;
+    uint16_t tmpccer = TIMx->CCER;
+
+    // Очищаем поле slave mode selection и устанавливаем в него выбранный режим
+    // энкодера.
+    tmpsmcr &= (uint16_t)~TIM_SMCR_SMS;
+    tmpsmcr |= TIM_EncoderMode;
+
+    // Настраиваем таймер в режим счёта внешних сигналов
+    // Выбираем Capture Compare 1 и Capture Compare 2 в режиме входа IC1 и IC2
+    // Нулевой режим как то связан с направлением счёта?
+    tmpccmr1 &= ((uint16_t)~TIM_CCMR1_CC1S) & ((uint16_t)~TIM_CCMR1_CC2S);
+    tmpccmr1 |= TIM_CCMR1_CC1S_0 | TIM_CCMR1_CC2S_0;
+
+    // Очищаем полярности входов энкодера и устанавливаем выбранные
+    tmpccer &= ((uint16_t)~TIM_CCER_CC1P) & ((uint16_t)~TIM_CCER_CC2P);
+    tmpccer |= (uint16_t)(TIM_IC1Polarity |
+                          (uint16_t)(TIM_IC2Polarity << (uint16_t)4));
+
+    // Записываем настройки
+    TIMx->SMCR = tmpsmcr;
+    TIMx->CCMR1 = tmpccmr1;
+    TIMx->CCER = tmpccer;
+}
+
 ///////////////////////////////////////////////////////////////
 
 typedef struct
