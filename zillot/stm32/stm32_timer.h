@@ -1,5 +1,5 @@
-#ifndef STM32_ASM_TIMER_H
-#define STM32_ASM_TIMER_H
+#ifndef STM32_ASM_STM32_TIMER_H
+#define STM32_ASM_STM32_TIMER_H
 
 #include <igris/compiler.h>
 #include <igris/util/bits.h>
@@ -124,6 +124,11 @@ static inline void stm32_timer_set_direction(TIM_TypeDef *tim,
     bits_lvl(tim->CR1, TIM_CR1_DIR, mode);
 }
 
+static inline void stm32_timer_set_counter_mode(TIM_TypeDef *tim, uint8_t mode)
+{
+    stm32_timer_set_direction(tim, (enum TimerDirection)mode);
+}
+
 static inline void stm32_timer_set_one_pulse_mode(TIM_TypeDef *tim, uint8_t en)
 {
     bits_lvl(tim->CR1, TIM_CR1_OPM, en);
@@ -181,11 +186,32 @@ static inline void stm32_timer_drop_ovf_flag(TIM_TypeDef *tim)
     bits_clr(tim->SR, TIM_SR_UIF);
 }
 
+enum TimerICPolarity
+{
+    TimerICPolarityRising = 0x0,
+    TimerICPolarityFalling = 0x2,
+    TimerICPolarityBothEdge = 0xA
+};
+
+enum TimerEncoderMode
+{
+    TimerEncoderMode_TI1 = 0x1,
+    TimerEncoderMode_TI2 = 0x2,
+    TimerEncoderMode_TI12 = 0x3
+};
+
+//#define TIM_ICPolarity_Rising ((uint16_t)0x0000)
+//#define TIM_ICPolarity_Falling ((uint16_t)0x0002)
+//#define TIM_ICPolarity_BothEdge ((uint16_t)0x000A)
+
+//#define TIM_EncoderMode_TI1 ((uint16_t)0x0001)
+//#define TIM_EncoderMode_TI2 ((uint16_t)0x0002)
+//#define TIM_EncoderMode_TI12 ((uint16_t)0x0003)
 static inline void
 stm32_timer_encoder_interface_config(TIM_TypeDef *TIMx,
-                                     uint16_t TIM_EncoderMode,
-                                     uint16_t TIM_IC1Polarity,
-                                     uint16_t TIM_IC2Polarity)
+                                     enum TimerEncoderMode TIM_EncoderMode,
+                                     enum TimerICPolarity TIM_IC1Polarity,
+                                     enum TimerICPolarity TIM_IC2Polarity)
 {
     // Считываем регистры во временные переменные
     uint16_t tmpsmcr = TIMx->SMCR;
@@ -214,8 +240,10 @@ stm32_timer_encoder_interface_config(TIM_TypeDef *TIMx,
     TIMx->CCER = tmpccer;
 }
 
-///////////////////////////////////////////////////////////////
+__END_DECLS
 
+///////////////////////////////////////////////////////////////
+#if 0
 typedef struct
 {
     uint16_t TIM_OCMode; /*!< Specifies the TIM mode.
@@ -258,6 +286,8 @@ typedef struct
                                     @note This parameter is valid only for TIM1
                                   and TIM8. */
 } TIM_OCInitTypeDef;
+
+__BEGIN_DECLS
 
 void TIM_OC1Init(TIM_TypeDef *TIMx, TIM_OCInitTypeDef *TIM_OCInitStruct);
 void TIM_OC3Init(TIM_TypeDef *TIMx, TIM_OCInitTypeDef *TIM_OCInitStruct);
@@ -1082,4 +1112,5 @@ __END_DECLS
 #define TIM_DMABurstLength_17Bytes TIM_DMABurstLength_17Transfers
 #define TIM_DMABurstLength_18Bytes TIM_DMABurstLength_18Transfers
 
+#endif
 #endif

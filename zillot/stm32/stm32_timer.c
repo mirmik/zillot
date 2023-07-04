@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <zillot/stm32/stm32_timer.h>
 
+#if 0
 /**
  * @brief  Fills each TIM_OCInitStruct member with its default value.
  * @param  TIM_OCInitStruct: pointer to a TIM_OCInitTypeDef structure which will
@@ -304,3 +305,5 @@ void TIM_OC3Init(TIM_TypeDef *TIMx, TIM_OCInitTypeDef *TIM_OCInitStruct)
     /* Write to TIMx CCER */
     TIMx->CCER = tmpccer;
 }
+
+#endif
