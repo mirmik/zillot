@@ -134,6 +134,22 @@ static inline void stm32_timer_set_one_pulse_mode(TIM_TypeDef *tim, uint8_t en)
     bits_lvl(tim->CR1, TIM_CR1_OPM, en);
 }
 
+static inline void stm32_timer_config_interrupt_source(TIM_TypeDef *TIMx,
+                                                       uint16_t TIM_IT,
+                                                       bool NewState)
+{
+    if (NewState)
+    {
+        /* Enable the Interrupt sources */
+        TIMx->DIER |= TIM_IT;
+    }
+    else
+    {
+        /* Disable the Interrupt sources */
+        TIMx->DIER &= (uint16_t)~TIM_IT;
+    }
+}
+
 // Активировать прерывание по переполнению ( бит UIE - update interrupt enable
 // ). Не забудьте настроить разрешение в NVIC. Перед выходом из прерывания
 // следует сбросить флаг SR->UIF.
@@ -243,7 +259,7 @@ stm32_timer_encoder_interface_config(TIM_TypeDef *TIMx,
 __END_DECLS
 
 ///////////////////////////////////////////////////////////////
-#if 0
+//#if 0
 typedef struct
 {
     uint16_t TIM_OCMode; /*!< Specifies the TIM mode.
@@ -296,8 +312,6 @@ void TIM_EncoderInterfaceConfig(TIM_TypeDef *TIMx,
                                 uint16_t TIM_EncoderMode,
                                 uint16_t TIM_IC1Polarity,
                                 uint16_t TIM_IC2Polarity);
-void TIM_ITConfig(TIM_TypeDef *TIMx, uint16_t TIM_IT, FunctionalState NewState);
-void TIM_Cmd(TIM_TypeDef *TIMx, FunctionalState NewState);
 void TIM_ClearITPendingBit(TIM_TypeDef *TIMx, uint16_t TIM_IT);
 void TIM_OC3Init(TIM_TypeDef *TIMx, TIM_OCInitTypeDef *TIM_OCInitStruct);
 
@@ -1113,4 +1127,4 @@ __END_DECLS
 #define TIM_DMABurstLength_18Bytes TIM_DMABurstLength_18Transfers
 
 #endif
-#endif
+//#endif
