@@ -269,6 +269,18 @@ void stm32_rcc_enable_timer(TIM_TypeDef *t)
         break;
 #endif
 
+#ifdef RCC_APB1ENR1_TIM5EN
+    case TIM5_BASE:
+        RCC->APB1ENR1 |= RCC_APB1ENR1_TIM5EN;
+        break;
+#endif
+
+#ifdef RCC_APB1LENR_TIM5EN
+    case TIM5_BASE:
+        RCC->APB1LENR |= RCC_APB1LENR_TIM5EN;
+        break;
+#endif
+
 #ifdef TIM6_BASE
 #ifdef RCC_APB1ENR_TIM6EN
     case TIM6_BASE:
