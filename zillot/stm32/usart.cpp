@@ -83,17 +83,17 @@ static void _irqhandler(void *priv)
     zillot::stm32::usart *dev = (zillot::stm32::usart *)priv;
     USART_TypeDef *regs = dev->regs;
 
-    if (stm32_rxirq_status(regs))
+    if (stm32_rxirq_status(regs) && stm32_usart_rxirq_enabled(regs))
     {
         dev->handler(dev->handarg, UART_IRQCODE_RX);
     }
 
-    else if (stm32_txirq_status(regs))
+    else if (stm32_txirq_status(regs) && stm32_usart_txirq_enabled(regs))
     {
         dev->handler(dev->handarg, UART_IRQCODE_TX);
     }
 
-    else if (stm32_tcirq_status(regs))
+    else if (stm32_tcirq_status(regs) && stm32_usart_tcirq_enabled(regs))
     {
         dev->handler(dev->handarg, UART_IRQCODE_TC);
     }
@@ -109,7 +109,7 @@ static void _irqhandler(void *priv)
         // dpr("stm32: unh usart irq usart->ISR: ");
         // stm32_debug_print_usart_interrupt_status_register(dev->regs);
         // dln();
-        // abort();
+        abort();
     }
 }
 

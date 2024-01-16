@@ -297,11 +297,26 @@ void stm32_usart_txirq_enable(USART_TypeDef *regs, int en)
                                                            USART_CR1_TXEIE);
 }
 
+int stm32_usart_rxirq_enabled(USART_TypeDef *regs)
+{
+    return regs->CR1 & USART_CR1_RXNEIE;
+}
+
+int stm32_usart_txirq_enabled(USART_TypeDef *regs)
+{
+    return regs->CR1 & USART_CR1_TXEIE;
+}
+
 void stm32_usart_tcirq_enable(USART_TypeDef *regs, int en)
 {
     if (en)
         bits_set(regs->CR1, USART_CR1_TCIE) else bits_clr(regs->CR1,
                                                           USART_CR1_TCIE);
+}
+
+int stm32_usart_tcirq_enabled(USART_TypeDef *regs)
+{
+    return regs->CR1 & USART_CR1_TCIE;
 }
 
 int stm32_usart_setup(USART_TypeDef *regs,

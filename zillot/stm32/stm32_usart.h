@@ -36,6 +36,9 @@ int stm32_usart_setup(USART_TypeDef *regs,
 void stm32_usart_txirq_enable(USART_TypeDef *regs, int en);
 void stm32_usart_tcirq_enable(USART_TypeDef *regs, int en);
 void stm32_usart_rxirq_enable(USART_TypeDef *regs, int en);
+int stm32_usart_txirq_enabled(USART_TypeDef *regs);
+int stm32_usart_tcirq_enabled(USART_TypeDef *regs);
+int stm32_usart_rxirq_enabled(USART_TypeDef *regs);
 
 void stm32_drop_overrun_flag(USART_TypeDef *regs);
 
