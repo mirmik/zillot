@@ -39,13 +39,15 @@ jobs:
           # Убери те, которые у тебя уже лежат в workspace, чтобы не было конфликтов путей.
           git clone https://github.com/mirmik/igris                || true
           git clone https://github.com/mirmik/nos                  || true
+          git clone https://github.com/mirmik/onboardtest          || true
 
       - name: Register licant libraries (licant-libs like in make-world.sh)
         run: |
           set -e
           list_of_directories="\
               igris \
-              nos"
+              nos \
+              onboardtest \"
 
           for directory in $list_of_directories
           do
