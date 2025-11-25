@@ -7,9 +7,8 @@ on:
     branches: [master]
 
 jobs:
-  build:
+  build-arduino2560:
     runs-on: ubuntu-latest
-
     env:
       BUILD_TYPE: Release
 
@@ -26,6 +25,7 @@ jobs:
             ninja-build \
             python3 python3-pip \
             gcc-avr binutils-avr avr-libc
+
       - name: Install ARM GCC 9-2019-q4-major
         run: |
           cd $HOME
@@ -46,11 +46,9 @@ jobs:
 
       - name: Fetch licant libraries sources
         run: |
-          # Клонируем необходимые библиотеки.
-          # Убери те, которые у тебя уже лежат в workspace, чтобы не было конфликтов путей.
-          git clone https://github.com/mirmik/igris                || true
-          git clone https://github.com/mirmik/nos                  || true
-          git clone https://github.com/mirmik/onboardtest          || true
+          git clone https://github.com/mirmik/igris       || true
+          git clone https://github.com/mirmik/nos         || true
+          git clone https://github.com/mirmik/onboardtest || true
 
       - name: Register licant libraries (licant-libs like in make-world.sh)
         run: |
@@ -71,9 +69,186 @@ jobs:
             fi
           done
 
-      - name: Build (licant)
+      - name: Build arduino2560-firmware.elf
         run: |
-          python3 make.py --debug
+          python3 make.py arduino2560-firmware.elf
+
+  build-stm32:
+    runs-on: ubuntu-latest
+    env:
+      BUILD_TYPE: Release
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install toolchains and system deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            cmake \
+            ninja-build \
+            python3 python3-pip \
+            gcc-avr binutils-avr avr-libc
+
+      - name: Install ARM GCC 9-2019-q4-major
+        run: |
+          cd $HOME
+          wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/9-2019q4/gcc-arm-none-eabi-9-2019-q4-major-x86_64-linux.tar.bz2
+          tar xf gcc-arm-none-eabi-9-2019-q4-major-x86_64-linux.tar.bz2
+          echo "$HOME/gcc-arm-none-eabi-9-2019-q4-major/bin" >> $GITHUB_PATH
+
+      - name: Install licant (with licant-libs)
+        run: |
+          sudo python3 -m pip install licant
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Fetch licant libraries sources
+        run: |
+          git clone https://github.com/mirmik/igris       || true
+          git clone https://github.com/mirmik/nos         || true
+          git clone https://github.com/mirmik/onboardtest || true
+
+      - name: Register licant libraries
+        run: |
+          set -e
+          list_of_directories="\
+              igris \
+              nos \
+              onboardtest \
+          "
+          for directory in $list_of_directories
+          do
+            if [ -d "$directory" ]; then
+              echo "licant-libs $directory"
+              sudo licant-libs "./$directory"
+            else
+              echo "Skip $directory (not found)"
+            fi
+          done
+
+      - name: Build stm32-firmware.elf
+        run: |
+          python3 make.py stm32-firmware.elf
+
+  build-stm32h7:
+    runs-on: ubuntu-latest
+    env:
+      BUILD_TYPE: Release
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install toolchains and system deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            cmake \
+            ninja-build \
+            python3 python3-pip \
+            gcc-avr binutils-avr avr-libc
+
+      - name: Install ARM GCC 9-2019-q4-major
+        run: |
+          cd $HOME
+          wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/9-2019q4/gcc-arm-none-eabi-9-2019-q4-major-x86_64-linux.tar.bz2
+          tar xf gcc-arm-none-eabi-9-2019-q4-major-x86_64-linux.tar.bz2
+          echo "$HOME/gcc-arm-none-eabi-9-2019-q4-major/bin" >> $GITHUB_PATH
+
+      - name: Install licant (with licant-libs)
+        run: |
+          sudo python3 -m pip install licant
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Fetch licant libraries sources
+        run: |
+          git clone https://github.com/mirmik/igris       || true
+          git clone https://github.com/mirmik/nos         || true
+          git clone https://github.com/mirmik/onboardtest || true
+
+      - name: Register licant libraries
+        run: |
+          set -e
+          list_of_directories="\
+              igris \
+              nos \
+              onboardtest \
+          "
+          for directory in $list_of_directories
+          do
+            if [ -d "$directory" ]; then
+              echo "licant-libs $directory"
+              sudo licant-libs "./$directory"
+            else
+              echo "Skip $directory (not found)"
+            fi
+          done
+
+      - name: Build stm32h7-firmware.elf
+        run: |
+          python3 make.py stm32h7-firmware.elf
+
+  build-and-test-host:
+    runs-on: ubuntu-latest
+    env:
+      BUILD_TYPE: Release
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install toolchains and system deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            cmake \
+            ninja-build \
+            python3 python3-pip \
+            gcc-avr binutils-avr avr-libc
+
+      - name: Install ARM GCC 9-2019-q4-major
+        run: |
+          cd $HOME
+          wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/9-2019q4/gcc-arm-none-eabi-9-2019-q4-major-x86_64-linux.tar.bz2
+          tar xf gcc-arm-none-eabi-9-2019-q4-major-x86_64-linux.tar.bz2
+          echo "$HOME/gcc-arm-none-eabi-9-2019-q4-major/bin" >> $GITHUB_PATH
+
+      - name: Install licant (with licant-libs)
+        run: |
+          sudo python3 -m pip install licant
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Fetch licant libraries sources
+        run: |
+          git clone https://github.com/mirmik/igris       || true
+          git clone https://github.com/mirmik/nos         || true
+          git clone https://github.com/mirmik/onboardtest || true
+
+      - name: Register licant libraries
+        run: |
+          set -e
+          list_of_directories="\
+              igris \
+              nos \
+              onboardtest \
+          "
+          for directory in $list_of_directories
+          do
+            if [ -d "$directory" ]; then
+              echo "licant-libs $directory"
+              sudo licant-libs "./$directory"
+            else
+              echo "Skip $directory (not found)"
+            fi
+          done
+
+      - name: Build runtests
+        run: |
+          python3 make.py runtests
 
       - name: Run tests
         run: |
