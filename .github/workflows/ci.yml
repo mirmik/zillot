@@ -26,13 +26,12 @@ jobs:
             ninja-build \
             python3 python3-pip \
             gcc-avr binutils-avr avr-libc
-
       - name: Install ARM GCC 9-2019-q4-major
         run: |
           cd $HOME
-          wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/9-2019q4/gnu-arm-none-eabi-9-2019-q4-major-x86_64-linux.tar.bz2
-          tar xf gnu-arm-none-eabi-9-2019-q4-major-x86_64-linux.tar.bz2
-          echo "$HOME/gnu-arm-none-eabi-9-2019-q4-major/bin" >> $GITHUB_PATH
+          wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/9-2019q4/gcc-arm-none-eabi-9-2019-q4-major-x86_64-linux.tar.bz2
+          tar xf gcc-arm-none-eabi-9-2019-q4-major-x86_64-linux.tar.bz2
+          echo "$HOME/gcc-arm-none-eabi-9-2019-q4-major/bin" >> $GITHUB_PATH
 
       - name: Show ARM toolchain version
         run: |
