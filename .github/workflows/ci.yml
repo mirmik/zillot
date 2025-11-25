@@ -47,7 +47,8 @@ jobs:
           list_of_directories="\
               igris \
               nos \
-              onboardtest \"
+              onboardtest \
+          "
 
           for directory in $list_of_directories
           do
