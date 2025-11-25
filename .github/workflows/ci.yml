@@ -37,6 +37,7 @@ jobs:
         run: |
           arm-none-eabi-gcc --version || true
           arm-none-eabi-g++ --version || true
+          arm-none-eabi-ld --version || true
 
       - name: Install licant (with licant-libs)
         run: |
