@@ -33,8 +33,6 @@ jobs:
           python3 -m pip install --user licant
           echo "$HOME/.local/bin" >> $GITHUB_PATH
 
-      # Если эти репозитории уже есть как сабмодули или лежат рядом — блок clone можно
-      # убрать/подправить. Сейчас вариант "голого" раннера.
       - name: Fetch licant libraries sources
         run: |
           # Клонируем необходимые библиотеки.
@@ -47,7 +45,7 @@ jobs:
           set -e
           list_of_directories="\
               igris \
-              nos
+              nos"
 
           for directory in $list_of_directories
           do
