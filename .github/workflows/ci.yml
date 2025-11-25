@@ -1,0 +1,79 @@
+name: Licant CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      BUILD_TYPE: Release
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install toolchains and system deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            cmake \
+            ninja-build \
+            python3 python3-pip \
+            gcc-avr binutils-avr avr-libc \
+            gcc-arm-none-eabi libnewlib-arm-none-eabi
+
+      - name: Install licant (with licant-libs)
+        run: |
+          python3 -m pip install --user licant
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      # Если эти репозитории уже есть как сабмодули или лежат рядом — блок clone можно
+      # убрать/подправить. Сейчас вариант "голого" раннера.
+      - name: Fetch licant libraries sources
+        run: |
+          # Клонируем необходимые библиотеки.
+          # Убери те, которые у тебя уже лежат в workspace, чтобы не было конфликтов путей.
+          git clone https://github.com/mirmik/igris                || true
+          git clone https://github.com/mirmik/nos                  || true
+          git clone https://github.com/mirmik/crow                 || true
+          git clone https://github.com/mirmik/ralgo                || true
+          git clone https://github.com/mirmik/rabbit               || true
+          git clone https://github.com/mirmik/rfmeask              || true
+          git clone https://github.com/mirmik/rfdaemon             || true
+          git clone https://github.com/mirmik/dataproxy            || true
+          git clone https://github.com/mirmik/ModbusRemoteControl  || true
+          git clone https://github.com/mirmik/zillot               || true
+          git clone https://github.com/mirmik/genos                || true
+          git clone https://github.com/mirmik/onboardtest          || true
+
+      - name: Register licant libraries (licant-libs like in make-world.sh)
+        run: |
+          set -e
+          list_of_directories="\
+              igris \
+              nos \
+              crow
+
+          for directory in $list_of_directories
+          do
+            if [ -d "$directory" ]; then
+              echo "licant-libs $directory"
+              sudo licant-libs "./$directory"
+            else
+              echo "Skip $directory (not found)"
+            fi
+          done
+
+      - name: Build (licant)
+        run: |
+          python3 make.py
+
+      - name: Run tests
+        run: |
+          ./runtests
