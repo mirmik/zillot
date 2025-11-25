@@ -42,15 +42,6 @@ jobs:
           git clone https://github.com/mirmik/igris                || true
           git clone https://github.com/mirmik/nos                  || true
           git clone https://github.com/mirmik/crow                 || true
-          git clone https://github.com/mirmik/ralgo                || true
-          git clone https://github.com/mirmik/rabbit               || true
-          git clone https://github.com/mirmik/rfmeask              || true
-          git clone https://github.com/mirmik/rfdaemon             || true
-          git clone https://github.com/mirmik/dataproxy            || true
-          git clone https://github.com/mirmik/ModbusRemoteControl  || true
-          git clone https://github.com/mirmik/zillot               || true
-          git clone https://github.com/mirmik/genos                || true
-          git clone https://github.com/mirmik/onboardtest          || true
 
       - name: Register licant libraries (licant-libs like in make-world.sh)
         run: |
