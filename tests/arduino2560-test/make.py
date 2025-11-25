@@ -29,7 +29,7 @@ licant.cxx_application("arduino2560-firmware.elf",
                        cc_flags="-ffunction-sections -fdata-sections",
                        ld_flags="-nostdinc -Wl,--gc-sections",
                        libs=["gcc"],
-                       defines=["WITHOUT_ATOF64"]
+                       defines=["WITHOUT_ATOF64", "IGRIS_SYNC_ENABLE_SEM_COMPAT_NAMES"]
                        )
 
 default_file = "/dev/ttyACM0"
