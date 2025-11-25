@@ -30,7 +30,7 @@ jobs:
 
       - name: Install licant (with licant-libs)
         run: |
-          python3 -m pip install --user licant
+          sudo python3 -m pip install licant
           echo "$HOME/.local/bin" >> $GITHUB_PATH
 
       - name: Fetch licant libraries sources
