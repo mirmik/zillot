@@ -62,7 +62,7 @@ jobs:
 
       - name: Build (licant)
         run: |
-          python3 make.py
+          python3 make.py --debug
 
       - name: Run tests
         run: |
