@@ -11,8 +11,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout zillot
         uses: actions/checkout@v4
+
+      - name: Checkout igris
+        uses: actions/checkout@v4
+        with:
+          repository: mirmik/igris
+          path: igris
+          fetch-depth: 1
+
+      - name: Checkout nos
+        uses: actions/checkout@v4
+        with:
+          repository: mirmik/nos
+          path: nos
+          fetch-depth: 1
+
+      - name: Checkout onboardtest
+        uses: actions/checkout@v4
+        with:
+          repository: mirmik/onboardtest
+          path: onboardtest
+          fetch-depth: 1
 
       - name: Install host and AVR toolchains
         run: |
@@ -26,12 +47,6 @@ jobs:
         run: |
           sudo python3 -m pip install licant
 
-      - name: Fetch licant libraries sources
-        run: |
-          git clone https://github.com/mirmik/igris       || true
-          git clone https://github.com/mirmik/nos         || true
-          git clone https://github.com/mirmik/onboardtest || true
-
       - name: Register licant libraries
         run: |
           set -e
@@ -42,12 +57,8 @@ jobs:
           "
           for directory in $list_of_directories
           do
-            if [ -d "$directory" ]; then
-              echo "licant-libs $directory"
-              sudo licant-libs "./$directory"
-            else
-              echo "Skip $directory (not found)"
-            fi
+            echo "licant-libs $directory"
+            sudo licant-libs "./$directory"
           done
 
       - name: Build arduino2560-firmware.elf
@@ -58,8 +69,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout zillot
         uses: actions/checkout@v4
+
+      - name: Checkout igris
+        uses: actions/checkout@v4
+        with:
+          repository: mirmik/igris
+          path: igris
+          fetch-depth: 1
+
+      - name: Checkout nos
+        uses: actions/checkout@v4
+        with:
+          repository: mirmik/nos
+          path: nos
+          fetch-depth: 1
+
+      - name: Checkout onboardtest
+        uses: actions/checkout@v4
+        with:
+          repository: mirmik/onboardtest
+          path: onboardtest
+          fetch-depth: 1
 
       - name: Install host toolchain
         run: |
@@ -84,12 +116,6 @@ jobs:
         run: |
           sudo python3 -m pip install licant
 
-      - name: Fetch licant libraries sources
-        run: |
-          git clone https://github.com/mirmik/igris       || true
-          git clone https://github.com/mirmik/nos         || true
-          git clone https://github.com/mirmik/onboardtest || true
-
       - name: Register licant libraries
         run: |
           set -e
@@ -100,12 +126,8 @@ jobs:
           "
           for directory in $list_of_directories
           do
-            if [ -d "$directory" ]; then
-              echo "licant-libs $directory"
-              sudo licant-libs "./$directory"
-            else
-              echo "Skip $directory (not found)"
-            fi
+            echo "licant-libs $directory"
+            sudo licant-libs "./$directory"
           done
 
       - name: Build stm32-firmware.elf
@@ -116,8 +138,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout zillot
         uses: actions/checkout@v4
+
+      - name: Checkout igris
+        uses: actions/checkout@v4
+        with:
+          repository: mirmik/igris
+          path: igris
+          fetch-depth: 1
+
+      - name: Checkout nos
+        uses: actions/checkout@v4
+        with:
+          repository: mirmik/nos
+          path: nos
+          fetch-depth: 1
+
+      - name: Checkout onboardtest
+        uses: actions/checkout@v4
+        with:
+          repository: mirmik/onboardtest
+          path: onboardtest
+          fetch-depth: 1
 
       - name: Install host toolchain
         run: |
@@ -142,12 +185,6 @@ jobs:
         run: |
           sudo python3 -m pip install licant
 
-      - name: Fetch licant libraries sources
-        run: |
-          git clone https://github.com/mirmik/igris       || true
-          git clone https://github.com/mirmik/nos         || true
-          git clone https://github.com/mirmik/onboardtest || true
-
       - name: Register licant libraries
         run: |
           set -e
@@ -158,12 +195,8 @@ jobs:
           "
           for directory in $list_of_directories
           do
-            if [ -d "$directory" ]; then
-              echo "licant-libs $directory"
-              sudo licant-libs "./$directory"
-            else
-              echo "Skip $directory (not found)"
-            fi
+            echo "licant-libs $directory"
+            sudo licant-libs "./$directory"
           done
 
       - name: Build stm32h7-firmware.elf
@@ -174,8 +207,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout zillot
         uses: actions/checkout@v4
+
+      - name: Checkout igris
+        uses: actions/checkout@v4
+        with:
+          repository: mirmik/igris
+          path: igris
+          fetch-depth: 1
+
+      - name: Checkout nos
+        uses: actions/checkout@v4
+        with:
+          repository: mirmik/nos
+          path: nos
+          fetch-depth: 1
+
+      - name: Checkout onboardtest
+        uses: actions/checkout@v4
+        with:
+          repository: mirmik/onboardtest
+          path: onboardtest
+          fetch-depth: 1
 
       - name: Install host toolchain
         run: |
@@ -188,12 +242,6 @@ jobs:
         run: |
           sudo python3 -m pip install licant
 
-      - name: Fetch licant libraries sources
-        run: |
-          git clone https://github.com/mirmik/igris       || true
-          git clone https://github.com/mirmik/nos         || true
-          git clone https://github.com/mirmik/onboardtest || true
-
       - name: Register licant libraries
         run: |
           set -e
@@ -204,12 +252,8 @@ jobs:
           "
           for directory in $list_of_directories
           do
-            if [ -d "$directory" ]; then
-              echo "licant-libs $directory"
-              sudo licant-libs "./$directory"
-            else
-              echo "Skip $directory (not found)"
-            fi
+            echo "licant-libs $directory"
+            sudo licant-libs "./$directory"
           done
 
       - name: Build runtests
